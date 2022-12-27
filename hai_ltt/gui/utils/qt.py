@@ -69,6 +69,12 @@ def addActions(widget, actions):
     for action in actions:
         if action is None:
             widget.addSeparator()
+        elif action == "Spacer":
+            spacer = QtWidgets.QWidget()
+            spacer.setSizePolicy(
+                QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding
+            )
+            widget.addWidget(spacer)
         elif isinstance(action, QtWidgets.QMenu):
             widget.addMenu(action)
         else:

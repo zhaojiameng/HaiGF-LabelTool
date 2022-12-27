@@ -44,7 +44,7 @@ class Ui_MainWindow(object):
         self.setupMenuBar(mw=mw)  # 设置菜单栏
         self.setupCoreFuncBar(mw=mw)  # 设置核心功能栏
         self.setupMainSideBar(mw=mw)  # 设置主侧栏
-        self.setupAuxSideBar(mw=mw)  # 设置核心功能区
+        self.setupAuxSideBar(mw=mw)  # 设置辅助侧栏
         self.setupCentralWidget(mw=mw)  # 设置中央控件
         # self.setupCanvas(mw=mw)  # 设置画布
         self.setupPanel(mw=mw)  # 设置面板
@@ -61,12 +61,12 @@ class Ui_MainWindow(object):
 
     def setupCoreFuncBar(self, mw):
         """设置核心功能栏"""
-        core_func_bar = get_toolbar("core_func_bar", actions=None)
+        core_func_bar = get_toolbar("core_func_bar", parent=mw, actions=None)
         actions=[
                 mw.actions.explorer_action, 
                 mw.actions.anno_action, 
                 mw.actions.ai_action,
-                None,  # 占位
+                'Spacer',  # 占位
                 mw.actions.setting_action,
                 ]
         core_func_bar.addActions(actions=actions)
@@ -88,8 +88,8 @@ class Ui_MainWindow(object):
 
     def setupCentralWidget(self, mw):
         """设置中心窗口"""
-        central_widget = get_central_widget(mw)
-        mw.setCentralWidget(central_widget)
+        mw.central_widget = get_central_widget(mw)
+        mw.setCentralWidget(mw.central_widget)
 
     def setupCanvas(self, mw):
         """设置画布"""
@@ -101,19 +101,21 @@ class Ui_MainWindow(object):
         """设置底部选项卡"""
         # tab_widget = QTabWidget(mw)
         docker = QDockWidget("Bottom", mw)
-        docker2 = QDockWidget("Bottom2", mw)
+        # docker2 = QDockWidget("Bottom2", mw)
         docker.setWidget(QLabel('s1'))
-        docker2.setWidget(QLabel('s2'))
+        # docker2.setWidget(QLabel('s2'))
         docker.setFeatures(QDockWidget.DockWidgetMovable)
         # docker.setMovable(False)
         # tab_widget.addTab(QLabel('s3'), "S4")
         mw.addDockWidget(Qt.BottomDockWidgetArea, docker)
-        mw.addDockWidget(Qt.BottomDockWidgetArea, docker2)
+        # mw.addDockWidget(Qt.BottomDockWidgetArea, docker2)
         pass
 
     def setupStatusBar(self, mw):
         self.statusbar = QStatusBar(mw)
         self.statusbar.setObjectName(u"statusbar")
+        # 设置状态栏背景颜色
+        self.statusbar.setStyleSheet("background-color: rgb(255, 255, 255);")    
         mw.setStatusBar(self.statusbar)
 
 

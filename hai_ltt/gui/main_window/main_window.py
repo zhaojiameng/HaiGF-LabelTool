@@ -24,6 +24,8 @@ class MainWindow(QMainWindow):
         self.settings.setValue("window/size", self.size())
         self.settings.setValue("window/position", self.pos())
         self.settings.setValue("window/state", self.saveState())
+        
+        self.settings.setValue("splitter/state", self.central_widget.splitter.saveState())
 
     
 if __name__ == "__main__":

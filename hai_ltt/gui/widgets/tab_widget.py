@@ -7,54 +7,67 @@ from PySide2.QtWidgets import (QWidget, QHBoxLayout, QTabWidget,
     QListWidgetItem, QDockWidget)
 
 from .. import utils
+from .tool_bar import get_toolbar, ToolBar
 
 
 def get_tab_widget(parent=None, **kwargs):
-    return TabWidget(parent=parent, **kwargs)
+    tab_widget = TabWidget(parent=parent, **kwargs)
+    return tab_widget
 
-# class TabWidget(QDockWidget):
-# class TabWidget(QWidget):
+
 class TabWidget(QTabWidget):
-    """包含TabBar、ToolBar和Page的组合控件"""
-    def __init__(self, parent=None, id=0):
+    """
+    包含TabBar、ToolBar和Page的组合控件
+    # 先写一个默认的控件Table
+    """
+    def __init__(self, parent=None, pages=None, **kwargs):
         super().__init__(parent)
+        self.mw = parent
 
-        self.setWindowTitle(f"TabWidget {id}")
+        self.setWindowTitle(f"TabWidget")
 
-        # self.layout = QVBoxLayout(self)
-        # self.layout.setSpacing(0)
-        # self.layout.setContentsMargins(0, 0, 0, 0)
-        # self.setIcon(utils.newIcon("anno"))
-        self.setMovable(True)  # TabBar可移动
-        # self.setIconSize(QSize(16, 16))  # 设置图标大小，默认16x16
-        
-        tab_bar = TabBar()
-        label = QLabel(f"TabWidget {id}")
-        label2 = QLabel(f"TabWidget2 {id}")
-        
-        # self.layout.addWidget(tab_bar)
-        # self.layout.addWidget(label)
-        # self.layout.addWidget(label2)
-        self.addTab(tab_bar, utils.newIcon("ai"), "TabBar")
-        self.addTab(label, "Label")
-        # self.setTabIcon(0, utils.newIcon("ai"))
         self.setTabShape(QTabWidget.Rounded)
         self.setTabsClosable(True)
         self.usesScrollButtons()
 
         # 设置可调整控件大小
-
         # self.setFeatures(QDockWidget.DockWidgetMovable | QDockWidget.DockWidgetFloatable)
-        
         # 设置边框颜色
         # self.setStyleSheet("border-right: 1px solid rgb(0, 255, 255);")
+    
 
-
-
-class TabBar(QWidget):
-    """选项卡，包含多个Tab, 每个Tab包含图标、标题、关闭按钮"""
+class Page(QWidget):
+    """单个页面，包含ToolBar和Page"""
     def __init__(self, parent=None, **kwargs):
+        print(parent, 'parent')
         super().__init__(parent)
+        self.mw = parent
+        tool_bar = kwargs.pop("tool_bar", None)
+
+        self.layout = QHBoxLayout(self)
+        self.layout.setSpacing(0)
+        self.layout.setContentsMargins(0, 0, 0, 0)
+        self.setLayout(self.layout)
+        
+        # 设置工具栏
+        self.setupToolBar(tool_bar=tool_bar)
+
+    def default_tool_bar(self):
+        # tool_bar = get_toolbar(title='PageToolBar', parent=self.parent)
+        # mw = self.mw
+        # actions = [mw.actions.explorer_action]
+        # tool_bar.addActions(actions)
+        tool_bar = QWidget()
+        tool_bar.setLayout(QHBoxLayout())
+        tool_bar.layout().addWidget(QLabel("PageToolBar"))
+        return tool_bar
+
+    def setupToolBar(self, tool_bar=None):
+        tool_bar = tool_bar if tool_bar else self.default_tool_bar()
+        self.layout.addWidget(tool_bar)
+
+
+    def a(self):
 
         self.layout = QHBoxLayout(self)
         self.layout.setSpacing(0)
