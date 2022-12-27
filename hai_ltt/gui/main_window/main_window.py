@@ -20,14 +20,21 @@ class MainWindow(QMainWindow):
         # self.mw_ui.retranslateUi(self)
         # self.setStyleSheet("QMainWindow{background-color: rgb(255, 255, 255);}")
 
+    def load_file_or_dir(self, file=None, dir=None):
+        assert file or dir, 'file or dir must be specified'
+        # 
+        
+        print('Load file or dir')
+
+    
+        
+
     def closeEvent(self, event):
         self.settings.setValue("window/size", self.size())
         self.settings.setValue("window/position", self.pos())
         self.settings.setValue("window/state", self.saveState())
-        
-        self.settings.setValue("splitter/state", self.central_widget.splitter.saveState())
+        # self.settings.setValue("splitter/state", self.central_widget.splitter.saveState())
 
-    
 if __name__ == "__main__":
 
     app = QApplication(sys.argv)
