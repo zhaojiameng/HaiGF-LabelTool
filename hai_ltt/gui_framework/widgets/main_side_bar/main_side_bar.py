@@ -45,15 +45,14 @@ class ExampleWidget(QWidget):
 
         layout = QVBoxLayout()
         # layout.setSpacing(0)
-        layout.setContentsMargins(0, 0, 0, 0)
+        # layout.setContentsMargins(0, 0, 0, 0)
 
         # 1.标签
         label1 = QLabel(self.tr('Folder not opend.'))
         label1.setFont(self.font)
-        # label1.setMinimumSize(100, 100)
+        label1.setWordWrap(True)
         label1.setStyleSheet(f"color: {HGF.COLORS.LightBlack};")
        
-
         # 2.按钮
         button1 = QPushButton(self.tr('Open Folder'))
         # button1.setStyleSheet(f"color: {HGF.COLORS.DimGray};")
