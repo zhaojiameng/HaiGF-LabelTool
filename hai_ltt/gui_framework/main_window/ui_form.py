@@ -119,7 +119,7 @@ class Ui_MainWindow(object):
         self.statusbar = QStatusBar(mw)
         self.statusbar.setObjectName(u"statusbar")
         # 设置状态栏背景颜色
-        self.statusbar.setStyleSheet("background-color: rgb(255, 255, 255);")    
+        # self.statusbar.setStyleSheet("background-color: rgb(255, 255, 255);")    
         mw.setStatusBar(self.statusbar)
 
 

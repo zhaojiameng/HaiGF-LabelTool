@@ -19,6 +19,7 @@ class ToolBar(QtWidgets.QToolBar):
     def __init__(self, title, parent=None):
         super(ToolBar, self).__init__(title, parent=parent)
         self.layout = self.layout()
+
         m = (0, 0, 0, 0)
         self.layout.setSpacing(0)
         self.layout.setContentsMargins(*m)  # 设置左顶右底的边距
@@ -28,13 +29,14 @@ class ToolBar(QtWidgets.QToolBar):
         self.layout.setAlignment(QtCore.Qt.AlignCenter)
 
         # 设置背景颜色灰色
-        self.setStyleSheet("background-color: rgb(100, 100, 100);")
+        # self.setStyleSheet("background-color: rgb(100, 100, 100);")
         self.setLayout(self.layout)
         
     def addAction(self, action):
         if isinstance(action, QtWidgets.QWidgetAction):
             return super(ToolBar, self).addAction(action)
         btn = QtWidgets.QToolButton()
+        # btn.setStyleSheet("background-color: rgb(10, 10, 10);")
         btn.setDefaultAction(action)
         self.addWidget(btn)
         # Center align
