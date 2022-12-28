@@ -68,6 +68,7 @@ class Ui_MainWindow(object):
                 mw.actions.anno_action, 
                 mw.actions.ai_action,
                 'Spacer',  # 占位
+                mw.actions.user_action,
                 mw.actions.setting_action,
                 ]
         core_func_bar.addActions(actions=actions)
@@ -107,6 +108,7 @@ class Ui_MainWindow(object):
         """设置底部选项卡"""
         # tab_widget = QTabWidget(mw)
         docker = QDockWidget("Bottom", mw)
+        docker.setObjectName("Pannel")
         # docker2 = QDockWidget("Bottom2", mw)
         docker.setWidget(QLabel('s1'))
         # docker2.setWidget(QLabel('s2'))

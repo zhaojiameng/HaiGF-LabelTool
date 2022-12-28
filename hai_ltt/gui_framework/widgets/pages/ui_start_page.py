@@ -14,6 +14,7 @@ from PySide2.QtWidgets import *
 
 from hai_ltt.apis import HGF, utils
 from ..blue_button import BlueButton
+from ..qobjects.item_model import ItemModel
 
 
 class Ui_Widget(object):
@@ -37,6 +38,7 @@ class Ui_Widget(object):
         font1.setFamily(u"Al Bayan")
         font1.setPointSize(18)
         self.label_3.setFont(font1)
+        self.label_3.setStyleSheet(f"color: {HGF.COLORS.DimGray};")
 
         self.label_4 = QLabel(Widget)
         self.label_4.setObjectName(u"label_4")
@@ -45,8 +47,8 @@ class Ui_Widget(object):
 
         self.openFileButton = BlueButton(text='Open File', parent=Widget)
         self.openFileButton.setObjectName(u"openFileButton")
-        self.openFileButton.setGeometry(QRect(90, 200, 121, 32))
-        # icon = QIcon(QIcon.fromTheme(u"appointment-new"))
+        self.openFileButton.setGeometry(QRect(90, 180, 121, 32))
+        # 设置文本左对齐
         icon = utils.newIcon('file-addition-one')
         self.openFileButton.setIcon(icon)
 
@@ -54,15 +56,23 @@ class Ui_Widget(object):
         self.label_5.setObjectName(u"label_5")
         self.label_5.setGeometry(QRect(50, 280, 211, 51))
         self.label_5.setFont(font1)
+        self.label_5.setStyleSheet(f"color: {HGF.COLORS.DimGray};")
+
         self.recentListView = QListView(Widget)
         self.recentListView.setObjectName(u"recentListView")
         self.recentListView.setGeometry(QRect(90, 330, 256, 192))
         self.recentListView.setAutoFillBackground(False)
         self.recentListView.setFrameShape(QFrame.NoFrame)
         self.recentListView.setFrameShadow(QFrame.Sunken)
+        recent_files = ['No recent files']
+        item_model = ItemModel.from_list(recent_files)
+        self.recentListView.setModel(item_model)
+        self.recentListView.setStyleSheet(f"color: {HGF.COLORS.DimGray};")
+        self.recentListView.setFont(HGF.FONT)
+
         self.openDirButton = BlueButton(text='Open Folder', parent=Widget)
         self.openDirButton.setObjectName(u"openDirButton")
-        self.openDirButton.setGeometry(QRect(90, 240, 121, 32))
+        self.openDirButton.setGeometry(QRect(90, 220, 121, 32))
         icon1 = utils.newIcon('folder-open')
         self.openDirButton.setIcon(icon1)
 

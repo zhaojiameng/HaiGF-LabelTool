@@ -8,6 +8,7 @@ from pathlib import Path
 from .ui_form import Ui_MainWindow
 from hai_ltt.apis import __version__, __appname__
 from .actions.actions import AllActions
+from hai_ltt.apis import HGF
 
 from ..widgets import ExplorerWidget
 
@@ -26,8 +27,7 @@ class FrameworkMainWindow(QMainWindow):
         # self.setStyleSheet("QMainWindow{background-color: rgb(255, 255, 255);}")
         # self.setStyleSheet("QMainWindow{background-color: rgb(0, 255, 255);}")
         # 设置前景色和背景色
-        # self.setStyleSheet("QMainWindow{background-color: rgb(40, 40, 40); color: rgb(255, 255, 255);}")
-
+        self.setStyleSheet("QMainWindow{"+f"background-color: {HGF.COLORS.WhiteSmoke}; color: rgb(255, 255, 255);"+"}")
 
     def load_file_or_dir(self, file=None, dir=None):
         # assert file or dir, 'file or dir must be specified'
@@ -59,6 +59,9 @@ class FrameworkMainWindow(QMainWindow):
         self.settings.setValue("window/position", self.pos())
         self.settings.setValue("window/state", self.saveState())
         # self.settings.setValue("splitter/state", self.central_widget.splitter.saveState())
+
+    def mousePressEvent(self, ev):
+        logger.info(f'mousePressEvent: {ev}')
 
 if __name__ == "__main__":
 

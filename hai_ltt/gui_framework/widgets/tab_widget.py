@@ -1,13 +1,16 @@
 
 
-from PySide2.QtCore import QSize
-from PySide2.QtGui import QIcon
+from PySide2.QtCore import QSize, Slot
+from PySide2.QtGui import QIcon, Qt
 from PySide2.QtWidgets import (QWidget, QHBoxLayout, QTabWidget,
     QLabel, QTabBar, QPushButton, QVBoxLayout, QListWidget, 
     QListWidgetItem, QDockWidget)
+import damei as dm
 
 from .. import utils
 from .tool_bar import get_toolbar, ToolBar
+
+logger = dm.get_logger('tab_widget')
 
 
 def get_tab_widget(parent=None, **kwargs):
@@ -18,22 +21,30 @@ def get_tab_widget(parent=None, **kwargs):
 class TabWidget(QTabWidget):
     """
     包含TabBar、ToolBar和Page的组合控件
-    # 先写一个默认的控件Table
+    先写一个默认的控件Table
     """
     def __init__(self, parent=None, pages=None, **kwargs):
         super().__init__(parent)
         self.mw = parent
 
         self.setWindowTitle(f"TabWidget")
+        self.setObjectName(f"TabWidget")
+
+        # self.layout().setSpacing(0)
+        self.setContentsMargins(0, 0, 0, 0)
 
         self.setTabShape(QTabWidget.Rounded)
         self.setTabsClosable(True)
         self.usesScrollButtons()
+        self.setMovable(True)
 
-        # 设置可调整控件大小
-        # self.setFeatures(QDockWidget.DockWidgetMovable | QDockWidget.DockWidgetFloatable)
-        # 设置边框颜色
-        # self.setStyleSheet("border-right: 1px solid rgb(0, 255, 255);")
+        # self.tabBarClicked.connect(self.tabBarClicked)
+
+    # def mousePressEvent(self, ev):
+    #     logger.info(f"mousePressEvent {ev}")
+
+    # def mouseMoveEvent(self, ev):
+    #     logger.info(f"mouseMoveEvent {ev}")
     
 
 class Page(QWidget):
@@ -45,9 +56,12 @@ class Page(QWidget):
         tool_bar = kwargs.pop("tool_bar", None)
 
         self.layout = QHBoxLayout(self)
-        self.layout.setSpacing(0)
+        self.layout.setSpacing(10)
         self.layout.setContentsMargins(0, 0, 0, 0)
         self.setLayout(self.layout)
+
+        # 设置Frameless
+        self.setWindowFlags(self.windowFlags() | Qt.FramelessWindowHint)
         
         # 设置工具栏
         self.setupToolBar(tool_bar=tool_bar)
@@ -65,34 +79,6 @@ class Page(QWidget):
     def setupToolBar(self, tool_bar=None):
         tool_bar = tool_bar if tool_bar else self.default_tool_bar()
         self.layout.addWidget(tool_bar)
-
-
-    def a(self):
-
-        self.layout = QHBoxLayout(self)
-        self.layout.setSpacing(0)
-        self.layout.setContentsMargins(0, 0, 0, 0)
-        # self.layout.addWidget(QLabel("TabBar"))
-
-        # 列表
-        list_widget = QListWidget()
-        list_widget.setFixedWidth(100)
-
-        btn = QPushButton("TabBar")
-        btn.setIcon(utils.newIcon("anno"))
-        list_widget.addItem(QListWidgetItem(btn.icon(), "TabBar"))
-
-        # self.layout.addWidget(btn)
-        self.layout.addWidget(list_widget)
-        
-        # 设置图标
-        self.setWindowIcon(utils.newIcon("anno"))
-
-        # 设置高度
-        self.setFixedHeight(30)
-
-        # 设置背景色
-        self.setStyleSheet("background-color: rgb(255, 0, 0);")
 
 
     

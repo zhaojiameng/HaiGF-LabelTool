@@ -19,6 +19,7 @@ class MainSideBar(QtWidgets.QDockWidget):
         self.mw = parent
         title = kwargs.pop('title', 'Main Side Bar Title')
         self.setWindowTitle(title)
+        self.setObjectName('MainSideBar')
 
         # 1.标题栏，带有按钮
         self.title_bar = TitleBarWithAction()  # QFrame()
