@@ -37,6 +37,7 @@ class TabWidget(QTabWidget):
         self.setTabsClosable(True)
         self.usesScrollButtons()
         self.setMovable(True)
+        
 
         # self.tabBarClicked.connect(self.tabBarClicked)
 
