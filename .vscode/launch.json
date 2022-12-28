@@ -13,10 +13,18 @@
             "justMyCode": true
         },
         {
-            "name": "Python: main.py",
+            "name": "Python: run_app.py",
             "type": "python",
             "request": "launch",
-            "program": "${workspaceFolder}/run_hai_ltt.py",
+            "program": "${workspaceFolder}/run_app.py",
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
+            "name": "Python: run_framework.py",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/run_framework.py",
             "console": "integratedTerminal",
             "justMyCode": true
         }

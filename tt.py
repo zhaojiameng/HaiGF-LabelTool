@@ -3,7 +3,7 @@ from PySide2.QtWidgets import (QApplication, QWidget, QSplitter, QTextEdit, QVBo
     QToolBar)
 from PySide2.QtCore import Qt
 
-from hai_ltt.gui.widgets.tab_widget import Page
+from hai_ltt.gui_framework.widgets.tab_widget import Page
 
 app = QApplication(sys.argv)
 # window = QWidget()

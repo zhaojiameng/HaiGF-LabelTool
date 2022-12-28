@@ -70,7 +70,7 @@ class Ui_Widget(object):
 
     def retranslateUi(self, Widget):
         Widget.setWindowTitle(QCoreApplication.translate("Widget", u"Widget", None))
-        self.label.setText(QCoreApplication.translate("Widget", u"Label Trian Tools of HAI", None))
+        self.label.setText(QCoreApplication.translate("Widget", u"GUI Freamwork of HAI", None))
         self.label_3.setText(QCoreApplication.translate("Widget", u"Start up", None))
         self.label_4.setText("")
         self.openFileButton.setText(QCoreApplication.translate("Widget", u"Open File ...", None))

@@ -3,11 +3,12 @@ import sys
 from PySide2.QtWidgets import QApplication, QMainWindow
 from PySide2.QtCore import QTranslator
 
-from hai_ltt import MainWindow
-from hai_ltt import __version__, __appname__
+from .gui_framework import FrameworkMainWindow
+from .gui_application import AppMainWindow
+from .apis import __version__, __appname__
 
 
-def main():
+def main(name='framework'):
     translator = QTranslator()
     translator.load("translate/traslate.qm")
 
@@ -15,8 +16,12 @@ def main():
     app.setApplicationName(__appname__)
     app.installTranslator(translator)
     
-    mw = MainWindow()
+    if name == 'framework':
+        mw = FrameworkMainWindow()
+    else:
+        mw = AppMainWindow()
 
     mw.show()
     mw.raise_()
     sys.exit(app.exec_())
+

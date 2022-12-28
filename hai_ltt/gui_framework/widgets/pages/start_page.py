@@ -33,7 +33,7 @@ class StartPage(QWidget):
     def on_openDirButton_clicked(self):
 
         # defaultOpenDirPath = root_path
-        defaultOpenDirPath = self.mw.settings.value('lastOpenDirPath', root_path)
+        defaultOpenDirPath = self.mw.settings.value('lastDirPath', root_path)
 
         selected_dir = str(
             QtWidgets.QFileDialog.getExistingDirectory(

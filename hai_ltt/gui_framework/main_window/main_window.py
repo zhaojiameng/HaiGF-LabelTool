@@ -1,14 +1,17 @@
 # This Python file uses the following encoding: utf-8
 import sys
-
 from PySide2.QtWidgets import QApplication, QMainWindow
 from PySide2 import QtCore
-# from PySide2.QtCore import QTranslator
+import damei as dm
+from pathlib import Path
+
 from .ui_form import Ui_MainWindow
-from ...version import __version__, __appname__
+from hai_ltt.apis import __version__, __appname__
 from .actions.actions import AllActions
 
-class MainWindow(QMainWindow):
+logger = dm.get_logger('framework_main_window')
+
+class FrameworkMainWindow(QMainWindow):
     def __init__(self, parent=None):
         super().__init__(parent)
         
@@ -19,15 +22,24 @@ class MainWindow(QMainWindow):
         self.mw_ui.setupUi(self)
         # self.mw_ui.retranslateUi(self)
         # self.setStyleSheet("QMainWindow{background-color: rgb(255, 255, 255);}")
+        # self.setStyleSheet("QMainWindow{background-color: rgb(0, 255, 255);}")
+        # 设置前景色和背景色
+        self.setStyleSheet("QMainWindow{background-color: rgb(0, 255, 255);color: rgb(0, 0, 255);}")
+
 
     def load_file_or_dir(self, file=None, dir=None):
         assert file or dir, 'file or dir must be specified'
-        # 
-        
-        print('Load file or dir')
+        if file:
+            dir = Path(file).parent
+        self.settings.setValue('lastDirPath', str(dir))
+        # TODO：打开资源管理器，资源管理器添加到主侧栏中
 
-    
-        
+        self.load_file_or_dir_func(file=file, dir=dir)  # 面向切面的编程，这里是切面，在子类中重写该函数能实现不同的功能
+
+    def load_file_or_dir_func(self, file=None, dir=None):
+        pass
+        # logger.error('Please reimplement this method "load_file_or_dir_func" in subclass')
+        # raise NotImplementedError(f'Please reimplement this method "load_file_or_dir_func" in subclass')
 
     def closeEvent(self, event):
         self.settings.setValue("window/size", self.size())
@@ -40,6 +52,7 @@ if __name__ == "__main__":
     app = QApplication(sys.argv)
     # translator = QTranslator()
     # translator.load("qtbase_ru.qm")
-    widget = MainWindow()
+    # widget = MainWindow()
+    widget = FrameworkMainWindow()
     widget.show()
     sys.exit(app.exec_())

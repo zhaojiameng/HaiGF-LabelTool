@@ -7,7 +7,7 @@ def get_toolbar(title, parent=None, actions=None):
     """
     创建一个工具栏
     """
-    toolbar = ToolBar(title, parent=None)
+    toolbar = ToolBar(title, parent=parent)
     toolbar.setObjectName(f"{title} ToolBar")
     # toolbar.setOrientation(QtCore.Qt.Vertical)
     toolbar.setToolButtonStyle(QtCore.Qt.ToolButtonTextUnderIcon)
@@ -28,7 +28,7 @@ class ToolBar(QtWidgets.QToolBar):
         self.layout.setAlignment(QtCore.Qt.AlignCenter)
 
         # 设置背景颜色灰色
-        # self.setStyleSheet("background-color: rgb(100, 100, 100);")
+        self.setStyleSheet("background-color: rgb(100, 100, 100);")
         self.setLayout(self.layout)
         
     def addAction(self, action):

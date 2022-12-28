@@ -29,7 +29,7 @@
     </font>
    </property>
    <property name="text">
-    <string>Label Trian Tools of HAI</string>
+    <string>GUI Freamwork of HAI</string>
    </property>
   </widget>
   <widget class="QLabel" name="label_3">

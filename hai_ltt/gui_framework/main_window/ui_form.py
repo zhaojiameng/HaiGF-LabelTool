@@ -19,7 +19,7 @@ from PySide2.QtWidgets import (QApplication, QMainWindow, QMenuBar, QPushButton,
     QSizePolicy, QStatusBar, QWidget, QDockWidget, QTabWidget,
     QTabBar, QLabel, QVBoxLayout, QHBoxLayout)
 
-from ..widgets import get_toolbar, get_central_widget
+from ..widgets import get_toolbar, get_central_widget, get_main_side_bar
 from .. import utils
 from ...version import __appname__
 
@@ -37,7 +37,7 @@ class Ui_MainWindow(object):
         mw.resize(size)
         mw.move(position)
         mw.restoreState(state)
-        mw.setWindowTitle(__appname__)
+        mw.setWindowTitle('HAI GUI Framework')
 
     def setupUi(self, mw):
         self.setupProperties(mw=mw)  # 设置主窗口属性
@@ -77,7 +77,11 @@ class Ui_MainWindow(object):
         
         
     def setupMainSideBar(self, mw):
-        """设置左侧"""
+        """设置主侧栏，在左侧"""
+        main_side_bar = get_main_side_bar(mw)
+        # mw.addWidget(main_side_bar)
+        main_side_bar.setFeatures(QDockWidget.DockWidgetMovable)
+        mw.addDockWidget(Qt.LeftDockWidgetArea, main_side_bar)
         pass
 
     def setupAuxSideBar(self, mw):
