@@ -6,6 +6,8 @@ Usage:
 >>> widget.setStyleSheet(f'background-color: {a};')
 """
 
+from .preset import Font
+
 class Colors(object):
     White = "#FFFFFF"  # 255, 255, 255
     WhiteSmoke = "#F5F5F5"  # 245, 245, 245
@@ -21,15 +23,37 @@ class Colors(object):
     LightBlack = "#404040"  # 64, 64, 64
     Black = "#000000"  # 0, 0, 0
 
+    Blue = "#0000FF"  # 纯蓝，0, 0, 255
+    MediumBlue = "#0000CD"  # 中蓝，0, 0, 205
+    MidnightBlue = "#191970"  # 午夜蓝，25, 25, 112
+    DarkBlue = "#00008B"  # 深蓝，0, 0, 139
+    Navy = "#000080"  # 海军蓝，0, 0, 128
+    RoyalBlue = "#4169E1"  # 皇家蓝，65, 105, 225
+    CornflowerBlue = "#6495ED"  # 矢车菊蓝，100, 149, 237
+    LightSteelBlue = "#B0C4DE"  # 淡钢蓝，176, 196, 222
+    SteelBlue = "#4682B4"  # 钢蓝，70, 130, 180
+    SkyBlue = "#87CEEB"  # 天蓝，135, 206, 235
+    LightSkyBlue = "#87CEFA"  # 淡天蓝，135, 206, 250
+    DeepSkyBlue = "#00BFFF"  # 深天蓝，0, 191, 255
+    DodgerBlue = "#1E90FF"  # 道奇蓝，30, 144, 255
+    Azure = "#F0FFFF"  # 蔚蓝，240, 255, 255
+
 class FontFamilys(object):
     default = "Microsoft YaHei"
 
-
 class HGF(object):
+    # 一群
     COLORS = Colors()
     FONT_FAMILYS = FontFamilys()
+
+    # 一个
     FONT_FAMILY = FONT_FAMILYS.default
     FONT_SIZE = 12
+    FONT = Font(
+        family=FONT_FAMILY, 
+        size=FONT_SIZE,
+        bold=False,
+        )
 
 
 

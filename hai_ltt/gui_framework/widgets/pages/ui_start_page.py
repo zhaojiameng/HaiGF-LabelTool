@@ -12,19 +12,24 @@ from PySide2.QtCore import *
 from PySide2.QtGui import *
 from PySide2.QtWidgets import *
 
+from hai_ltt.apis import HGF
+from ..blue_button import BlueButton
+
 
 class Ui_Widget(object):
     def setupUi(self, Widget):
         if not Widget.objectName():
-            Widget.setObjectName(u"Widget")
+            Widget.setObjectName(u"StartPage")
         Widget.resize(800, 600)
         self.label = QLabel(Widget)
         self.label.setObjectName(u"label")
-        self.label.setGeometry(QRect(50, 70, 701, 51))
+        # self.label.setGeometry(QRect(50, 70, 701, 51))
         font = QFont()
-        font.setFamily(u"Al Bayan")
+        font.setFamily(HGF.FONT_FAMILY)
         font.setPointSize(24)
         self.label.setFont(font)
+        self.label.setStyleSheet(f"color: {HGF.COLORS.LightBlack};")
+
         self.label_3 = QLabel(Widget)
         self.label_3.setObjectName(u"label_3")
         self.label_3.setGeometry(QRect(40, 150, 211, 51))
@@ -32,11 +37,13 @@ class Ui_Widget(object):
         font1.setFamily(u"Al Bayan")
         font1.setPointSize(18)
         self.label_3.setFont(font1)
+
         self.label_4 = QLabel(Widget)
         self.label_4.setObjectName(u"label_4")
         self.label_4.setGeometry(QRect(80, 200, 211, 51))
         self.label_4.setFont(font1)
-        self.openFileButton = QPushButton(Widget)
+
+        self.openFileButton = BlueButton(text='Open File', parent=Widget)
         self.openFileButton.setObjectName(u"openFileButton")
         self.openFileButton.setGeometry(QRect(90, 200, 121, 32))
         icon = QIcon(QIcon.fromTheme(u"appointment-new"))
