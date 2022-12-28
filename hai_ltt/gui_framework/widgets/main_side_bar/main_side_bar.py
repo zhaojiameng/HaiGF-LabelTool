@@ -55,7 +55,7 @@ class ExampleWidget(QWidget):
         super().__init__(parent=parent)
         self.parent = parent
         self.mw = self.parent.mw
-        print(self.parent)
+        # print(self.parent)
 
         # 1.标签
         label1 = QLabel(self.tr('Folder not opend.'))

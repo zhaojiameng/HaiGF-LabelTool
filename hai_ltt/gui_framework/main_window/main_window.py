@@ -41,11 +41,16 @@ class FrameworkMainWindow(QMainWindow):
     def load_file_or_dir_func(self, file=None, dir=None):
         # print(self.main_side_bar)
         # dir = Path(dir).parent
-        widget = ExplorerWidget(parent=self, dir=dir)
-        self.main_side_bar.load(
-            title='Explorer',
-            widget=widget,
-            )
+        if file:
+            pass
+        elif dir:
+            widget = ExplorerWidget(parent=self, dir=dir)
+            self.main_side_bar.load(
+                title='Explorer',
+                widget=widget,
+                )
+        else:  # 没有指定文件或目录
+            pass
         # logger.error('Please reimplement this method "load_file_or_dir_func" in subclass')
         # raise NotImplementedError(f'Please reimplement this method "load_file_or_dir_func" in subclass')
 

@@ -39,7 +39,7 @@ class TabWidget(QTabWidget):
 class Page(QWidget):
     """单个页面，包含ToolBar和Page"""
     def __init__(self, parent=None, **kwargs):
-        print(parent, 'parent')
+        # print(parent, 'parent')
         super().__init__(parent)
         self.mw = parent
         tool_bar = kwargs.pop("tool_bar", None)
