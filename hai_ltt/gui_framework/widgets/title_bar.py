@@ -7,6 +7,7 @@ from PySide2 import QtWidgets
 from PySide2 import QtGui
 
 from .. import utils
+from hai_ltt.apis import HGF
 
 class TitleBarWithAction(QtWidgets.QFrame):
 
@@ -21,7 +22,7 @@ class TitleBarWithAction(QtWidgets.QFrame):
         self.title_label = QtWidgets.QLabel(f'Title')
         # 设置字体尺寸
         font = QtGui.QFont()
-        font.setFamily(u"Al Bayan")
+        font.setFamily(HGF.FONT_FAMILY)
         font.setPointSize(10)
         self.title_label.setFont(font)
         # 设置文本颜色
