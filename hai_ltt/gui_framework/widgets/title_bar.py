@@ -52,6 +52,9 @@ class TitleBarWithAction(QtWidgets.QFrame):
             color: {HGF.COLORS.LightBlack};")
         self.setSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         
+    def set_title(self, title):
+        self.title_label.setText(self.tr(title))
+
     def addAction(self, action):
         # self.layout.addAction(action)
         # 设置act

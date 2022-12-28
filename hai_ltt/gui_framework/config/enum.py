@@ -39,15 +39,16 @@ class Colors(object):
     Azure = "#F0FFFF"  # 蔚蓝，240, 255, 255
 
 class FontFamilys(object):
-    default = "Microsoft YaHei"
+    MicrosoftYaHei = "Microsoft YaHei"
+    AlBayan = "Al Bayan"
 
 class HGF(object):
     # 一群
     COLORS = Colors()
     FONT_FAMILYS = FontFamilys()
-
+    
     # 一个
-    FONT_FAMILY = FONT_FAMILYS.default
+    FONT_FAMILY = FONT_FAMILYS.AlBayan
     FONT_SIZE = 12
     FONT = Font(
         family=FONT_FAMILY, 

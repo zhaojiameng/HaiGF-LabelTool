@@ -9,4 +9,5 @@ class BlueButton(QPushButton):
         self.setFont(HGF.FONT)
         self.setStyleSheet(
             f"background-color: {HGF.COLORS.RoyalBlue}; \
-                color: {HGF.COLORS.White};")
+                color: {HGF.COLORS.White}; \
+                border-radius: 3px;")

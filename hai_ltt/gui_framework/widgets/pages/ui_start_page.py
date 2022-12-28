@@ -12,7 +12,7 @@ from PySide2.QtCore import *
 from PySide2.QtGui import *
 from PySide2.QtWidgets import *
 
-from hai_ltt.apis import HGF
+from hai_ltt.apis import HGF, utils
 from ..blue_button import BlueButton
 
 
@@ -23,16 +23,16 @@ class Ui_Widget(object):
         Widget.resize(800, 600)
         self.label = QLabel(Widget)
         self.label.setObjectName(u"label")
-        # self.label.setGeometry(QRect(50, 70, 701, 51))
+        self.label.setGeometry(QRect(40, 40, 701, 51))
         font = QFont()
         font.setFamily(HGF.FONT_FAMILY)
         font.setPointSize(24)
         self.label.setFont(font)
         self.label.setStyleSheet(f"color: {HGF.COLORS.LightBlack};")
 
-        self.label_3 = QLabel(Widget)
+        self.label_3 = QLabel(Widget)  # start up
         self.label_3.setObjectName(u"label_3")
-        self.label_3.setGeometry(QRect(40, 150, 211, 51))
+        self.label_3.setGeometry(QRect(40, 120, 211, 51))
         font1 = QFont()
         font1.setFamily(u"Al Bayan")
         font1.setPointSize(18)
@@ -46,8 +46,10 @@ class Ui_Widget(object):
         self.openFileButton = BlueButton(text='Open File', parent=Widget)
         self.openFileButton.setObjectName(u"openFileButton")
         self.openFileButton.setGeometry(QRect(90, 200, 121, 32))
-        icon = QIcon(QIcon.fromTheme(u"appointment-new"))
+        # icon = QIcon(QIcon.fromTheme(u"appointment-new"))
+        icon = utils.newIcon('file-addition-one')
         self.openFileButton.setIcon(icon)
+
         self.label_5 = QLabel(Widget)
         self.label_5.setObjectName(u"label_5")
         self.label_5.setGeometry(QRect(50, 280, 211, 51))
@@ -58,16 +60,10 @@ class Ui_Widget(object):
         self.recentListView.setAutoFillBackground(False)
         self.recentListView.setFrameShape(QFrame.NoFrame)
         self.recentListView.setFrameShadow(QFrame.Sunken)
-        self.openDirButton = QPushButton(Widget)
+        self.openDirButton = BlueButton(text='Open Folder', parent=Widget)
         self.openDirButton.setObjectName(u"openDirButton")
         self.openDirButton.setGeometry(QRect(90, 240, 121, 32))
-        icon1 = QIcon()
-        iconThemeName = u"appointment-new"
-        if QIcon.hasThemeIcon(iconThemeName):
-            icon1 = QIcon.fromTheme(iconThemeName)
-        else:
-            icon1.addFile(u".", QSize(), QIcon.Normal, QIcon.Off)
-        
+        icon1 = utils.newIcon('folder-open')
         self.openDirButton.setIcon(icon1)
 
         self.retranslateUi(Widget)
@@ -82,6 +78,6 @@ class Ui_Widget(object):
         self.label_4.setText("")
         self.openFileButton.setText(QCoreApplication.translate("Widget", u"Open File ...", None))
         self.label_5.setText(QCoreApplication.translate("Widget", u"Recent", None))
-        self.openDirButton.setText(QCoreApplication.translate("Widget", u"Open Dir ...", None))
+        self.openDirButton.setText(QCoreApplication.translate("Widget", u"Open Folder ...", None))
     # retranslateUi
 

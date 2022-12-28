@@ -54,10 +54,11 @@ class Ui_MainWindow(object):
 
     def setupMenuBar(self, mw):
         """设置菜单栏"""
-        self.menubar = QMenuBar(mw)
-        self.menubar.setObjectName(u"menubar")
-        self.menubar.setGeometry(QRect(0, 0, 800, 22))
-        mw.setMenuBar(self.menubar)
+        menubar = QMenuBar(mw)
+        menubar.setObjectName(u"menubar")
+        menubar.setGeometry(QRect(0, 0, 800, 22))
+        mw.meaubar = menubar
+        mw.setMenuBar(menubar)
 
     def setupCoreFuncBar(self, mw):
         """设置核心功能栏"""
@@ -70,7 +71,7 @@ class Ui_MainWindow(object):
                 mw.actions.setting_action,
                 ]
         core_func_bar.addActions(actions=actions)
-
+        mw.core_func_bar = core_func_bar
         mw.addToolBar(Qt.LeftToolBarArea, core_func_bar)
         # 设置工具区域背景颜色
         # Qt.LeftToolBarArea.set
@@ -81,6 +82,7 @@ class Ui_MainWindow(object):
         main_side_bar = get_main_side_bar(mw)
         # mw.addWidget(main_side_bar)
         main_side_bar.setFeatures(QDockWidget.DockWidgetMovable)
+        mw.main_side_bar = main_side_bar
         mw.addDockWidget(Qt.LeftDockWidgetArea, main_side_bar)
         pass
 

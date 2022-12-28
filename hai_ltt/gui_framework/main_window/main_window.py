@@ -9,6 +9,8 @@ from .ui_form import Ui_MainWindow
 from hai_ltt.apis import __version__, __appname__
 from .actions.actions import AllActions
 
+from ..widgets import ExplorerWidget
+
 logger = dm.get_logger('framework_main_window')
 
 class FrameworkMainWindow(QMainWindow):
@@ -28,7 +30,7 @@ class FrameworkMainWindow(QMainWindow):
 
 
     def load_file_or_dir(self, file=None, dir=None):
-        assert file or dir, 'file or dir must be specified'
+        # assert file or dir, 'file or dir must be specified'
         if file:
             dir = Path(file).parent
         self.settings.setValue('lastDirPath', str(dir))
@@ -37,7 +39,13 @@ class FrameworkMainWindow(QMainWindow):
         self.load_file_or_dir_func(file=file, dir=dir)  # 面向切面的编程，这里是切面，在子类中重写该函数能实现不同的功能
 
     def load_file_or_dir_func(self, file=None, dir=None):
-        pass
+        # print(self.main_side_bar)
+        # dir = Path(dir).parent
+        widget = ExplorerWidget(parent=self, dir=dir)
+        self.main_side_bar.load(
+            title='Explorer',
+            widget=widget,
+            )
         # logger.error('Please reimplement this method "load_file_or_dir_func" in subclass')
         # raise NotImplementedError(f'Please reimplement this method "load_file_or_dir_func" in subclass')
 

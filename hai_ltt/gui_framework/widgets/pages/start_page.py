@@ -21,7 +21,8 @@ from .ui_start_page import Ui_Widget
 class StartPage(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
-        self.mw = parent
+        self.parent = parent
+        self.mw = self.parent.mw
         self.ui = Ui_Widget()
         self.ui.setupUi(self)
 

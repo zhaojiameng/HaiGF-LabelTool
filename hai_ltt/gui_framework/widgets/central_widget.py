@@ -31,8 +31,8 @@ class CentralWidget(QWidget):
         from .pages.start_page import StartPage
         # 先创建页面
         # page = Page(parent=mw, **kwargs)  # 是一个QWidget
-        start_page = StartPage(parent=mw, **kwargs)
-        page2 = Page(parent=mw, **kwargs)
+        start_page = StartPage(parent=self, **kwargs)
+        page2 = Page(parent=self, **kwargs)
         tab_widget = get_tab_widget(parent=self.mw)
 
         tab_widget.addTab(

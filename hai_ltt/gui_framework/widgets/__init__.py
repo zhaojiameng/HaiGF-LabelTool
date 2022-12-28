@@ -5,6 +5,7 @@ from .pages.start_page import StartPage
 
 from .main_side_bar.main_side_bar import get_main_side_bar, MainSideBar
 
+from .explorer_widget import ExplorerWidget
 
 
 
