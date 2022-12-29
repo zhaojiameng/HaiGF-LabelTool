@@ -74,7 +74,9 @@ class Ui_Widget(object):
 
         self.openDirButton = BlueButton(text='Open Folder', parent=Widget)
         self.openDirButton.setObjectName(u"openDirButton")
-        self.openDirButton.setGeometry(QRect(90, 220, 121, 32))
+        # self.openDirButton.setGeometry(QRect(90, 220, 121, 32))
+        self.openDirButton.setMinimumSize(120, 32)
+        self.openDirButton.move(90, 220)
         icon1 = utils.newIcon('folder-open')
         self.openDirButton.setIcon(icon1)
 
