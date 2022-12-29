@@ -1,5 +1,6 @@
 from hai_ltt.apis import HGF
 from PySide2.QtWidgets import QPushButton
+from PySide2 import QtCore
 
 
 class BlueButton(QPushButton):
@@ -11,3 +12,5 @@ class BlueButton(QPushButton):
             f"background-color: {HGF.COLORS.RoyalBlue}; \
                 color: {HGF.COLORS.White}; \
                 border-radius: 5px;")
+        # 设置尺寸策略为适应内容
+        self.setSizePolicy(QtCore.QSizePolicy.Preferred, QtCore.QSizePolicy.Preferred)

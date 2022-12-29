@@ -42,8 +42,9 @@ class CentralWidget(QWidget):
         # w = self._spliters[0].widget(0)
         # print(w, f'parent={w.parent()}')
         # print(self.current_tab_widget)
-        self.setStyleSheet(f'background-color: {HGF.COLORS.WhiteSmoke};border-corlor: {HGF.COLORS.Black}; \
-            border-width: 0px; margin: 0px; padding: 0px;')
+        # border-corlor: {HGF.COLORS.Black}; \
+        self.setStyleSheet(f'background-color: {HGF.COLORS.White}; ')
+            # border-width: 3px; margin: 0px; padding: 3px;')
 
         
     def _init(self, **kwargs):

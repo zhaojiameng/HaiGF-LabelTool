@@ -27,7 +27,10 @@ class FrameworkMainWindow(QMainWindow):
         # self.setStyleSheet("QMainWindow{background-color: rgb(255, 255, 255);}")
         # self.setStyleSheet("QMainWindow{background-color: rgb(0, 255, 255);}")
         # 设置前景色和背景色
-        self.setStyleSheet("QMainWindow{"+f"background-color: {HGF.COLORS.WhiteSmoke}; color: rgb(255, 255, 255);"+"}")
+        self.setStyleSheet(
+            "QMainWindow{"+f"background-color: {HGF.COLORS.WhiteSmoke}; \
+                color: rgb(255, 255, 255);\
+                "+"}")
 
     def load_file_or_dir(self, file=None, dir=None):
         # assert file or dir, 'file or dir must be specified'
