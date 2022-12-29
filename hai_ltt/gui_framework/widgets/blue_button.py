@@ -12,5 +12,4 @@ class BlueButton(QPushButton):
             f"background-color: {HGF.COLORS.RoyalBlue}; \
                 color: {HGF.COLORS.White}; \
                 border-radius: 5px;")
-        # 设置尺寸策略为适应内容
         self.setSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
