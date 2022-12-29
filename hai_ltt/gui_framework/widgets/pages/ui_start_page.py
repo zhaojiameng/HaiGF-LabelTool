@@ -48,7 +48,7 @@ class Ui_Widget(object):
         self.openFileButton = BlueButton(text='Open File', parent=Widget)
         self.openFileButton.setObjectName(u"openFileButton")
         self.openFileButton.setMinimumSize(120, 32)
-        # self.openFileButton.setGeometry(QRect(90, 180, 121, 32))
+        self.openFileButton.setGeometry(QRect(90, 180, 121, 32))
         # 设置文本左对齐
         icon = utils.newIcon('file-addition-one')
         self.openFileButton.setIcon(icon)
