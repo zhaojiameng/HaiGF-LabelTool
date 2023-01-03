@@ -10,7 +10,7 @@ import damei as dm
 from ... import utils
 from ..core_func_bar.tool_bar import get_toolbar, ToolBar
 from .start_page import HStartPage, HExamplesPage
-from .tab_bar import HTabBar
+from .hai_tab_bar import HTabBar
 
 logger = dm.get_logger('tab_widget')
 
@@ -36,7 +36,8 @@ class HTabWidget(QTabWidget):
     """
     def __init__(self, parent=None, **kwargs):
         super().__init__(parent)
-        self.mw = parent
+        self.parent = parent
+        # self.mw = parent
         self.tab_bar = HTabBar(self)  # 空的tab bar
 
         self.setWindowTitle(f"TabWidget")
@@ -50,7 +51,8 @@ class HTabWidget(QTabWidget):
         self.usesScrollButtons()
         self.setMovable(True)
 
-        
+        self.shadow_tabbar = QTabBar(self)  # 影子
+
         # self.tab_bar.addTab(utils.newIcon("start"), self.tr("Start"))
         # self.tabBarClicked.connect(self.tabBarClicked)
 
@@ -71,8 +73,8 @@ class HTabWidget(QTabWidget):
             self.removeTab(0)
 
         for page in pages:
-            print('xx', page.parent)
-            self.addTab(page, 'test title')
+            # print('xx', page.parent)
+            self.addTab(page, 'test title')  # 添加一个page
             if page.icon and page.title:
                 self.tab_bar.addTab(page.icon, page.title)
             elif not page.icon and page.title:
@@ -87,8 +89,21 @@ class HTabWidget(QTabWidget):
 
     # def mouseMoveEvent(self, ev):
     #     logger.info(f"mouseMoveEvent {ev}")
-    
 
+
+    def moving_tab(self, ev, shadow_tabbar):
+        """移动tab"""
+        logger.info(f"moving_tab")
+        self.shadow_tabbar = shadow_tabbar
+        # self.shadow_tabbar.setTabText('xxx')
+
+        c_page = self.currentWidget()  # 当前page
+        # self.shadow_tabbar.setParent(c_page)
+        self.shadow_tabbar.setParent(self)
+
+        # self.shadow_tabbar.addTab('xx')
+        self.shadow_tabbar.show()
+        self.shadow_tabbar.move(ev.x(), ev.y())
 
 
 

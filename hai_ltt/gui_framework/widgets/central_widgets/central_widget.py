@@ -8,7 +8,7 @@ import damei as dm
 
 from hai_ltt.apis import HGF
 from .tab_widget import HTabWidget, get_start_tab_widget
-from .tab_bar import HTabBar
+from .hai_tab_bar import HTabBar
 from ... import utils
 
 logger = dm.get_logger('central_widget')

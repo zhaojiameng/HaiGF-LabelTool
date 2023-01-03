@@ -6,5 +6,5 @@ from .central_widgets.start_page.start_page import HStartPage
 from .main_side_bar.main_side_bar import get_main_side_bar, MainSideBar
 
 from .main_side_bar.explorer_widget import ExplorerWidget
-from .central_widgets.tab_bar import HTabBar
+from .central_widgets.hai_tab_bar import HTabBar
 
