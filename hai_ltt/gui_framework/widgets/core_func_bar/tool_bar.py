@@ -1,6 +1,6 @@
 from PySide2 import QtCore
 from PySide2 import QtWidgets
-from .. import utils
+from ... import utils
 
 
 def get_toolbar(title, parent=None, actions=None):

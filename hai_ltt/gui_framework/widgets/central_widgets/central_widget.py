@@ -7,22 +7,28 @@ from PySide2.QtWidgets import (QWidget, QHBoxLayout, QTabWidget,
 import damei as dm
 
 from hai_ltt.apis import HGF
-from .tab_widget import TabWidget, get_tab_widget, Page
-from .pages.start_page import StartPage
-from .. import utils
+from .tab_widget import HTabWidget, get_start_tab_widget
+from .tab_bar import HTabBar
+from ... import utils
 
 logger = dm.get_logger('central_widget')
 
 
 def get_central_widget(parent=None):
-    return CentralWidget(parent=parent)
+    central_widget = CentralWidget(parent=parent)
+    # splitter是自动的，不需要手动添加
+    empty_tabw = HTabWidget(parent=parent)
+    start_tab_widget = get_start_tab_widget(parent=central_widget)
+    # central_widget.addTabWidget(empty_tabw)
+    central_widget.addTabWidget(start_tab_widget)
+    return central_widget
 
 class CentralWidget(QWidget):
     """
     自定义Widget控件，网格布局
     布局内有1个控件
     Qsplitter切分，内容是TabWidget
-    继承关系(父到子)：CentralWidget -> Splitter -> QObject
+    继承关系(父到子)：CentralWidget -> Splitter -> QTabWidget -> Tab和Page
     """
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -38,27 +44,13 @@ class CentralWidget(QWidget):
         # state = parent.settings.value("splitter/state", QByteArray())
         # splitter.restoreState(state)
 
-        self._init()
+        # self._init()
         # w = self._spliters[0].widget(0)
         # print(w, f'parent={w.parent()}')
         # print(self.current_tab_widget)
         # border-corlor: {HGF.COLORS.Black}; \
         self.setStyleSheet(f'background-color: {HGF.COLORS.White}; ')
             # border-width: 3px; margin: 0px; padding: 3px;')
-
-        
-    def _init(self, **kwargs):
-        """
-        初始化，添加分屏器、TabWidget、Page
-        """
-        mw = self.mw
-
-        splitter = self.get_splitter()  # 添加分屏器
-        self._spliters.append(splitter)
-        tab_widget = self.get_tab_widget()  # 添加TabWidget
-        self._tab_widgets.append(tab_widget)
-        splitter.addWidget(tab_widget)  # 添加TabWidget到分屏器
-        self.load()
 
     @property
     def current_tab_widget(self):
@@ -104,25 +96,17 @@ class CentralWidget(QWidget):
         splitter.setHandleWidth(1)
         return splitter
 
-    def get_tab_widget(self, parent=None, **kwargs):
-        start_page = StartPage(parent=self, **kwargs)
-        examples_page = Page(parent=self, **kwargs)
-        tab_widget = TabWidget(parent=parent)
-        new_idx = len(self.tab_widgets)
-        logger.info(f'Create new TabWidget, idx={new_idx}')
-        tab_widget.setObjectName(f"TabWidget{new_idx}")
-        tab_widget.tabBarClicked.connect(self.on_tabBarClicked)
-        tab_widget.tabBarDoubleClicked.connect(self.on_tabBarDoubleClicked)
-        tab_widget.tabBar().tabMoved.connect(self.on_tabMoved)
+    def addTabWidget(self, tab_widget):
+        """添加TabWidget"""
+        splitter = self.get_splitter()  # 添加分屏器
+        self._spliters.append(splitter)
+        self._tab_widgets.append(tab_widget)
         
-        tab_widget.addTab(
-            start_page, 
-            utils.newIcon("start"), 
-            self.tr("Start")) 
-        tab_widget.addTab(
-            examples_page, 
-            self.tr("Examples"))
-        return tab_widget
+        # tab_widget = self.get_tab_widget()  # 添加TabWidget
+        self._tab_widgets.append(tab_widget)
+        splitter.addWidget(tab_widget)  # 添加TabWidget到分屏器
+        # self.load()
+        self.load()
 
     def on_tabBarClicked(self, index):
         logger.info(f'tabBarClicked. tabw: {self.current_tab_widget}, tab idx: {index}')
@@ -196,9 +180,6 @@ class CentralWidget(QWidget):
     def on_tabMoved(self, from_index, to_index):
         logger.info(f'tabMoved. from_index: {from_index}, to_index: {to_index}')
 
-    
-
-    
 
     def closeEvent(self, event):
         self.parent.settings.setValue("splitter/state", self.splitter.saveState())

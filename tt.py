@@ -3,7 +3,7 @@ from PySide2.QtWidgets import (QApplication, QWidget, QSplitter, QTextEdit, QVBo
     QToolBar,  QListView)
 from PySide2.QtCore import Qt, QAbstractItemModel, QModelIndex, Qt
 
-from hai_ltt.gui_framework.widgets.tab_widget import Page
+from hai_ltt.gui_framework.widgets.certral_widgets.tab_widget import Page
 
 def tt1():
     app = QApplication(sys.argv)

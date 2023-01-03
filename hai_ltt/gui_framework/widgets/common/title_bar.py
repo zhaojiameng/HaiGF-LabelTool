@@ -6,7 +6,7 @@ from PySide2 import QtCore
 from PySide2 import QtWidgets
 from PySide2 import QtGui
 
-from .. import utils
+from ... import utils
 from hai_ltt.apis import HGF
 
 class TitleBarWithAction(QtWidgets.QFrame):
@@ -21,8 +21,8 @@ class TitleBarWithAction(QtWidgets.QFrame):
         font.setFamily(HGF.FONT_FAMILY)
         font.setPointSize(HGF.FONT_SIZE)
         self.title_label.setFont(font)
-        # self.title_label.setStyleSheet("color: rgb(100, 100, 100);")
 
+        # self.title_label.setStyleSheet("color: rgb(100, 100, 100);")
         # 2.占位符
         spacer = QtWidgets.QWidget()
         spacer.setSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
@@ -30,6 +30,7 @@ class TitleBarWithAction(QtWidgets.QFrame):
         # 3.标题右侧的工具按钮
         self.toolbar = QtWidgets.QToolBar()
         self.toolbar.setIconSize(QtCore.QSize(HGF.FONT_SIZE, HGF.FONT_SIZE))
+
         action = utils.newAction(
                 parent=self,
                 text='Title Bar Action',
