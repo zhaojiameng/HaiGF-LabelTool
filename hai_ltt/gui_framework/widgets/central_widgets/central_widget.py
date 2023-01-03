@@ -21,6 +21,7 @@ def get_central_widget(parent=None):
     start_tab_widget = get_start_tab_widget(parent=central_widget)
     # central_widget.addTabWidget(empty_tabw)
     central_widget.addTabWidget(start_tab_widget)
+    central_widget.addTabWidget(empty_tabw)
     return central_widget
 
 class CentralWidget(QWidget):
@@ -41,16 +42,11 @@ class CentralWidget(QWidget):
         self.layout.setSpacing(0)
         self.layout.setContentsMargins(0, 0, 0, 0)
 
-        # state = parent.settings.value("splitter/state", QByteArray())
-        # splitter.restoreState(state)
-
-        # self._init()
-        # w = self._spliters[0].widget(0)
-        # print(w, f'parent={w.parent()}')
-        # print(self.current_tab_widget)
-        # border-corlor: {HGF.COLORS.Black}; \
         self.setStyleSheet(f'background-color: {HGF.COLORS.White}; ')
             # border-width: 3px; margin: 0px; padding: 3px;')
+        
+        # 初始化1个默认分屏器
+        self.addSplitter()
 
     @property
     def current_tab_widget(self):
@@ -86,7 +82,12 @@ class CentralWidget(QWidget):
     def tab_widgets(self):
         return self._tab_widgets
 
-    def get_splitter(self, orientation=Qt.Horizontal, parent=None):
+    # def get_splitter(self, orientation=Qt.Horizontal, parent=None):
+    #     """添加分屏器"""
+    #     pass
+        # return splitter
+
+    def addSplitter(self, orientation=Qt.Horizontal, parent=None):
         """添加分屏器"""
         current_spl = self.current_splitter
         current_spl_idx = self.spliters.index(current_spl) if current_spl else -1
@@ -94,18 +95,14 @@ class CentralWidget(QWidget):
         splitter = QSplitter(orientation, parent=parent)
         splitter.setObjectName(f"Splitter{new_spl_idx}")  # i.e. Splitter0, Splitter1, ...
         splitter.setHandleWidth(1)
+        self._spliters.append(splitter)
         return splitter
 
     def addTabWidget(self, tab_widget):
-        """添加TabWidget"""
-        splitter = self.get_splitter()  # 添加分屏器
-        self._spliters.append(splitter)
-        self._tab_widgets.append(tab_widget)
-        
-        # tab_widget = self.get_tab_widget()  # 添加TabWidget
+        """添加TabWidget, 只会在当前分屏器中添加"""
+        splitter = self.current_splitter
         self._tab_widgets.append(tab_widget)
         splitter.addWidget(tab_widget)  # 添加TabWidget到分屏器
-        # self.load()
         self.load()
 
     def on_tabBarClicked(self, index):
@@ -173,9 +170,7 @@ class CentralWidget(QWidget):
 
         if current_tabw.count() == 0:
             current_tabw.deleteLater()
-            # current_spl.deleteLater()
-        # print(f'current_spl={current_spl}')
-        # current_tabw = 
+            
     
     def on_tabMoved(self, from_index, to_index):
         logger.info(f'tabMoved. from_index: {from_index}, to_index: {to_index}')

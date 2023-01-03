@@ -12,6 +12,9 @@ class HTabBar(QTabBar):  # HAI TabBar
         self.setTabsClosable(True)
         self.setMovable(True)
         self.c_tabbar = QTabBar(self.parent)
+        # 设置self左对齐
+
+
         self.tabCloseRequested.connect(self.on_tabCloseRequested)
 
     def mousePressEvent(self, ev):
@@ -42,7 +45,9 @@ class HTabBar(QTabBar):  # HAI TabBar
         if tab_index == -1:
             return
         self.c_tabbar.show()
-        self.c_tabbar.move(ev.x(), ev.y())
+        w, h = self.c_tabbar.sizeHint().width(), self.c_tabbar.sizeHint().height()
+        x, y = int(ev.x()-w/2), int(ev.y()-h/2)
+        self.c_tabbar.move(x, y)
 
 
     def on_tabCloseRequested(self, index):
