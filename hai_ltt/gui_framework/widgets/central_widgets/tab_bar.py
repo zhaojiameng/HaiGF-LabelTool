@@ -11,7 +11,8 @@ class HTabBar(QTabBar):  # HAI TabBar
         self.parent = parent
         self.setTabsClosable(True)
         self.setMovable(True)
-        self.c_tabbar = QTabBar(self.parent)
+        self.shadow_tabbarr = QTabBar(self.parent)  # 影子
+        self.c_idx = 0  # 当前tab的index
         # 设置self左对齐
 
         self.tabCloseRequested.connect(self.on_tabCloseRequested)
@@ -21,6 +22,7 @@ class HTabBar(QTabBar):  # HAI TabBar
         tab_idx = self.tabAt(ev.pos())
         if tab_idx == -1:
             return
+        self.c_idx = tab_idx
         self.setCurrentIndex(self.tabAt(ev.pos()))  # 切换tab
 
         # 创建一个影子tabbar
@@ -28,35 +30,36 @@ class HTabBar(QTabBar):  # HAI TabBar
         tab_text = self.tabText(tab_idx)
         tab_closable = self.tabsClosable()
         
-        self.c_tabbar.setTabsClosable(tab_closable)
-        for i in range(self.c_tabbar.count()):
-            self.c_tabbar.removeTab(0)
-        self.c_tabbar.addTab(tab_icon, tab_text)
-        self.c_tabbar = self.c_tabbar
-        self.c_tabbar.move(ev.x(), ev.y())
-        self.c_tabbar.hide()
+        self.shadow_tabbarr.setTabsClosable(tab_closable)
+        for i in range(self.shadow_tabbarr.count()):
+            self.shadow_tabbarr.removeTab(0)
+        self.shadow_tabbarr.addTab(tab_icon, tab_text)
+        self.shadow_tabbarr = self.shadow_tabbarr
+        self.shadow_tabbarr.move(ev.x(), ev.y())
+        self.shadow_tabbarr.hide()
 
 
     def mouseMoveEvent(self, ev):
-        print(f'mouseMoveEvent: {ev}')
+       
         # 获取当前鼠标对应的tab
         tab_idx = self.tabAt(ev.pos())
         if tab_idx == -1:
             return
         
         # 当前tabbar跟随鼠标移动
-        self.c_tabbar.show()
-        w, h = self.c_tabbar.sizeHint().width(), self.c_tabbar.sizeHint().height()
+        self.shadow_tabbarr.show()
+        w, h = self.shadow_tabbarr.sizeHint().width(), self.shadow_tabbarr.sizeHint().height()
         x, y = int(ev.x()-w/2), int(ev.y()-h/2)
-        self.c_tabbar.move(x, y)
+        self.shadow_tabbarr.move(x, y)
         # 如果移动到其他标签处，切换标签
-        tab_idx2 = self.tabAt(ev.pos())  # 第二个标签
-        if tab_idx2 != -1 and tab_idx2 != tab_idx:
-            self.moveTab(tab_idx, tab_idx2)
+        if tab_idx != self.c_idx:
+            print(f'mouseMoveEvent: {ev} {self.c_idx} {tab_idx}')
+            self.moveTab(self.c_idx, tab_idx)
+            self.c_idx = tab_idx
 
 
     def mouseReleaseEvent(self, ev):
-        self.c_tabbar.hide()
+        self.shadow_tabbarr.hide()
 
     def on_tabCloseRequested(self, index):
         logger.info(f'on_tabCloseRequested: {index}')
