@@ -52,7 +52,7 @@ class HTabBar(QTabBar):  # HAI TabBar
         # 如果移动到其他标签处，切换标签
         tab_idx2 = self.tabAt(ev.pos())  # 第二个标签
         if tab_idx2 != -1 and tab_idx2 != tab_idx:
-            self.moveFromTo(tab_idx, tab_idx2)
+            self.moveTab(tab_idx, tab_idx2)
 
 
     def mouseReleaseEvent(self, ev):
