@@ -43,10 +43,11 @@ class HTabBar(QTabBar):  # HAI TabBar
 
     def mouseMoveEvent(self, ev):
         logger.info(f'mouseMoveEvent: {ev.x()} {ev.y()}')
-        super().mouseMoveEvent(ev)
+       
         # 获取当前鼠标对应的tab
         tab_idx = self.tabAt(ev.pos())
-        # if tab_idx == -1:
+        if tab_idx != -1:
+            super().mouseMoveEvent(ev)
             # logger.info('return')
             # return
         
