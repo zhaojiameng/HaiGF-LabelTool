@@ -95,17 +95,16 @@ class HTabWidget(QTabWidget):
         """移动tab"""
         logger.info(f"moving_tab")
         st = shadow_tabbar
-        
-        pos = st.parent().mapToParent(QPoint(0, 0))
-        print('pos', pos)
-        print(f'ev: {ev.x()}, {ev.y()} {ev.globalX()}, {ev.globalY()}')
 
-        ev_pos_widget = self.mapFromGlobal(QPoint(ev.globalX(), ev.globalY()))  # 鼠标在tab widget中的位置
-        print('xx', ev_pos_widget)
-
+        # 移动和显示影子tab bar
+        ev_pos_widget = self.mapFromGlobal(QPoint(ev.globalX(), ev.globalY()))  # 获取鼠标在tab widget中的位置
         st.setParent(self)
+        x = ev_pos_widget.x() - st.width() / 2
+        y = ev_pos_widget.y() - st.height() / 2
+        st.move(x, y)
         st.show()
-        st.move(ev_pos_widget.x(), ev_pos_widget.y())
+
+        
 
 
 
