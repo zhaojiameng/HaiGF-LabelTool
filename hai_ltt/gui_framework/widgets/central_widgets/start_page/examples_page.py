@@ -1,7 +1,7 @@
 from PySide2.QtCore import *
 from PySide2.QtGui import *
 from PySide2.QtWidgets import *
-from .abstract_page import HPage
+from .hai_page import HPage
 
 class HExamplesPage(HPage):
     """单个页面，包含ToolBar和Page"""

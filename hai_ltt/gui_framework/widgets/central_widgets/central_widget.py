@@ -37,6 +37,7 @@ class CentralWidget(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.mw = parent
+        self.setWindowFlags(Qt.FramelessWindowHint)
 
         self._spliters = []  # 分屏器列表
         self._tab_widgets = []  # TabWidget列表

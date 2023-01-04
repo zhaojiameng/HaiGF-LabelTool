@@ -32,25 +32,19 @@ class HTabBar(QTabBar):  # HAI TabBar
 
 
     def mouseMoveEvent(self, ev):
-        logger.info(f'mouseMoveEvent: {ev.x()} {ev.y()}')
+        # logger.info(f'mouseMoveEvent: {ev.x()} {ev.y()}')
        
         # 获取当前鼠标对应的tab
         tab_idx = self.tabAt(ev.pos())
         if tab_idx != -1:  # 在self范围内
             super().mouseMoveEvent(ev)
-            # logger.info('return')
+        # else:
+        #     logger.info('not in')
+        #     # 把tab移回到原来的位置
+        #     self.moveTab(self.c_idx, self.c_idx)
         
         # 当前tabbar跟随鼠标移动
         self.shadow_tabbar.show()  # 显示影子
-        # w, h = self.shadow_tabbar.sizeHint().width(), self.shadow_tabbar.sizeHint().height()
-        # x, y = int(ev.x()-w/2), int(ev.y()-h/2)
-        # self.shadow_tabbar.move(100, 0)
-        # self.shadow_tabbar.move(x, y)
-
-        # 如果移动到其他标签处，切换标签
-        # if tab_idx != self.c_idx:
-            # self.moveTab(self.c_idx, tab_idx)
-            # self.c_idx = tab_idx
         
         # 如果移动到pages里，显示区域
         self.parent.moving_tab(ev, self.shadow_tabbar)
