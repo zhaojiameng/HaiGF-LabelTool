@@ -7,8 +7,8 @@ class HExamplesPage(HPage):
     """单个页面，包含ToolBar和Page"""
     def __init__(self, parent=None, **kwargs):
         # print(parent, 'parent')
-        icon = None
-        title = 'Examples'
+        icon = kwargs.pop('icon', None)
+        title = kwargs.pop('title', 'Examples')
         super().__init__(parent, icon=icon, title=title, **kwargs)
         self.mw = parent
         tool_bar = kwargs.pop("tool_bar", None)

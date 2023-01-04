@@ -1,6 +1,6 @@
 
 
-from PySide2.QtCore import QSize, Slot
+from PySide2.QtCore import QSize, Slot, QPoint
 from PySide2.QtGui import QIcon, Qt
 from PySide2.QtWidgets import (QWidget, QHBoxLayout, QTabWidget,
     QLabel, QTabBar, QPushButton, QVBoxLayout, QListWidget, 
@@ -51,7 +51,7 @@ class HTabWidget(QTabWidget):
         self.usesScrollButtons()
         self.setMovable(True)
 
-        self.shadow_tabbar = QTabBar(self)  # 影子
+        self.shadow_tabbar = None  # 影子
 
         # self.tab_bar.addTab(utils.newIcon("start"), self.tr("Start"))
         # self.tabBarClicked.connect(self.tabBarClicked)
@@ -94,16 +94,18 @@ class HTabWidget(QTabWidget):
     def moving_tab(self, ev, shadow_tabbar):
         """移动tab"""
         logger.info(f"moving_tab")
-        self.shadow_tabbar = shadow_tabbar
-        # self.shadow_tabbar.setTabText('xxx')
+        st = shadow_tabbar
+        
+        pos = st.parent().mapToParent(QPoint(0, 0))
+        print('pos', pos)
+        print(f'ev: {ev.x()}, {ev.y()} {ev.globalX()}, {ev.globalY()}')
 
-        c_page = self.currentWidget()  # 当前page
-        # self.shadow_tabbar.setParent(c_page)
-        self.shadow_tabbar.setParent(self)
+        ev_pos_widget = self.mapFromGlobal(QPoint(ev.globalX(), ev.globalY()))  # 鼠标在tab widget中的位置
+        print('xx', ev_pos_widget)
 
-        # self.shadow_tabbar.addTab('xx')
-        self.shadow_tabbar.show()
-        self.shadow_tabbar.move(ev.x(), ev.y())
+        st.setParent(self)
+        st.show()
+        st.move(ev_pos_widget.x(), ev_pos_widget.y())
 
 
 

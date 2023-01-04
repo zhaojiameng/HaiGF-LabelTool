@@ -9,6 +9,7 @@ import damei as dm
 from hai_ltt.apis import HGF
 from .tab_widget import HTabWidget, get_start_tab_widget
 from .hai_tab_bar import HTabBar
+from .start_page import HExamplesPage
 from ... import utils
 
 logger = dm.get_logger('central_widget')
@@ -18,6 +19,8 @@ def get_central_widget(parent=None):
     central_widget = CentralWidget(parent=parent)
     # splitter是自动的，不需要手动添加
     empty_tabw = HTabWidget(parent=parent)
+    empty_tabw.setPages([HExamplesPage(title='ex')])
+
     start_tab_widget = get_start_tab_widget(parent=central_widget)
     # central_widget.addTabWidget(empty_tabw)
     central_widget.addTabWidget(start_tab_widget)
