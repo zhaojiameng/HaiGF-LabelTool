@@ -42,7 +42,7 @@ class HTabWidget(QTabWidget):
         self.tab_bar = HTabBar(self)  # 空的tab bar
 
         self.setWindowTitle(f"TabWidget")
-        self.setObjectName(f"TabWidget")
+        # self.setObjectName(f"TabWidget")
 
         # self.layout().setSpacing(0)
         self.setContentsMargins(0, 0, 0, 0)
@@ -52,22 +52,11 @@ class HTabWidget(QTabWidget):
         self.usesScrollButtons()
         self.setMovable(True)
 
-        self.shadow_tabbar = None  # 影子
-
-        self.paint_flag = 0
-
         # self.tab_bar.addTab(utils.newIcon("start"), self.tr("Start"))
         # self.tabBarClicked.connect(self.tabBarClicked)
 
     def setPages(self, pages):
         """添加pages"""
-        # new_idx = len(self.tab_widgets)
-        # logger.info(f'Create new TabWidget, idx={new_idx}')
-        # tab_widget.setObjectName(f"TabWidget{new_idx}")
-        # tab_widget.tabBarClicked.connect(self.on_tabBarClicked)
-        # tab_widget.tabBarDoubleClicked.connect(self.on_tabBarDoubleClicked)
-        # tab_widget.tabBar().tabMoved.connect(self.on_tabMoved)
-        
         # 移除tab bar里的所有tab
         for i in range(self.tab_bar.count()):
             self.tab_bar.removeTab(0)
@@ -87,39 +76,26 @@ class HTabWidget(QTabWidget):
         
         self.setTabBar(self.tab_bar)
 
+    def mask_page(self, ev):
+        cw = self.currentWidget()  # 这个是指哪个的page
+        lurbc = self.pos2lurbc(ev)  # 获取鼠标位置对应左上右下中心的哪一个
+        cw.mask_lurbc(lurbc=lurbc)
 
-    def moving_tab(self, ev, shadow_tabbar):
-        """移动tab"""
-        # logger.info(f"moving_tab")
-        st = shadow_tabbar
+    def clear_mask(self):
+        self.currentWidget().clear_mask()
 
-        # 移动和显示影子tab bar
+
+    def pos2lurbc(self, ev, control_points=None):
+        """
+        以宽和高的1/4和3/4为控制点，把self分为5个区域left, up, right, bottom, center
+        返回当前鼠标位置对应的区域
+        return: 'left', 'up', 'right', 'bottom', 'center'
+        """
         ev_posw = self.mapFromGlobal(QPoint(ev.globalX(), ev.globalY()))  # 获取鼠标在tab widget中的位置
-        st.setParent(self)
-        x = ev_posw.x() - st.width() / 2
-        y = ev_posw.y() - st.height() / 2
-        st.move(x, y)
-        st.show()
-
-        # 根据鼠标位置绘制page的一半的背景
-        cw = self.currentWidget()
-        lurbc = self.pos2lurbc(ev)  # 鼠标位置对应的左上右下中心
-        # cw.update(lurbc=lurbc)
-        if self.paint_flag == 0:
-            self.paint_flag = 1
-            cw.paint_lurbc(lurbc=lurbc)
-
-    def pos2lurbc(self, ev):
-        """pos to left, up, right, bottom, center"""
-        ev_posw = self.mapFromGlobal(QPoint(ev.globalX(), ev.globalY()))
         x, y = ev_posw.x(), ev_posw.y()
-        w, h = self.size().width(), self.size().height()
-        # print(f'ev_posw={ev_posw}, self_size={w} {h}')
+        w, h = self.size().width(), self.size().height()  # self的宽和高
+        control_points = ((w/4, h/4), (w*3/4, h*3/4)) if control_points is None else control_points
         
-        """
-        以宽和高的1/4和3/4为界限，分为5个区域
-        """
-        control_points = ((w/4, h/4), (w*3/4, h*3/4))
         cps = control_points
         if x < cps[0][0]:  # 0~1/4
             if y < cps[0][1]:
@@ -133,7 +109,6 @@ class HTabWidget(QTabWidget):
                 # 判断左下
                 line = (0, h), (w / 3, h * 2 / 3)
                 cross = self.point_vs_line(p=(x, y), line=line)
-                # return 'left' if cross >= 0 else 'bottom'
                 return 'bottom' if cross >= 0 else 'left'
         elif x < cps[1][0]:  # [1/3, 2/3]
             if y < cps[0][1]:
