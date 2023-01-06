@@ -13,8 +13,8 @@ from PySide2.QtGui import *
 from PySide2.QtWidgets import *
 
 from hai_ltt.apis import HGF, utils
-from ..blue_button import BlueButton
-from ..qobjects.item_model import ItemModel
+from ...common.blue_button import BlueButton
+from ...common.item_model import ItemModel
 
 
 class Ui_Widget(object):

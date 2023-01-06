@@ -19,14 +19,15 @@ import damei as dm
 from hai_ltt.apis import root_path, __appname__
 from .example import Ui_Form
 from .ui_example_page  import Ui_Widget
+from .hai_page import HPage
 
 logger = dm.get_logger('example_page')
 
-class ExamplePage(QWidget):
-    def __init__(self, parent=None):
-        super().__init__(parent)
+class ExamplePage(HPage):
+    def __init__(self, parent=None, **kwargs):
+        super().__init__(parent, **kwargs)
         self.parent = parent
-        self.mw = self.parent.mw
+        # self.mw = self.parent.mw
         self.ui = Ui_Form()
         self.ui.setupUi(self)
 

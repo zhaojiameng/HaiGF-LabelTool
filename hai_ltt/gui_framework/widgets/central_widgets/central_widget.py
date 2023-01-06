@@ -12,6 +12,7 @@ from .tab_widget import HTabWidget, get_start_tab_widget
 from .hai_tab_bar import HTabBar
 from .start_page import HExamplesPage
 from ... import utils
+from .start_page import ExamplePage
 
 logger = dm.get_logger('central_widget')
 
@@ -22,7 +23,7 @@ def get_central_widget(parent=None):
     start_tab_widget = get_start_tab_widget(parent=central_widget)
     start_tab_widget.setObjectName('StartTabW')
     empty_tabw = HTabWidget(parent=parent)
-    page = HExamplesPage(title='ex')
+    page = HExamplesPage(title="Ex2")
     page.setObjectName('EmptyPage')
     empty_tabw.setPages([page])
     empty_tabw.setObjectName('EmptyTabW')

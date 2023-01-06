@@ -10,7 +10,7 @@ import numpy as np
 
 from ... import utils
 from ..core_func_bar.tool_bar import get_toolbar, ToolBar
-from .start_page import HStartPage, HExamplesPage
+from .start_page import HStartPage, HExamplesPage, ExamplePage
 from .hai_tab_bar import HTabBar
 
 logger = dm.get_logger('tab_widget')
@@ -21,7 +21,7 @@ def get_start_tab_widget(parent=None, **kwargs):
     """tab widget包含n个tab和n个page，每个tab对应一个page"""
     tab_widget = HTabWidget(parent=parent, **kwargs)  # 空界面
     page1_start = HStartPage(parent=tab_widget, **kwargs)
-    page2_examples = HExamplesPage(parent=tab_widget, **kwargs)
+    page2_examples = ExamplePage(parent=tab_widget, title='Examples', **kwargs)
 
     pages = [page1_start, page2_examples]
     # pages = [page1_start]
