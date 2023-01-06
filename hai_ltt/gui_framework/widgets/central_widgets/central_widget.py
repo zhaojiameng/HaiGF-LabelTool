@@ -22,14 +22,28 @@ def get_central_widget(parent=None):
     # splitter是自动的，不需要手动添加
     start_tab_widget = get_start_tab_widget(parent=central_widget)
     start_tab_widget.setObjectName('StartTabW')
-    empty_tabw = HTabWidget(parent=parent)
-    page = HExamplesPage(title="Ex2")
-    page.setObjectName('EmptyPage')
-    empty_tabw.setPages([page])
-    empty_tabw.setObjectName('EmptyTabW')
+
+    # empty_tabw = HTabWidget(parent=central_widget)
+    empty_page = HExamplesPage(title='ex')
+    empty_page.setObjectName('EmptyPage')
+    # pages = start_tab_widget.pages + [empty_page]
+    # start_tab_widget.setPages(pages)
+    # empty_tabw.setPages([empty_page])
+    # empty_tabw.setObjectName('EmptyTabW')
+
+    # empty_tabw2 = HTabWidget(parent=central_widget)
+    empty_page2 = HExamplesPage(title='ex2')
+    empty_page2.setObjectName('EmptyPage2')
+    # empty_tabw2.setPages([empty_page2])
+    # empty_tabw2.setObjectName('EmptyTabW2')
     # central_widget.addTabWidget(empty_tabw)
+
+    start_tab_widget.addPage(empty_page)
+    start_tab_widget.insertPage(1, empty_page2)
+    
     central_widget.addTabWidget(start_tab_widget)
-    central_widget.addTabWidget(empty_tabw)
+    # central_widget.addTabWidget(empty_tabw)
+    # central_widget.addTabWidget(empty_tabw2)
     return central_widget
 
 class CentralWidget(QWidget):
@@ -44,7 +58,7 @@ class CentralWidget(QWidget):
         self.mw = parent
         self.setWindowFlags(Qt.FramelessWindowHint)
 
-        self._spliters = []  # 分屏器列表
+        self._splitters = []  # 分屏器列表
         self._tab_widgets = []  # TabWidget列表
 
         self.layout = QGridLayout(self)
@@ -53,13 +67,10 @@ class CentralWidget(QWidget):
 
         self.setStyleSheet(f'background-color: {HGF.COLORS.White}; ')
             # border-width: 3px; margin: 0px; padding: 3px;')
-        
-        # 初始化1个默认分屏器
-        self.addSplitter()
 
     @property
-    def spliters(self):
-        return self._spliters
+    def splitters(self):
+        return self._splitters
 
     @property
     def tab_widgets(self):
@@ -92,7 +103,7 @@ class CentralWidget(QWidget):
 
     @property
     def current_splitter(self):
-        spls = self.spliters
+        spls = self.splitters
         if spls == [] or spls is None:
             return None
         elif len(spls) == 1:
@@ -106,23 +117,73 @@ class CentralWidget(QWidget):
     #     pass
         # return splitter
 
-    def addSplitter(self, orientation=Qt.Horizontal, parent=None):
-        """添加分屏器"""
-        current_spl = self.current_splitter
-        current_spl_idx = self.spliters.index(current_spl) if current_spl else -1
-        new_spl_idx = current_spl_idx + 1
+    def automatic_naming(self, tabw=None, spliiter=None):
+        if spliiter is not None:
+            if self.splitters == []:
+                return 'Splitter0'
+            else:
+                maxidx = max([int(spl.objectName().replace('Splitter', '')) for spl in self.splitters])
+                return f'Splitter{maxidx + 1}'
+                
+            cspl = self.current_splitter
+            cspl_idx = self.splitters.index(cspl) if cspl else -1
+            new_spl_idx = cspl_idx + 1
+            name = f'Splitter{new_spl_idx}'
+            return name
+        if tabw is not None:
+            # if self.tab_widgets == []:
+            #     return 'TabWidget0'
+            # else:
+            #     names = [tabw.objectName() for tabw in self.tab_widgets]
+            #     maxidx = max([int(tabw.objectName().replace('TabWidget', '')) for tabw in self.tab_widgets])
+            #     return f'TabWidget{maxidx + 1}'
+            ctabw = self.current_tab_widget()
+            ctabw_idx = self.tab_widgets.index(ctabw) if ctabw else -1
+            new_tabw_idx = ctabw_idx + 1
+            name = f'TabWidget{new_tabw_idx}'
+            return name
+
+
+    def create_splitter(self, orientation=Qt.Horizontal, parent=None):
+        """添加分屏器到_splitters列表"""
+        parent = parent if parent else self
         splitter = QSplitter(orientation, parent=parent)
-        splitter.setObjectName(f"Splitter{new_spl_idx}")  # i.e. Splitter0, Splitter1, ...
+        name = self.automatic_naming(spliiter=splitter)
+        splitter.setObjectName(name)  # i.e. Splitter0, Splitter1, ...
         splitter.setHandleWidth(1)
-        self._spliters.append(splitter)
         return splitter
 
-    def addTabWidget(self, tab_widget):
-        """添加TabWidget, 只会在当前分屏器中添加"""
-        splitter = self.current_splitter
+    def asign_spliter(self, tab_widget, *args):
+        """分配分屏器"""
+        # 什么时候创建分屏器？
+        if self.splitters == []:
+            splitter = self.create_splitter()
+            self._splitters.append(splitter)
+        elif len(self.splitters) == 1:
+            splitter = self.splitters[0]
+        else:
+            raise NotImplementedError('多个分屏器时，需要实现')
+
+        return splitter
+
+    def addTabWidget(self, tab_widget, *args):
+        """添加TabWidget到_tab_widgets列表，并设置其parrent为splitter中"""
         self._tab_widgets.append(tab_widget)
+        # 分配spliter，分配方案：不知道
+        splitter = self.asign_spliter(tab_widget, *args)
         splitter.addWidget(tab_widget)  # 添加TabWidget到分屏器
         self.load()
+
+    def create_tab_widget_by_source_tabw(self, source_tabw):
+        """
+        根据源TabWidget及其index tab, 创建新的TabWidget
+        """
+        tabw = HTabWidget(self)
+        name = self.automatic_naming(tabw=tabw)
+        tabw.setObjectName(name)
+        page = source_tabw.currentWidget()
+        tabw.setPages([page])
+        return tabw
 
     def on_tabBarClicked(self, index):
         logger.info(f'tabBarClicked. tabw: {self.current_tab_widget}, tab idx: {index}')
@@ -135,80 +196,125 @@ class CentralWidget(QWidget):
         # current_tab = self.current_tab_widget.tabBar()
         # print(f'current_tab={current_tab}')
         self.split_screen(index)
-        
 
-    def split_screen(self, current_tabw, mask_region=None):
-        """
-        实现分屏，实现左右和上下分屏即可
-        """
-        if mask_region is None:
-            return
-        current_spl = self.current_splitter
-        current_tabw = self.current_tab_widget
-        cpage = current_tabw.currentWidget()  # current page
-        ctext = current_tabw.tabBar().tabText(index)  # current text
-        cicon = current_tabw.tabBar().tabIcon(index)  # current icon
-        # print(f'ctext={ctext}, cicon={cicon}')
-
-        attempt_tabw = current_tabw  # 当前tabw或其他tabw，尝试
-        attempt_area = 'right'
-
-        attempt_spl = attempt_tabw.parent()  # 
-        orent = attempt_spl.orientation()
-        print(f'orent={orent}')
-        
-        # TODO: 判断当前tabw的位置，决定新建tabw的位置
-        if attempt_tabw == current_tabw:
-            if attempt_area == 'center':
-                pass
-            elif attempt_area == 'left':
-                # 尝试把tab添加到tabw的左侧，新建tabw, 添加Tab到新建tabw
-                new_tabw = TabWidget()
-                new_tabw.addTab(cpage, cicon, ctext)
-                # current_tabw.removeTab(index)  # 移除旧Tabw中的当前Tab  # Note: 不能移除，new_tabw添加tab后，会自动移除
-                if attempt_spl.orientation() == Qt.Horizontal:
-                    new_spl = attempt_spl
-                else:
-                    new_spl = self.get_splitter(orientation=Qt.Horizontal)
-                # insert的索引是attempt tabw在父spl中的索引
-                idx = attempt_spl.indexOf(attempt_tabw)
-                new_spl.insertWidget(idx, new_tabw)
-            elif attempt_area == 'right':
-                # 尝试把tab添加到当前tabw的右侧，新建tabw，添加Tab到新建tabw
-                new_tabw = TabWidget()
-                new_tabw.addTab(cpage, cicon, ctext)
-                if attempt_spl.orientation() == Qt.Horizontal:
-                    new_spl = attempt_spl
-                else:
-                    new_spl = self.get_splitter(orientation=Qt.Horizontal)
-                idx = attempt_spl.indexOf(attempt_tabw)
-                new_spl.insertWidget(idx+1, new_tabw)
-                # current_spl.addWidget(target_tabw)
+    
+    def get_current_splitter_by_tab_widget(self, tab_widget):
+        """获取当前TabWidget所在的Splitter"""
+        for splitter in self.splitters:
+            if splitter.indexOf(tab_widget) != -1:
+                return splitter
+        return None
+    
+    def judge_need_create_new_splitter(self, mask_region, tspl):
+        """判断是否需要创建新的Splitter和方向"""
+        orent = tspl.orientation()
+        if mask_region in ['left', 'right']:
+            if orent == Qt.Horizontal:
+                return False, Qt.Vertical
             else:
-                raise NotImplementedError('尝试拖动其他区域时，需要实现')
+                return True, Qt.Vertical
+        elif mask_region in ['top', 'bottom']:
+            if orent == Qt.Vertical:
+                return False, Qt.Horizontal
+            else:
+                return True, Qt.Horizontal
+        else:  # center
+            return False, None
+
+    def split_screen(self, source_tabw, target_tabw, mask_region=None):
+        """
+        在moved_tab后调用，实现分屏，实现左右和上下分屏即可
+        :param target_tabw: 当前鼠标所在TabWidget，即目标TabWidget
+        :param mask_region: left, right, top, bottom, center or None
+        """
+        stabw = source_tabw
+        ttabw = target_tabw
+        mr = mask_region
+        if mr is None:
+            return
+        tspl = self.get_current_splitter_by_tab_widget(ttabw)
+        orent = tspl.orientation()
+
+        
+
+
+        return
+
+        print(f'Stabw={stabw} \nTtabw={ttabw} \nTspl={tspl} \nMr={mr} \nOrent={orent}')
+        need_create_new_tabw = True if mr in ['left', 'right', 'top', 'bottom'] else False
+        need_create_new_spl, new_orent = self.judge_need_create_new_splitter(mr, tspl=tspl)
+        print(f'need_create_new_tabw={need_create_new_tabw} \nneed_create_new_spl={need_create_new_spl} \nnew_orent={new_orent}')
+        
+        # 创建新TabWidget和Splitter
+        if need_create_new_tabw:
+            new_tabw = self.create_tab_widget_by_source_tabw(stabw)
+            self._tab_widgets.append(new_tabw)
+            # new_taw_widget中只包含1个page
+            # 删除源TabWidget中的当前页
+            # stabw.removePage(stabw.currentIndex())
         else:
-            raise NotImplementedError('尝试拖动到其他tabw时，需要实现')
+            # stabw.setParent(None)
+            new_tabw = stabw
+            
+        if need_create_new_spl:
+            new_spl = self.addSplitter(new_orent, parent=tspl)
+        else:
+            new_spl = tspl
+        
+        if mr == 'left':
+            new_spl.insertWidget(0, new_tabw)
+        elif mr == 'right':  # 测试, 
+            new_spl.addWidget(new_tabw)
+        elif mr == 'top':
+            new_spl.insertWidget(0, new_tabw)
+        elif mr == 'bottom':
+            new_spl.addWidget(new_tabw)
+        elif mr == 'center':  # center
+            if ttabw == stabw:
+                print('ttabw == stabw')
+                pass
+            else:  # 目标TabWidget是其他tabw
+                print(f'new_spl.count = {new_spl.count()}')
+                self.move_one_tab_to_another_tabw(stabw, ttabw)
+                # new_spl.addWidget(new_tabw)
+                print(f'new_spl={new_spl} \nnew_tabw={new_tabw} \nnew_spl.count={new_spl.count()}')
+        else:
+            raise ValueError(f'Invalid mask_region: {mr}')
 
-        if current_tabw.count() == 0:
-            current_tabw.deleteLater()
+        # if stabw.count() == 0:
+            # stabw.remove_from_splitter()
 
+        for spl in self.splitters:
+            print(f'spl={spl}')
+        print(ttabw.count())
+
+        self.load()
+
+    def move_one_tab_to_another_tabw(self, source_tabw, target_tabw):
+        """将一个TabWidget中的一个Tab移动到另一个TabWidget中"""
+        source_page = source_tabw.currentWidget()
+        print(source_page)
+        # target_tabw.addPage(source_page)
+        old_pages = target_tabw.pages
+        old_pages.append(source_page)
+        target_tabw.setPages(old_pages)
+        # target_tabw.insertPage(0, source_page)
+        # source_tabw.move_tab_to_another_tabw(target_tabw)
 
     def closeEvent(self, event):
         self.parent.settings.setValue("splitter/state", self.splitter.saveState())
         
     def load(self):
         """加载TabWidget"""
+        # 清除所有分屏器
+        for spl in self.splitters:
+            self.layout.removeWidget(spl)
+            # spl.deleteLater()
 
         # 加载分屏器
-        for spl in self.spliters:
-            self.layout.addWidget(spl)
-        # 清除所有的子控件
-        # for i in reversed(range(self.layout.count())):
-            # self.layout.itemAt(i).widget().setParent(None)
-        # for tab_widget in tab_widgets:
-            # spacer_item = QSpacerItem(0, 0, QSizePolicy.Expanding, QSizePolicy.Minimum)
-            # self.layout.addWidget(tab_widget)
-            # self.splitter.addWidget(tab_widget)
+        # for spl in self.splitters]:
+            # self.layout.addWidget(spl)
+        self.layout.addWidget(self.splitters[-1])
 
     def mousePressEvent(self, ev):
         logger.info(f'mousePressEvent. ev: {ev}')
@@ -222,6 +328,7 @@ class CentralWidget(QWidget):
         """
         # logger.info(f'moving_tab. ev: {ev}')
         st = shadow_tabbar
+        stabw = st.body.parent
 
         # 移动和显示影子tab bar
         ev_posw = self.mapFromGlobal(QPoint(ev.globalX(), ev.globalY()))  # 获取鼠标在tab widget中的位置
@@ -236,21 +343,25 @@ class CentralWidget(QWidget):
         for tabw in self.tab_widgets:  # 清除其他tabw的mask
             if tabw != ctabw:
                 tabw.clear_mask()
+        if ctabw == stabw and stabw.count() == 1:  # 源tabw只有一个tab，不做处理
+            return
         if ctabw is None:  # 在多个tabw的接缝处，不做处理
             return
         ctabw.mask_page(ev)  # 在当前tabw上显示mask
 
-    def moved_tab(self, ev):
+    def moved_tab(self, ev, shadow_tabbar):
         """鼠标拖动Tab结束"""
+        st = shadow_tabbar
+        stabw = st.body.parent  # 拖动的tab所在的tabw, source tab widget
+        # print(f'body_of_st={body_of_st} body_tab_idx={body_tab_idx}')
         ev_posw = self.mapFromGlobal(QPoint(ev.globalX(), ev.globalY()))  # 获取鼠标在tab widget中的位置
         
         ctabw = self.current_tab_widget(pos=ev_posw)
         if ctabw is None:
             return
-        mr = ctabw.currentWidget().mask_region  # 蒙版位置, left, right, top, bottom, center
+        mr = ctabw.currentWidget()._mask_region  # 蒙版位置, left, right, top, bottom, center
         ctabw.clear_mask()  # 清除蒙版
-        logger.info(f'ctabw={ctabw}, mr={mr}')
-        self.split_screen(ctabw, mr)
+        self.split_screen(stabw, ctabw, mr) 
 
 
 

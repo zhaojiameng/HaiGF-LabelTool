@@ -28,6 +28,7 @@ class HTabBar(QTabBar):  # HAI TabBar
         self.c_idx = tab_idx  # 存储current tab idx
         self.setCurrentIndex(self.tabAt(ev.pos()))  # 切换tab
         self.setup_shadow_tabbar(tab_idx)  # 更新影子
+        # self.shadow_tabbar.body = 
         self.shadow_tabbar.hide()  # 隐藏因子
 
     def mouseMoveEvent(self, ev):
@@ -44,9 +45,10 @@ class HTabBar(QTabBar):  # HAI TabBar
 
     def mouseReleaseEvent(self, ev):
         super().mouseReleaseEvent(ev)
-        print(f'mouseReleaseEvent: {ev}')
+        logger.info(f'mouseReleaseEvent: {ev}')
         self.shadow_tabbar.hide()  # 隐藏影子
-        self.parent.parent.moved_tab(ev)
+        self.parent.parent.moved_tab(ev, self.shadow_tabbar)
+        self.reset_shadow_tabbar()
 
     def on_tabCloseRequested(self, index):
         # logger.info(f'on_tabCloseRequested: {index}')
@@ -66,6 +68,15 @@ class HTabBar(QTabBar):  # HAI TabBar
             self.shadow_tabbar.removeTab(0)
         self.shadow_tabbar.addTab(tab_icon, tab_text)
         self.shadow_tabbar.setTabsClosable(tab_closable)
+        self.shadow_tabbar.body = self  # 影子的正身
+        self.shadow_tabbar.body_tab_idx = tab_idx  # 影子的正身的tab索引
+
+    def reset_shadow_tabbar(self):
+        """重置影子tabbar"""
+        for i in range(self.shadow_tabbar.count()):
+            self.shadow_tabbar.removeTab(0)
+        self.shadow_tabbar.body = None
+        self.shadow_tabbar.body_tab_idx = None
 
         
 
