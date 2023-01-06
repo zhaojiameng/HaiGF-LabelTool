@@ -246,7 +246,7 @@ class CentralWidget(QWidget):
 
     def split_screen(self, source_tabw, target_tabw, mask_region=None):
         """
-        在moved_tab后调用，实现分屏，实现左右和上下分屏即可
+        在moved_tab后调用，实现分屏。
         :param target_tabw: 当前鼠标所在TabWidget，即目标TabWidget
         :param mask_region: left, right, top, bottom, center or None
         """
