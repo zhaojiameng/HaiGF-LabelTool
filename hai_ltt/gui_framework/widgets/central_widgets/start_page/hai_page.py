@@ -38,21 +38,6 @@ class HPage(QWidget):
     def clear_mask(self):
         self._mask_region = None
         self.maskw.hide()
-
-    # def paintEvent(self, ev):
-    #     logger.info(f'paintEvent ev: {ev}')
-    #     if self.mask_region:
-    #         p = QPainter(self)
-    #         print(f'paint device: {p.device()}')
-    #         p.setOpacity(0.5)
-    #         img = np.zeros((self.size().height(), self.size().width(), 3), dtype=np.uint8)
-    #         img[...] = (100, 149, 237)  # 矢车菊蓝
-    #         pixmap = general.img2pixmap(img)
-    #         region = self.mask_region2region(self.mask_region)
-    #         p.drawRect(region[0], region[1], region[2], region[3])
-    #         p.fillRect(region[0], region[1], region[2], region[3], Qt.red)
-    #         # p.drawPixmap(region[0], region[1], region[2], region[3], pixmap)
-    #         p.end()
         
     def mask_region2geom(self, mask_region):
         """left up right bottom corner to geometry"""

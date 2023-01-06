@@ -21,7 +21,8 @@ def get_start_tab_widget(parent=None, **kwargs):
     """tab widget包含n个tab和n个page，每个tab对应一个page"""
     tab_widget = HTabWidget(parent=parent, **kwargs)  # 空界面
     page1_start = HStartPage(parent=tab_widget, **kwargs)
-    page2_examples = ExamplePage(parent=tab_widget, title='Examples', **kwargs)
+    # page2_examples = ExamplePage(parent=tab_widget, title='Examples', **kwargs)
+    page2_examples = HExamplesPage(parent=tab_widget, title='Examples', **kwargs)
 
     pages = [page1_start, page2_examples]
     # pages = [page1_start]
@@ -37,14 +38,9 @@ class HTabWidget(QTabWidget):
     """
     def __init__(self, parent=None, **kwargs):
         super().__init__(parent)
-        self.parent = parent
-        # self.mw = parent
-        self.tab_bar = None  # 空的tab bar
-
+        self.p = parent
         self.setWindowTitle(f"HTabWidget")
-        # self.setObjectName(f"TabWidget")
 
-        # self.layout().setSpacing(0)
         self.setContentsMargins(0, 0, 0, 0)
 
         self.setTabShape(QTabWidget.Rounded)
@@ -56,6 +52,10 @@ class HTabWidget(QTabWidget):
 
         # self.tab_bar.addTab(utils.newIcon("start"), self.tr("Start"))
         # self.tabBarClicked.connect(self.tabBarClicked)
+
+    @property
+    def c_idx(self):
+        return self.tabBar().c_idx
     
     @property
     def pages(self):
@@ -88,37 +88,42 @@ class HTabWidget(QTabWidget):
     def load_pages(self):
         """加载pages"""
         # 移除tab bar里的所有tab
-        self.tab_bar = HTabBar(self)
+        # if self.tab_bar is not None:
+            # self.tab_bar.setParent(None)
+        tab_bar = HTabBar(self)
 
         # for i in range(self.tab_bar.count()):
             # self.tab_bar.removeTab(0)
         # 移除tab widget里的所有tab
-        for i in range(self.count()):
-            self.removeTab(0)
+        # for i in range(self.count()):
+            # self.removeTab(0)
 
-        for page in self._pages:
+        for i, page in enumerate(self._pages):
+            print(f'[{i+1}/{len(self._pages)}] page: {page.title}')
             # print('xx', page.parent)
             self.addTab(page, 'test title')  # 添加一个page
+            # 设置tab bar的tab
             if page.icon and page.title:
-                self.tab_bar.addTab(page.icon, page.title)
+                tab_bar.addTab(page.icon, page.title)
             elif not page.icon and page.title:
-                self.tab_bar.addTab(page.title)
+                tab_bar.addTab(page.title)
             else:
                 raise ValueError("page.icon and page.title can't be None at the same time")
-            # if page not in self._pages:
-                # self._pages.append(page)
         
-        self.setTabBar(self.tab_bar)
+        tab_bar.show()
+        self.setTabBar(tab_bar)
 
     def mask_page(self, ev):
+        """遮罩当前page"""
         cw = self.currentWidget()  # 这个是指哪个的page
         mr = self.pos2mask_region(ev)  # 获取鼠标位置对应左上右下中心的哪一个
         cw.mask_region(mr)
 
     def clear_mask(self):
-        cw = self.currentWidget()
+        # cw = self.currentWidget()
         # print('clear mask, cw:', cw)
-        self.currentWidget().clear_mask()
+        # self.currentWidget().clear_mask()
+        self._pages[self.c_idx].clear_mask()
 
 
     def pos2mask_region(self, ev, control_points=None):
@@ -183,6 +188,26 @@ class HTabWidget(QTabWidget):
         AC = np.array([x - x1, y - y1])
         ret = np.cross(AB, AC)
         return ret
+
+    def remove_current_page(self):
+        """移除当前page"""
+        c_idx = self.tabBar().c_idx
+        cpage = self._pages[c_idx]
+        pages = [x for x in self._pages if x != cpage]
+        self.setPages(pages)
+        # self.print_pages_name()
+
+    def print_pages_name(self):
+        for page in self._pages:
+            print('page_title', page.title)
+        print('tabbar count: ', self.tabBar().count())
+
+    def add_tab_from_another_tabw(self, tabw2):
+        """把tabw2当前tab的page添加到self中"""
+        page = tabw2.currentWidget()
+        pages = self._pages + [page]
+        self.setPages(pages)
+        # tabw.setPages([page])
 
         
 
