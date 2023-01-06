@@ -18,14 +18,20 @@ import damei as dm
 
 from hai_ltt.apis import root_path, __appname__
 from .ui_start_page import Ui_Widget
+from .hai_page import HPage
+from .... import utils
 
 logger = dm.get_logger('start_page')
 
-class StartPage(QWidget):
-    def __init__(self, parent=None):
-        super().__init__(parent)
+class HStartPage(HPage):
+    def __init__(self, parent=None, icon=None, title=None):
+        icon = utils.newIcon('start')
+        title = 'Start'
+        super().__init__(parent, icon=icon, title=title)
         self.parent = parent
-        self.mw = self.parent.mw
+        # self.mw = self.parent.mw
+
+        # 设置UI界面
         self.ui = Ui_Widget()
         self.ui.setupUi(self)
 

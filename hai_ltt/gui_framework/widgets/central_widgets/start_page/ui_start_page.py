@@ -13,8 +13,8 @@ from PySide2.QtGui import *
 from PySide2.QtWidgets import *
 
 from hai_ltt.apis import HGF, utils
-from ..blue_button import BlueButton
-from ..qobjects.item_model import ItemModel
+from ...common.blue_button import BlueButton
+from ...common.item_model import ItemModel
 
 
 class Ui_Widget(object):
@@ -47,7 +47,9 @@ class Ui_Widget(object):
 
         self.openFileButton = BlueButton(text='Open File', parent=Widget)
         self.openFileButton.setObjectName(u"openFileButton")
-        self.openFileButton.setGeometry(QRect(90, 180, 121, 32))
+        self.openFileButton.setMinimumSize(120, 32)
+        # self.openFileButton.setGeometry(QRect(90, 180, 121, 32))
+        self.openFileButton.move(90, 180)
         # 设置文本左对齐
         icon = utils.newIcon('file-addition-one')
         self.openFileButton.setIcon(icon)
@@ -72,7 +74,9 @@ class Ui_Widget(object):
 
         self.openDirButton = BlueButton(text='Open Folder', parent=Widget)
         self.openDirButton.setObjectName(u"openDirButton")
-        self.openDirButton.setGeometry(QRect(90, 220, 121, 32))
+        # self.openDirButton.setGeometry(QRect(90, 220, 121, 32))
+        self.openDirButton.setMinimumSize(120, 32)
+        self.openDirButton.move(90, 220)
         icon1 = utils.newIcon('folder-open')
         self.openDirButton.setIcon(icon1)
 

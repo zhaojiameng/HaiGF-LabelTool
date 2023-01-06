@@ -5,9 +5,9 @@ from PySide2.QtWidgets import *
 from PySide2.QtGui import *
 from pathlib import Path
 
-from ..title_bar import TitleBarWithAction
+from ..common.title_bar import TitleBarWithAction
 from hai_ltt.apis import HGF
-from ..blue_button import BlueButton
+from ..common.blue_button import BlueButton
 from hai_ltt.apis import root_path, __appname__
 
 def get_main_side_bar(parent=None, **kwargs):
