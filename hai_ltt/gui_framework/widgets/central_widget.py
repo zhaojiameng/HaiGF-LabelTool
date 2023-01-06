@@ -9,6 +9,7 @@ import damei as dm
 from hai_ltt.apis import HGF
 from .tab_widget import TabWidget, get_tab_widget, Page
 from .pages.start_page import StartPage
+from .pages.example_page import ExamplePage
 from .. import utils
 
 logger = dm.get_logger('central_widget')
@@ -105,7 +106,8 @@ class CentralWidget(QWidget):
 
     def get_tab_widget(self, parent=None, **kwargs):
         start_page = StartPage(parent=self, **kwargs)
-        examples_page = Page(parent=self, **kwargs)
+        # examples_page = Page(parent=self, **kwargs)
+        examples_page = ExamplePage(parent=self, **kwargs)
         tab_widget = TabWidget(parent=parent)
         new_idx = len(self.tab_widgets)
         logger.info(f'Create new TabWidget, idx={new_idx}')

@@ -76,6 +76,8 @@ class Ui_Widget(object):
         icon1 = utils.newIcon('folder-open')
         self.openDirButton.setIcon(icon1)
 
+
+
         self.retranslateUi(Widget)
 
         QMetaObject.connectSlotsByName(Widget)
