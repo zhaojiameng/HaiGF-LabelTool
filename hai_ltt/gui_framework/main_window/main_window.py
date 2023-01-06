@@ -66,6 +66,9 @@ class FrameworkMainWindow(QMainWindow):
     def mousePressEvent(self, ev):
         logger.info(f'mousePressEvent: {ev}')
 
+    def show_warning(self, msg):
+        self.mw_ui.statusbar.showMessage(msg, 5000)
+
 if __name__ == "__main__":
 
     app = QApplication(sys.argv)

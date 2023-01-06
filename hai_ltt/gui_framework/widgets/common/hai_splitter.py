@@ -31,6 +31,10 @@ class HSplitter(QSplitter):
         for i in range(len(self.widgets)):
             self.removeWidget(self.widgets[0])
         # print(widgets, len(widgets))
+        # 设置Splitter的子控件各占一半
+        self.setStretchFactor(0, 1)  # 设置子控件的伸缩比例
         for w in widgets:
             self.addWidget(w)
+
+        self.setSizes([self.width()/len(widgets) for w in widgets])
         

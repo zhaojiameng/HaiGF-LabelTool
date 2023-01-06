@@ -265,6 +265,12 @@ class CentralWidget(QWidget):
         print(f'Stabw={stabw} \nTtabw={ttabw} \nTspl={tspl} \nMr={mr} \nOrent={orent}')
         print(f'need_create_new_tabw   ={need_create_new_tabw} \nneed_create_new_spl    ={need_create_new_spl}')
         print(f'need_delete_source_tabw={need_delete_source_tabw} \nnew_orent={new_orent}')
+        num_of_tabws = len(self._tab_widgets) + bool(need_create_new_tabw) - bool(need_delete_source_tabw)
+        print(f'num_of_tabws={num_of_tabws}')
+        if num_of_tabws >= 4:
+            self.parent().show_warning('Only support 3 tab widgets at most.')
+            return
+
         if need_create_new_tabw:
             new_tabw = self.create_tab_widget_by_source_tabw(stabw)
             # stabw, new_tabw = stabw.split_into_two_tabw()
