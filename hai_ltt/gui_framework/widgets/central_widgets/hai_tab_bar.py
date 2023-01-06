@@ -52,7 +52,7 @@ class HTabBar(QTabBar):  # HAI TabBar
         self.reset_shadow_tabbar()
 
     def on_tabCloseRequested(self, index):
-        # logger.info(f'on_tabCloseRequested: {index}')
+        logger.info(f'on_tabCloseRequested: {index}')
         self.p.removeTab(index)
 
     def dragMoveEvent(self, ev):

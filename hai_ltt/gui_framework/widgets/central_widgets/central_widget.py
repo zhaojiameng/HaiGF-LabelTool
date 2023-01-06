@@ -86,18 +86,17 @@ class CentralWidget(QWidget):
         vis_tabws = [tabw for tabw in tabws if tabw.isVisible()]
         if vis_tabws == []:
             return None
-        elif len(vis_tabws) == 1:
+        elif len(vis_tabws) == 1 and pos is None:
             return vis_tabws[0]
         else:
             assert pos is not None, '多个TabWidget时，需要传入pos参数'
             ctabw = []
             for tabw in vis_tabws:
                 geom = tabw.geometry()  # x, y, w, h
-                if geom.contains(pos):
+                geom2 = tabw.tabBar().geometry()  # x, y, w, h
+                # print(f'geom={geom}, geom2={geom2}, pos={pos}')
+                if geom.contains(pos) and not geom2.contains(pos):
                     ctabw.append(tabw)
-                # print(f'geom={geom}, pos={pos}')
-                # if tabw.geometry().contains(pos):
-                    # ctabw.append(tabw)
             if ctabw == []:
                 return None
             assert len(ctabw) == 1, f'多个TabWidget时，需要传入pos参数, {ctabw}'
@@ -262,11 +261,11 @@ class CentralWidget(QWidget):
         need_create_new_tabw = True if mr in ['left', 'right', 'top', 'bottom'] else False
         need_delete_source_tabw = self.judge_need_delete_source_tabw(stabw, ttabw)
         need_create_new_spl, new_orent = self.judge_need_create_new_splitter(mr, tspl=tspl)
-        print(f'Stabw={stabw} \nTtabw={ttabw} \nTspl={tspl} \nMr={mr} \nOrent={orent}')
-        print(f'need_create_new_tabw   ={need_create_new_tabw} \nneed_create_new_spl    ={need_create_new_spl}')
-        print(f'need_delete_source_tabw={need_delete_source_tabw} \nnew_orent={new_orent}')
         num_of_tabws = len(self._tab_widgets) + bool(need_create_new_tabw) - bool(need_delete_source_tabw)
-        print(f'num_of_tabws={num_of_tabws}')
+        # print(f'Stabw={stabw} \nTtabw={ttabw} \nTspl={tspl} \nMr={mr} \nOrent={orent}')
+        # print(f'need_create_new_tabw   ={need_create_new_tabw} \nneed_create_new_spl    ={need_create_new_spl}')
+        # print(f'need_delete_source_tabw={need_delete_source_tabw} \nnew_orent={new_orent}')
+        # print(f'num_of_tabws={num_of_tabws}')
         if num_of_tabws >= 4:
             self.parent().show_warning('Only support 3 tab widgets at most.')
             return
@@ -292,7 +291,7 @@ class CentralWidget(QWidget):
         # 清除原有的Splitters
         self.clear_splitters()
 
-        print(f'num_of_tabw: {len(self._tab_widgets)} \nnum_of_spl : {len(self._splitters)}')
+        # print(f'num_of_tabw: {len(self._tab_widgets)} \nnum_of_spl : {len(self._splitters)}')
         if len(self._tab_widgets) == 1:
             # 获取最终的Splitter
             final_spl = self.create_splitter(orientation=new_orent)
@@ -388,7 +387,7 @@ class CentralWidget(QWidget):
 
         # 判断鼠标在哪个控件里
         ctabw = self.current_tab_widget(pos=ev_posw)
-        for tabw in self.tab_widgets:  # 清除其他tabw的mask
+        for tabw in self._tab_widgets:  # 清除其他tabw的mask
             if tabw != ctabw:
                 tabw.clear_mask()
         if ctabw == stabw and stabw.count() == 1:  # 源tabw只有一个tab，不做处理

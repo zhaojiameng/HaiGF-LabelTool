@@ -61,6 +61,11 @@ class HTabWidget(QTabWidget):
     def pages(self):
         return self._pages
 
+    def removeTab(self, index):
+        self._pages.pop(index)
+        return super().removeTab(index)
+        
+
     def setPages(self, pages):
         """设置pages"""
         self._pages = pages
@@ -92,14 +97,8 @@ class HTabWidget(QTabWidget):
             # self.tab_bar.setParent(None)
         tab_bar = HTabBar(self)
 
-        # for i in range(self.tab_bar.count()):
-            # self.tab_bar.removeTab(0)
-        # 移除tab widget里的所有tab
-        # for i in range(self.count()):
-            # self.removeTab(0)
-
         for i, page in enumerate(self._pages):
-            print(f'[{i+1}/{len(self._pages)}] page: {page.title}')
+            # print(f'[{i+1}/{len(self._pages)}] page: {page.title}')
             # print('xx', page.parent)
             self.addTab(page, 'test title')  # 添加一个page
             # 设置tab bar的tab
