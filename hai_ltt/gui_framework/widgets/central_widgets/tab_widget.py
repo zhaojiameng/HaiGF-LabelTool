@@ -22,6 +22,7 @@ def get_start_tab_widget(parent=None, **kwargs):
     tab_widget = HTabWidget(parent=parent, **kwargs)  # 空界面
     page1_start = HStartPage(parent=tab_widget, **kwargs)
     page2_examples = HExamplesPage(parent=tab_widget, **kwargs)
+    # page3 = HExamplesPage(parent=tab_widget, **kwargs)
 
     pages = [page1_start, page2_examples]
     # pages = [page1_start]
@@ -39,9 +40,9 @@ class HTabWidget(QTabWidget):
         super().__init__(parent)
         self.parent = parent
         # self.mw = parent
-        self.tab_bar = HTabBar(self)  # 空的tab bar
+        self.tab_bar = None  # 空的tab bar
 
-        self.setWindowTitle(f"TabWidget")
+        self.setWindowTitle(f"HTabWidget")
         # self.setObjectName(f"TabWidget")
 
         # self.layout().setSpacing(0)
@@ -52,19 +53,51 @@ class HTabWidget(QTabWidget):
         self.usesScrollButtons()
         self.setMovable(True)
 
+        self._pages = []
+
         # self.tab_bar.addTab(utils.newIcon("start"), self.tr("Start"))
         # self.tabBarClicked.connect(self.tabBarClicked)
+    
+    @property
+    def pages(self):
+        return self._pages
 
     def setPages(self, pages):
+        """设置pages"""
+        self._pages = pages
+        self.load_pages()
+
+    def addPage(self, page, load=True):
+        """添加page"""
+        if page not in self._pages:
+            self._pages.append(page)
+        if load:
+            self.load_pages()
+
+    def addPages(self, pages):
         """添加pages"""
+        for page in pages:
+            self.addPage(page, load=False)
+        self.load_pages()
+    
+    def insertPage(self, index, page):
+        """插入page"""
+        if page not in self._pages:
+            self._pages.insert(index, page)
+        self.load_pages()
+
+    def load_pages(self):
+        """加载pages"""
         # 移除tab bar里的所有tab
-        for i in range(self.tab_bar.count()):
-            self.tab_bar.removeTab(0)
+        self.tab_bar = HTabBar(self)
+
+        # for i in range(self.tab_bar.count()):
+            # self.tab_bar.removeTab(0)
         # 移除tab widget里的所有tab
         for i in range(self.count()):
             self.removeTab(0)
 
-        for page in pages:
+        for page in self._pages:
             # print('xx', page.parent)
             self.addTab(page, 'test title')  # 添加一个page
             if page.icon and page.title:
@@ -73,23 +106,27 @@ class HTabWidget(QTabWidget):
                 self.tab_bar.addTab(page.title)
             else:
                 raise ValueError("page.icon and page.title can't be None at the same time")
+            # if page not in self._pages:
+                # self._pages.append(page)
         
         self.setTabBar(self.tab_bar)
 
     def mask_page(self, ev):
         cw = self.currentWidget()  # 这个是指哪个的page
-        lurbc = self.pos2lurbc(ev)  # 获取鼠标位置对应左上右下中心的哪一个
-        cw.mask_lurbc(lurbc=lurbc)
+        mr = self.pos2mask_region(ev)  # 获取鼠标位置对应左上右下中心的哪一个
+        cw.mask_region(mr)
 
     def clear_mask(self):
+        cw = self.currentWidget()
+        # print('clear mask, cw:', cw)
         self.currentWidget().clear_mask()
 
 
-    def pos2lurbc(self, ev, control_points=None):
+    def pos2mask_region(self, ev, control_points=None):
         """
-        以宽和高的1/4和3/4为控制点，把self分为5个区域left, up, right, bottom, center
+        以宽和高的1/4和3/4为控制点，把self分为5个区域left, top, right, bottom, center
         返回当前鼠标位置对应的区域
-        return: 'left', 'up', 'right', 'bottom', 'center'
+        return: 'left', 'top', 'right', 'bottom', 'center'
         """
         ev_posw = self.mapFromGlobal(QPoint(ev.globalX(), ev.globalY()))  # 获取鼠标在tab widget中的位置
         x, y = ev_posw.x(), ev_posw.y()
@@ -102,7 +139,7 @@ class HTabWidget(QTabWidget):
                 # 判断左上
                 line = (0, 0), (w / 3, h / 3)
                 cross = self.point_vs_line(p=(x, y), line=line)
-                return 'left' if cross >= 0 else 'up'
+                return 'left' if cross >= 0 else 'top'
             elif y < cps[1][1]:
                 return 'left'
             else:
@@ -112,7 +149,7 @@ class HTabWidget(QTabWidget):
                 return 'bottom' if cross >= 0 else 'left'
         elif x < cps[1][0]:  # [1/3, 2/3]
             if y < cps[0][1]:
-                return 'up'
+                return 'top'
             elif y < cps[1][1]:
                 return 'center'
             else:
@@ -122,7 +159,7 @@ class HTabWidget(QTabWidget):
                 # 判断右上
                 line = (w, 0), (w * 2 / 3, h / 3)
                 cross = self.point_vs_line(p=(x, y), line=line)
-                return 'up' if cross >= 0 else 'right'
+                return 'top' if cross >= 0 else 'right'
             elif y < cps[1][1]:
                 return 'right'
             else:
