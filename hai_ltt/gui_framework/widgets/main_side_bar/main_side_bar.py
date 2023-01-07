@@ -28,6 +28,7 @@ class MainSideBar(QtWidgets.QDockWidget):
         default_widget = self.get_example_widget()
         self.setWidget(default_widget)
 
+
         self.setupProperty()
 
     def load(self, title_bar=None, title=None, widget=None):

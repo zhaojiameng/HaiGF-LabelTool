@@ -19,7 +19,7 @@ import damei as dm
 from hai_ltt.apis import root_path, __appname__
 from .example import Ui_Form
 from .ui_example_page  import Ui_Widget
-from .hai_page import HPage
+from ...common.hai_page import HPage
 
 logger = dm.get_logger('example_page')
 

@@ -282,7 +282,7 @@ class CentralWidget(QWidget):
                 stabw.remove_current_page()  # 移除当前Tab
 
         if need_delete_source_tabw:
-            print('delete source tabw:', stabw in self._tab_widgets)
+            # print('delete source tabw:', stabw in self._tab_widgets)
             stabw.setParent(None)
             self._tab_widgets.remove(stabw)
             # stabw.hide()

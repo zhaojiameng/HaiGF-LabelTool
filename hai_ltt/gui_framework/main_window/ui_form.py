@@ -19,7 +19,7 @@ from PySide2.QtWidgets import (QApplication, QMainWindow, QMenuBar, QPushButton,
     QSizePolicy, QStatusBar, QWidget, QDockWidget, QTabWidget,
     QTabBar, QLabel, QVBoxLayout, QHBoxLayout)
 
-from ..widgets import get_toolbar, get_central_widget, get_main_side_bar
+from ..widgets import get_toolbar, get_central_widget, get_main_side_bar, get_panel_widget
 from .. import utils
 from ...version import __appname__
 
@@ -85,6 +85,8 @@ class Ui_MainWindow(object):
         main_side_bar.setFeatures(QDockWidget.DockWidgetMovable)
         mw.main_side_bar = main_side_bar
         mw.addDockWidget(Qt.LeftDockWidgetArea, main_side_bar)
+        mw.setCorner(Qt.TopLeftCorner, Qt.LeftDockWidgetArea)
+        mw.setCorner(Qt.BottomLeftCorner, Qt.LeftDockWidgetArea)
         pass
 
     def setupAuxSideBar(self, mw):
@@ -106,18 +108,9 @@ class Ui_MainWindow(object):
 
     def setupPanel(self, mw):
         """设置底部选项卡"""
-        # tab_widget = QTabWidget(mw)
-        docker = QDockWidget("Bottom", mw)
-        docker.setObjectName("Pannel")
-        # docker2 = QDockWidget("Bottom2", mw)
-        docker.setWidget(QLabel('s1'))
-        # docker2.setWidget(QLabel('s2'))
-        docker.setFeatures(QDockWidget.DockWidgetMovable)
-        # docker.setMovable(False)
-        # tab_widget.addTab(QLabel('s3'), "S4")
-        mw.addDockWidget(Qt.BottomDockWidgetArea, docker)
-        # mw.addDockWidget(Qt.BottomDockWidgetArea, docker2)
-        pass
+        panel_widget = get_panel_widget(mw)
+        panel_widget.setObjectName("Panel")
+        mw.addDockWidget(Qt.BottomDockWidgetArea, panel_widget)
 
     def setupStatusBar(self, mw):
         self.statusbar = QStatusBar(mw)

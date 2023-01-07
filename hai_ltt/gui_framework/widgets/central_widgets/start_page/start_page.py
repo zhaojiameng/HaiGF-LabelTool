@@ -18,7 +18,7 @@ import damei as dm
 
 from hai_ltt.apis import root_path, __appname__
 from .ui_start_page import Ui_Widget
-from .hai_page import HPage
+from ...common.hai_page import HPage
 from .... import utils
 
 logger = dm.get_logger('start_page')
