@@ -1,5 +1,6 @@
 from math import sqrt
 import os.path as osp
+import os
 
 import numpy as np
 
@@ -14,6 +15,17 @@ here = osp.dirname(osp.abspath(__file__))
 def newIcon(icon):
     icons_dir = osp.join(here, "../icons")
     # print(osp.join(":/", icons_dir, "%s.png" % icon))
+    icons = os.listdir(icons_dir)
+    if f'{icon}.svg' in icons:
+        icon_name = f'{icon}.svg'
+        print(icon_name)
+    elif f'{icon}.png' in icons:
+        icon_name = f'{icon}.png'
+    else:
+        icon_name = 'unknown.png'
+    icon_path = osp.join(icons_dir, icon_name)
+    return QtGui.QIcon(icon_path)
+
     return QtGui.QIcon(osp.join(":/", icons_dir, "%s.png" % icon))
 
 

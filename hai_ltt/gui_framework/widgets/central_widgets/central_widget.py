@@ -57,7 +57,7 @@ class CentralWidget(QWidget):
     """
     def __init__(self, parent=None):
         super().__init__(parent)
-        self.mw = parent
+        self.p = parent
         self.setWindowFlags(Qt.FramelessWindowHint)
 
         self._splitters = []  # 分屏器列表
@@ -364,10 +364,10 @@ class CentralWidget(QWidget):
         self.layout.addWidget(splitter)
 
     def mousePressEvent(self, ev):
-        logger.info(f'mousePressEvent. ev: {ev}')
+        logger.debug(f'mousePressEvent. ev: {ev}')
 
     def mouseMoveEvent(self, ev):
-        logger.info(f'mouseMoveEvent. ev: {ev}')
+        logger.debug(f'mouseMoveEvent. ev: {ev}')
 
     def moving_tab(self, ev, shadow_tabbar):
         """

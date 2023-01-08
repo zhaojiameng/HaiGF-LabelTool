@@ -14,13 +14,5 @@ logger = dm.get_logger('main_window')
 
 class AppMainWindow(FrameworkMainWindow):
     
-    def load_file_or_dir_func(self, file=None, dir=None):
-        assert file or dir, 'file or dir must be specified'
-        if file:
-            raise NotImplementedError('just dir is supported')
-        else:
-            self.load_dir(dir=dir)
-
-    def load_dir(self, dir):
-        # 加载所有的图片
-        pass
+    def __init__(self, parent=None):
+        super().__init__(parent)

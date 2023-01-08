@@ -4,6 +4,10 @@ from PySide2.QtGui import *
 from PySide2.QtWidgets import *
 from pathlib import Path
 
+import damei as dm
+
+logger = dm.get_logger('explorer_widget')
+
 class ExplorerWidget(QWidget):
     def __init__(self, parent=None, **kwargs):
         super().__init__(parent)
@@ -30,3 +34,6 @@ class ExplorerWidget(QWidget):
 
 
         self.layout.addWidget(self.tree)
+
+    def mouseDoubleClickEvent(self, ev):
+        logger.debug(f'mouseDoubleClickEvent, ev={ev}')

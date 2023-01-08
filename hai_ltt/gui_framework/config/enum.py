@@ -38,24 +38,13 @@ class Colors(object):
     DodgerBlue = "#1E90FF"  # 道奇蓝，30, 144, 255
     Azure = "#F0FFFF"  # 蔚蓝，240, 255, 255
 
+    # 设定控件颜色
+    # CoreFuncBarBackground = DimGray
+    CoreFuncBarBackground = LightGray
+
 class FontFamilys(object):
     MicrosoftYaHei = "Microsoft YaHei"
     AlBayan = "Al Bayan"
-
-class HGF(object):
-    # 一群
-    COLORS = Colors()
-    FONT_FAMILYS = FontFamilys()
     
-    # 一个
-    FONT_FAMILY = FONT_FAMILYS.AlBayan
-    FONT_SIZE = 12
-    FONT = Font(
-        family=FONT_FAMILY, 
-        size=FONT_SIZE,
-        bold=False,
-        )
-
-
 
     

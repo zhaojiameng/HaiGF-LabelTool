@@ -1,4 +1,6 @@
 from PySide2.QtWidgets import *
+from PySide2.QtGui import *
+from PySide2.QtCore import *
 
 import damei as dm
 
@@ -20,8 +22,20 @@ class HTabBar(QTabBar):  # HAI TabBar
 
         self.tabCloseRequested.connect(self.on_tabCloseRequested)
 
+    def paintEvent(self, ev):
+        super().paintEvent(ev)
+
+        # # 绘制红色背景
+        # p = QPainter(self)
+        # p.setPen(Qt.NoPen)
+        # p.setBrush(QColor(255, 0, 0, 100))
+       
+        # p.drawRect(self.rect())
+        # # p.drawRect(self.tabRect(self.c_idx))
+        # p.end()
+
     def mousePressEvent(self, ev):
-        logger.info(f'mousePressEvent: {ev}')
+        # logger.info(f'mousePressEvent: {ev}')
         super().mousePressEvent(ev)
         tab_idx = self.tabAt(ev.pos())
         if tab_idx == -1:
@@ -46,13 +60,13 @@ class HTabBar(QTabBar):  # HAI TabBar
 
     def mouseReleaseEvent(self, ev):
         super().mouseReleaseEvent(ev)
-        logger.info(f'mouseReleaseEvent: {ev}')
+        # logger.info(f'mouseReleaseEvent: {ev}')
         self.shadow_tabbar.hide()  # 隐藏影子
         self.p.p.moved_tab(ev, self.shadow_tabbar)
         self.reset_shadow_tabbar()
 
     def on_tabCloseRequested(self, index):
-        logger.info(f'on_tabCloseRequested: {index}')
+        # logger.info(f'on_tabCloseRequested: {index}')
         self.p.removeTab(index)
 
     def dragMoveEvent(self, ev):

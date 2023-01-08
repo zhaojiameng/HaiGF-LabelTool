@@ -17,6 +17,7 @@ logger = dm.get_logger('framework_main_window')
 class FrameworkMainWindow(QMainWindow):
     def __init__(self, parent=None):
         super().__init__(parent)
+        self.cfg = HGF.CONFIG
         
         self.actions = AllActions(parent=self)
         self.settings = QtCore.QSettings(__appname__, __appname__)
@@ -52,6 +53,7 @@ class FrameworkMainWindow(QMainWindow):
                 title='Explorer',
                 widget=widget,
                 )
+            self.main_side_bar.show()
         else:  # 没有指定文件或目录
             pass
         # logger.error('Please reimplement this method "load_file_or_dir_func" in subclass')
@@ -64,7 +66,8 @@ class FrameworkMainWindow(QMainWindow):
         # self.settings.setValue("splitter/state", self.central_widget.splitter.saveState())
 
     def mousePressEvent(self, ev):
-        logger.info(f'mousePressEvent: {ev}')
+        # logger.info(f'mousePressEvent: {ev}')
+        logger.debug(f'mousePressEvent: {ev}')
 
     def show_warning(self, msg):
         self.mw_ui.statusbar.showMessage(msg, 5000)

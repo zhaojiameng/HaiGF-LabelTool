@@ -1,4 +1,6 @@
 from PySide2.QtWidgets import *
+from PySide2.QtCore import *
+from PySide2.QtGui import *
 
 from .. import HTabWidget, HTabBar
 from ..central_widgets.start_page import HStartPage
@@ -19,6 +21,7 @@ class PanelWidget(QDockWidget):
 
         tab_bar_widget = DockTitleBar(parent=self)
         self.setTitleBarWidget(tab_bar_widget)
+        # self.setMovable(True)
 
         self._pages = []
 
@@ -37,12 +40,16 @@ class PanelWidget(QDockWidget):
         
         # dock添加一个widget
         page = QTextBrowser()
-        page.setText('Outputs: ')
+        page.setText('Some outputs here... ')
         page.setFrameShape(QFrame.NoFrame)
         page2 = QTextEdit()
         page2.setFrameShape(QFrame.NoFrame)
         page2.setText('>>Please input something: ')
-        self.add_tab('Output', page, tip='Output (Command+Shift+U)')
+        cursor = page2.textCursor()
+        cursor.movePosition(QTextCursor.End)
+        
+
+        self.add_tab('Outputs', page, tip='Output (Command+Shift+U)')
         self.add_tab('Terminal', page2, tip='Terminal (Command+`)')
 
         self.load()
@@ -105,6 +112,7 @@ class DockTabBar(QTabBar):
         # self.addTab('Output')
         # self.addTab('Terminal')
         self.setExpanding(False)
+        
         self.c_idx = 0
 
         # 设置tab无背景
@@ -117,6 +125,30 @@ class DockTabBar(QTabBar):
 
     def add_tab(self, title):
         self.addTab(title)
+
+    def paintEvent(self, ev):
+        # super().paintEvent(ev)
+        # print('paintEvent', ev)
+        p = QPainter(self)
+        p.setPen(QColor(HGF.COLORS.Black))
+        p.setBrush(QColor(HGF.COLORS.WhiteSmoke))
+        # 绘制无边框矩形
+        # p.drawRoundedRect(self.rect(), 0, 0)
+
+        # 绘制文字
+        for i in range(self.count()):
+            # p.drawText(self.tabRect(i), Qt.AlignCenter, self.tabText(self.c_idx))
+            tab_text = self.tabText(i)
+            tab_rect = self.tabRect(i)
+            if i == self.c_idx:
+                p.setPen(QColor(HGF.COLORS.Black))
+                p.drawText(tab_rect, Qt.AlignCenter, tab_text)
+                p.setPen(QColor(HGF.COLORS.RoyalBlue))
+                p.drawLine(tab_rect.bottomLeft(), tab_rect.bottomRight())
+            else:
+                p.setPen(QColor(HGF.COLORS.Gray))
+                p.drawText(tab_rect, Qt.AlignCenter, tab_text)
+        p.end()
         
         
 

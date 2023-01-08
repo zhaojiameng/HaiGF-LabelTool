@@ -85,14 +85,17 @@ class Ui_MainWindow(object):
         main_side_bar.setFeatures(QDockWidget.DockWidgetMovable)
         mw.main_side_bar = main_side_bar
         mw.addDockWidget(Qt.LeftDockWidgetArea, main_side_bar)
+        mw.main_side_bar.hide()
+        
         mw.setCorner(Qt.TopLeftCorner, Qt.LeftDockWidgetArea)
         mw.setCorner(Qt.BottomLeftCorner, Qt.LeftDockWidgetArea)
-        pass
+
 
     def setupAuxSideBar(self, mw):
         """
         辅助侧栏(右侧)
         """
+        
         pass
 
     def setupCentralWidget(self, mw):

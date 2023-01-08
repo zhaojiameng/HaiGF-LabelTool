@@ -28,7 +28,7 @@ class HStartPage(HPage):
         icon = utils.newIcon('start')
         title = 'Start'
         super().__init__(parent, icon=icon, title=title)
-        self.parent = parent
+        self.p = parent
         # self.mw = self.parent.mw
 
         # 设置UI界面
@@ -41,10 +41,10 @@ class HStartPage(HPage):
 
     @QtCore.Slot()
     def on_openDirButton_clicked(self):
-
+        mw = self.p.p.p
         # defaultOpenDirPath = root_path
-        defaultOpenDirPath = self.mw.settings.value('lastDirPath', root_path)
-
+        defaultOpenDirPath = mw.settings.value('lastDirPath', root_path)
+        
         selected_dir = str(
             QtWidgets.QFileDialog.getExistingDirectory(
                 self,
@@ -54,4 +54,4 @@ class HStartPage(HPage):
                 | QtWidgets.QFileDialog.DontResolveSymlinks,
             )
         )
-        self.mw.load_file_or_dir(dir=selected_dir)
+        mw.load_file_or_dir(dir=selected_dir)

@@ -1,7 +1,7 @@
 
 
 from PySide2.QtCore import QSize, Slot, QPoint
-from PySide2.QtGui import QIcon, Qt
+from PySide2.QtGui import QIcon, Qt, QPainter, QColor
 from PySide2.QtWidgets import (QWidget, QHBoxLayout, QTabWidget,
     QLabel, QTabBar, QPushButton, QVBoxLayout, QListWidget, 
     QListWidgetItem, QDockWidget)
@@ -96,7 +96,8 @@ class HTabWidget(QTabWidget):
         # if self.tab_bar is not None:
             # self.tab_bar.setParent(None)
         tab_bar = HTabBar(self)
-
+        tab_bar.show()
+        
         for i, page in enumerate(self._pages):
             # print(f'[{i+1}/{len(self._pages)}] page: {page.title}')
             # print('xx', page.parent)
@@ -109,8 +110,10 @@ class HTabWidget(QTabWidget):
             else:
                 raise ValueError("page.icon and page.title can't be None at the same time")
         
-        tab_bar.show()
+        # tab_bar设置stretch
+        # tab_bar.setStretchLastSection(True)
         self.setTabBar(tab_bar)
+        
 
     def mask_page(self, ev):
         """遮罩当前page"""
@@ -207,6 +210,8 @@ class HTabWidget(QTabWidget):
         pages = self._pages + [page]
         self.setPages(pages)
         # tabw.setPages([page])
+
+
 
         
 
