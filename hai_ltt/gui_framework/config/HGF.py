@@ -4,6 +4,7 @@ from pathlib import Path
 import yaml
 from .enum import Colors, FontFamilys
 from .preset import Font
+from hai_ltt.utils import general
 
 here = Path(__file__).parent
 
@@ -18,9 +19,11 @@ def load_config():
 class HGF(object):
 
     def __init__(self):
+        self.SCALE_FACTOR = self.auto_scale()
         self.COLORS = Colors()
         self.FONT_FAMILYS = FontFamilys()
         self.CONFIG = load_config()
+        
 
     @property
     def FONT_FAMILY(self):
@@ -30,7 +33,7 @@ class HGF(object):
     @property
     def FONT_SIZE(self):
         """默认字体大小"""
-        return self.CONFIG['font_size']
+        return self.CONFIG['font_size']*self.SCALE_FACTOR
 
     @property
     def FONT(self):
@@ -53,4 +56,13 @@ class HGF(object):
             return self.COLORS.LightBlack
         elif self.THEME == 'Light':
             return self.COLORS.LightGray
+
+    def auto_scale(self, ):
+        """根据屏幕分辨率自动缩放"""
+        resolution = general.get_screen_resolution()
+        w, h = resolution.split('x')
+        w, h = int(w), int(h)
+        rw = w / 1920
+        rh = h / 1080
+        return min(rw, rh)
 

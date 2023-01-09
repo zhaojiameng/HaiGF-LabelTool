@@ -7,6 +7,9 @@ import numpy as np
 from PySide2 import QtCore
 from PySide2 import QtGui
 from PySide2 import QtWidgets
+from PySide2 import QtSvg
+
+from ..widgets.common.hai_action import HAction
 
 
 here = osp.dirname(osp.abspath(__file__))
@@ -18,13 +21,14 @@ def newIcon(icon):
     icons = os.listdir(icons_dir)
     if f'{icon}.svg' in icons:
         icon_name = f'{icon}.svg'
-        print(icon_name)
     elif f'{icon}.png' in icons:
         icon_name = f'{icon}.png'
     else:
         icon_name = 'unknown.png'
     icon_path = osp.join(icons_dir, icon_name)
-    return QtGui.QIcon(icon_path)
+
+    icon = QtGui.QIcon(icon_path)
+    return icon
 
     return QtGui.QIcon(osp.join(":/", icons_dir, "%s.png" % icon))
 
@@ -50,12 +54,15 @@ def newAction(
     checked=False,
 ):
     """Create a new action and assign callbacks, shortcuts, etc."""
-    a = QtWidgets.QAction(text, parent)
+    # a = QtWidgets.QAction(text, parent)
+    a = HAction(text, parent)
     if icon is not None:
         icon_text = "" if text is None else text.replace(" ", "\n")
         # a.setIconText(text.replace(" ", "\n"))
         a.setIconText(icon_text)
-        a.setIcon(newIcon(icon))
+        # a.setIcon(newIcon(icon))
+        a.setIcon(icon)
+        a.icon_stem = icon
         
     if shortcut is not None:
         if isinstance(shortcut, (list, tuple)):

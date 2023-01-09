@@ -47,7 +47,6 @@ class PanelWidget(QDockWidget):
         page2.setText('>>Please input something: ')
         cursor = page2.textCursor()
         cursor.movePosition(QTextCursor.End)
-        
 
         self.add_tab('Outputs', page, tip='Output (Command+Shift+U)')
         self.add_tab('Terminal', page2, tip='Terminal (Command+`)')
@@ -114,6 +113,7 @@ class DockTabBar(QTabBar):
         self.setExpanding(False)
         
         self.c_idx = 0
+        self.setIconSize(QSize(16, 16))
 
         # 设置tab无背景
         # self.setStyleSheet('background-color: rgb(255, 255, 255); color: rgb(122, 112, 33);')

@@ -1,4 +1,5 @@
 
+from .common.hai_action import HAction
 from .common.hai_splitter import HSplitter
 from .common.hai_page import HPage
 from .central_widgets.hai_tab_bar import HTabBar
