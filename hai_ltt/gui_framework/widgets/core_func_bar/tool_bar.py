@@ -3,6 +3,7 @@ from PySide2 import QtCore
 from PySide2 import QtWidgets
 from PySide2.QtWidgets import *
 from PySide2.QtGui import *
+from PySide2.QtCore import *
 import damei as dm
 from functools import partial
 
@@ -37,27 +38,57 @@ class ToolBar(QtWidgets.QToolBar):
         self.setMovable(False)
         self.layout.setAlignment(QtCore.Qt.AlignCenter)
         self.setLayout(self.layout)
-        self.setIconSize(QtCore.QSize(np.ceil(64*HGF.SCALE_FACTOR), np.ceil(64*HGF.SCALE_FACTOR)))
+        self.setIconSize(QtCore.QSize(np.ceil(48*HGF.SCALE_FACTOR), np.ceil(48*HGF.SCALE_FACTOR)))
 
     def paintEvent(self, ev):
         # 绘制背景
         painter = QtWidgets.QStylePainter(self)
         painter.setPen(QtCore.Qt.NoPen)
         painter.setBrush(QColor(HGF.CORE_FUNC_BAR_BACKGOUND_COLOR))
-        painter.drawRect(self.rect())
+        painter.drawRect(self.rect())  # 绘制rect为LightGray
+        # 绘制选中Checked的
+        for i in range(self.layout.count()):  # 遍历所有的widget
+            w = self.layout.itemAt(i).widget()
+            w_geom = w.geometry()
+            if not isinstance(w, QtWidgets.QToolButton):
+                continue
+            a = w.defaultAction()  # action
+            if a.isChecked():
+                painter.setPen(QColor(HGF.COLORS.White))
+                # 在widget左侧画线条，粗细为10
+                x1, y1 = w_geom.left(), w_geom.top()
+                x2, y2 = w_geom.left(), w_geom.bottom()
+                thickness = 3
+                for j in range(thickness):
+                    painter.drawLine(x1+j, y1, x2+j, y2)
+
+
+                # painter.drawLine(x1, y1, x2+thickness, y2)
+                
+                # painter.drawLine(w_geom.left(), w_geom.top(), w_geom.left(), w_geom.bottom())
     
         # 设置背景颜色灰色
-        # self.setStyleSheet(F"background-color: {HGF.CORE_FUNC_BAR_BACKGOUND_COLOR};")
+        self.setStyleSheet(F"background-color: {HGF.CORE_FUNC_BAR_BACKGOUND_COLOR};")
+        # self.setStyleSheet(F"background-color: {HGF.COLORS.RoyalBlue};")
         painter.end()
 
         
     def addAction(self, action):
         if isinstance(action, QtWidgets.QWidgetAction):
             return super(ToolBar, self).addAction(action)
+        widget = QWidget()
+        layout = QHBoxLayout()
+        white_frame = QFrame()
+        # 设置颜色
+        white_frame.setStyleSheet(F"background-color: {HGF.COLORS.White};")
         btn = QtWidgets.QToolButton()
         btn.setDefaultAction(action)
-        self.addWidget(btn)
+        layout.addWidget(white_frame)
+        layout.addWidget(btn)
+
+        self.addWidget(widget)
         action.hovered.connect(partial(self.hover_event, action.text()))
+        action.triggered.connect(self.action_triggered)
         # Center align
         for i in range(self.layout.count()):
             is_tool_button = isinstance(self.layout.itemAt(i).widget(), QtWidgets.QToolButton)
@@ -73,28 +104,37 @@ class ToolBar(QtWidgets.QToolBar):
     def toggleViewAction(self):
         logger.info("toggleViewAction")
 
+    def mousePressEvent(self, ev):
+        super().mousePressEvent(ev)
+        pass
+
+    def action_triggered(self):
+        logger.info('action triggered')
+        for i in range(self.layout.count()):  # 遍历所有的widget
+            w = self.layout.itemAt(i).widget()
+            
+            if not isinstance(w, QtWidgets.QToolButton):  # 如果不是QToolButton则不做任何操作
+                continue
+            a = w.defaultAction()  # action
+            print(a.isChecked(), a.isEnabled(), a.isCheckable())
+        self.repaint()
+        
+
     def hover_event(self, current_text):
+        return
         print("hoverEnterEvent", current_text)
         # print all widgets's state
         c_text = current_text
-
-        for i in range(self.layout.count()):
+        for i in range(self.layout.count()):  # 遍历所有的widget
             w = self.layout.itemAt(i).widget()
-            if not isinstance(w, QtWidgets.QToolButton):
+            if not isinstance(w, QtWidgets.QToolButton):  # 如果不是QToolButton则不做任何操作
                 continue
             a = w.defaultAction()  # action
-            # print(w, w.isEnabled(), w.isVisible(), w.isChecked())
-            if w.text() == c_text:
-                # print(w.defaultAction().text())
-                a._hovered = True
-                a.set_icon()
+            if a.text() == c_text:
+                color = (255, 255, 255)
             else:
-                a._hovered = False
-                # a.repaint()
-                a.set_icon()
-                # w.setStyleSheet("background-color: rgb(10, 10, 10);")
-                
-                
-        # self.repaint()
+                color = (128, 128, 128)
+            a.setIcon(a._icon_stem, color=color)
+            
 
 

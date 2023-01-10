@@ -54,15 +54,14 @@ def newAction(
     checked=False,
 ):
     """Create a new action and assign callbacks, shortcuts, etc."""
-    # a = QtWidgets.QAction(text, parent)
-    a = HAction(text, parent)
+    a = QtWidgets.QAction(text, parent)
+    # a = HAction(text, parent)
     if icon is not None:
         icon_text = "" if text is None else text.replace(" ", "\n")
         # a.setIconText(text.replace(" ", "\n"))
         a.setIconText(icon_text)
-        # a.setIcon(newIcon(icon))
-        a.setIcon(icon)
-        a.icon_stem = icon
+        a.setIcon(newIcon(icon))
+        # a.setIcon(icon)
         
     if shortcut is not None:
         if isinstance(shortcut, (list, tuple)):

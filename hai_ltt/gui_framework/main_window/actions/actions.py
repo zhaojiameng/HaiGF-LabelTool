@@ -33,7 +33,7 @@ class AllActions(object):
             text=mw.tr("Explorer"), 
             slot=None,
             shortcut="Ctrl+E", 
-            icon="explorer",
+            icon="document-folder",
             tip=f'{mw.tr("Explorer")} (Ctrl+E)',
             checkable=True,
             enabled=True,
