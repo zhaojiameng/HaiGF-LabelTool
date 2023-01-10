@@ -23,7 +23,6 @@ class HGF(object):
         self.COLORS = Colors()
         self.FONT_FAMILYS = FontFamilys()
         self.CONFIG = load_config()
-        
 
     @property
     def FONT_FAMILY(self):
@@ -33,6 +32,7 @@ class HGF(object):
     @property
     def FONT_SIZE(self):
         """默认字体大小"""
+        return self.CONFIG['font_size']
         return self.CONFIG['font_size']*self.SCALE_FACTOR
 
     @property
@@ -65,4 +65,13 @@ class HGF(object):
         rw = w / 1920
         rh = h / 1080
         return min(rw, rh)
+
+    @property
+    def TAB_FONT(self):
+        """Tab字体"""
+        return Font(
+            family=self.FONT_FAMILY, 
+            size=int(self.FONT_SIZE*0.9),
+            bold=False,
+            )
 

@@ -28,6 +28,7 @@ def get_toolbar(title, parent=None, actions=None):
 class ToolBar(QtWidgets.QToolBar):
     def __init__(self, title, parent=None):
         super(ToolBar, self).__init__(title, parent=parent)
+        self.p = parent
         self.layout = self.layout()
 
         m = (0, 0, 0, 0)
@@ -38,7 +39,9 @@ class ToolBar(QtWidgets.QToolBar):
         self.setMovable(False)
         self.layout.setAlignment(QtCore.Qt.AlignCenter)
         self.setLayout(self.layout)
-        self.setIconSize(QtCore.QSize(np.ceil(48*HGF.SCALE_FACTOR), np.ceil(48*HGF.SCALE_FACTOR)))
+        self.setIconSize(QtCore.QSize(HGF.CONFIG['action_size'], HGF.CONFIG['action_size']))
+
+        self._tool_btns = []
 
     def paintEvent(self, ev):
         # 绘制背景
@@ -47,27 +50,16 @@ class ToolBar(QtWidgets.QToolBar):
         painter.setBrush(QColor(HGF.CORE_FUNC_BAR_BACKGOUND_COLOR))
         painter.drawRect(self.rect())  # 绘制rect为LightGray
         # 绘制选中Checked的
-        for i in range(self.layout.count()):  # 遍历所有的widget
-            w = self.layout.itemAt(i).widget()
-            w_geom = w.geometry()
-            if not isinstance(w, QtWidgets.QToolButton):
-                continue
-            a = w.defaultAction()  # action
-            if a.isChecked():
+        for i, tool_btn in enumerate(self._tool_btns):
+            btn_geom = tool_btn.geometry()
+            btn_action = tool_btn.defaultAction()
+            if btn_action.isChecked():
                 painter.setPen(QColor(HGF.COLORS.White))
-                # 在widget左侧画线条，粗细为10
-                x1, y1 = w_geom.left(), w_geom.top()
-                x2, y2 = w_geom.left(), w_geom.bottom()
-                print(x1, y1, x2, y2)
-                thickness = 3
-                for j in range(thickness):
+                x1, y1 = btn_geom.left(), btn_geom.top()
+                x2, y2 = btn_geom.left(), btn_geom.bottom()
+                for j in range(HGF.CONFIG['line_width']):
                     painter.drawLine(0+j, y1, 0+j, y2)
 
-
-                # painter.drawLine(x1, y1, x2+thickness, y2)
-                
-                # painter.drawLine(w_geom.left(), w_geom.top(), w_geom.left(), w_geom.bottom())
-    
         # 设置背景颜色灰色
         self.setStyleSheet(F"background-color: {HGF.CORE_FUNC_BAR_BACKGOUND_COLOR};")
         # self.setStyleSheet(F"background-color: {HGF.COLORS.RoyalBlue};")
@@ -79,9 +71,10 @@ class ToolBar(QtWidgets.QToolBar):
             return super(ToolBar, self).addAction(action)
         btn = QtWidgets.QToolButton()
         btn.setDefaultAction(action)
+        self._tool_btns.append(btn)
         self.addWidget(btn)
         action.hovered.connect(partial(self.hover_event, action.text()))
-        action.triggered.connect(self.action_triggered)
+        action.triggered.connect(partial(self.action_triggered, action))
         # Center align
         for i in range(self.layout.count()):
             is_tool_button = isinstance(self.layout.itemAt(i).widget(), QtWidgets.QToolButton)
@@ -101,17 +94,29 @@ class ToolBar(QtWidgets.QToolBar):
         super().mousePressEvent(ev)
         pass
 
-    def action_triggered(self):
-        logger.info('action triggered')
-        for i in range(self.layout.count()):  # 遍历所有的widget
-            w = self.layout.itemAt(i).widget()
-            
-            if not isinstance(w, QtWidgets.QToolButton):  # 如果不是QToolButton则不做任何操作
-                continue
-            a = w.defaultAction()  # action
-            print(a.isChecked(), a.isEnabled(), a.isCheckable())
+    def action_triggered(self, action):
+        # logger.info('action triggered')
+        prev_checked = action.isChecked()
+        togged = not prev_checked
+        for i, tool_btn in enumerate(self._tool_btns):
+            btn_action = tool_btn.defaultAction()
+            if btn_action == action:
+                # action.setChecked(True)
+                if togged:
+                    btn_action.setChecked(False)
+                else:
+                    btn_action.setChecked(True)
+            else:
+                btn_action.setChecked(False)
         self.repaint()
-        
+
+        # 至少有一个被选中
+        if any([btn.defaultAction().isChecked() for btn in self._tool_btns]):
+            self.p.main_side_bar.load_widget_by_action(action)
+            self.p.main_side_bar.show()
+        else:
+            self.p.main_side_bar.hide()
+
 
     def hover_event(self, current_text):
         return

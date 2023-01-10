@@ -33,6 +33,9 @@ class PanelWidget(QDockWidget):
     @property
     def c_idx(self):
         return self.tabBar().c_idx
+    
+    def tabBar(self):
+        return self.titleBarWidget().children()[0]
 
     def setup_ui(self):
         # 不可移动
@@ -40,11 +43,13 @@ class PanelWidget(QDockWidget):
         
         # dock添加一个widget
         page = QTextBrowser()
+        page.setFont(HGF.FONT)
         page.setText('Some outputs here... ')
         page.setFrameShape(QFrame.NoFrame)
         page2 = QTextEdit()
         page2.setFrameShape(QFrame.NoFrame)
-        page2.setText('>>Please input something: ')
+        page2.setFont(HGF.FONT)
+        page2.setText(self.tr('>>Please input something: '))
         cursor = page2.textCursor()
         cursor.movePosition(QTextCursor.End)
 
@@ -57,6 +62,7 @@ class PanelWidget(QDockWidget):
         self._pages.append(page)
         # tab = QWidget()
         self.tabBar().add_tab(title)
+        # self.tabBar().setFontSize(18)   
         if tip:
             self.tabBar().setTabToolTip(self.tabBar().count() - 1, tip)
 
@@ -64,18 +70,9 @@ class PanelWidget(QDockWidget):
         self._pages = []
         self.tabBar().clear()
 
-    def tabBar(self):
-        return self.titleBarWidget().children()[0]
-
     def load(self):
         """根据c_idx加载page, 其他page隐藏"""
         self.setWidget(self._pages[self.c_idx])
-        # for i, page in enumerate(self._pages):
-            # if i == self.c_idx:
-                # page.show()
-                # 
-            # else:
-                # page.hide()
 
 
 class DockTitleBar(QWidget):
@@ -95,9 +92,7 @@ class DockTitleBar(QWidget):
         layout.addWidget(tab_bar)
         # layout.addStretch()
         layout.addWidget(spacer)
-        
         self.setLayout(layout)
-
         # 标题栏的背景颜色
         self.setStyleSheet(
             f'background-color: {HGF.COLORS.WhiteSmoke};')
@@ -113,10 +108,10 @@ class DockTabBar(QTabBar):
         self.setExpanding(False)
         
         self.c_idx = 0
-        self.setIconSize(QSize(16, 16))
-
+        # self.setIconSize(QSize(16, 16))
         # 设置tab无背景
         # self.setStyleSheet('background-color: rgb(255, 255, 255); color: rgb(122, 112, 33);')
+        # self.sizePolicy().setHorizontalPolicy(QSizePolicy.Maximum)
 
     def mousePressEvent(self, ev):
         super().mousePressEvent(ev)
@@ -129,9 +124,11 @@ class DockTabBar(QTabBar):
     def paintEvent(self, ev):
         # super().paintEvent(ev)
         # print('paintEvent', ev)
+        # return super().paintEvent(ev)
         p = QPainter(self)
         p.setPen(QColor(HGF.COLORS.Black))
         p.setBrush(QColor(HGF.COLORS.WhiteSmoke))
+        p.setFont(HGF.TAB_FONT)
         # 绘制无边框矩形
         # p.drawRoundedRect(self.rect(), 0, 0)
 
@@ -144,11 +141,16 @@ class DockTabBar(QTabBar):
                 p.setPen(QColor(HGF.COLORS.Black))
                 p.drawText(tab_rect, Qt.AlignCenter, tab_text)
                 p.setPen(QColor(HGF.COLORS.RoyalBlue))
-                p.drawLine(tab_rect.bottomLeft(), tab_rect.bottomRight())
+                x1, y1, x2, y2 = tab_rect.getCoords()
+                for j in range(HGF.CONFIG['line_width']):
+                    p.drawLine(x1, y2 - j, x2, y2 - j)
+                # p.drawLine(tab_rect.bottomLeft(), tab_rect.bottomRight())
             else:
                 p.setPen(QColor(HGF.COLORS.Gray))
                 p.drawText(tab_rect, Qt.AlignCenter, tab_text)
         p.end()
+        # 适应窗口大小
+        self.adjustSize()
         
         
 

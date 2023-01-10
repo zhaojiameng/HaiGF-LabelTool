@@ -4,11 +4,15 @@ from PySide2 import QtWidgets
 from PySide2.QtWidgets import *
 from PySide2.QtGui import *
 from pathlib import Path
+import damei as dm
 
-from ..common.title_bar import TitleBarWithAction
-from hai_ltt.apis import HGF
+from hai_ltt.apis import HGF, root_path, __appname__
+from ..common.title_bar_with_action import TitleBarWithAction
 from ..common.blue_button import BlueButton
-from hai_ltt.apis import root_path, __appname__
+from ..common.hai_msb_widget import HMainSideBarWidget
+from .explorer_widget import ExplorerWidget
+
+logger = dm.get_logger('main_side_bar')
 
 def get_main_side_bar(parent=None, **kwargs):
     return MainSideBar(parent=parent, **kwargs)
@@ -21,28 +25,36 @@ class MainSideBar(QtWidgets.QDockWidget):
         self.setWindowTitle(title)
         self.setObjectName('MainSideBar')
 
+        self._aw_dict = {}  # action: widget
+        self.c_widget = None  # current widget
+
         # 1.标题栏，带有按钮
         self.title_bar = TitleBarWithAction()  # QFrame()
         self.setTitleBarWidget(self.title_bar)
         # 2.默认界面
-        default_widget = self.get_example_widget()
-        self.setWidget(default_widget)
-
-
+        self.default_widget = self.get_example_widget()
+        self.setWidget(self.default_widget)
         self.setupProperty()
 
-    def load(self, title_bar=None, title=None, widget=None):
+    def add_widget(self, widget, action):
+        """添加一个widget, 对应一个action"""
+        # self._widgets.append(widget)
+        assert action not in self._aw_dict.keys(), f'action {action} already exists'
+        self._aw_dict[action] = widget
+        self.load_widget_by_action(action)
+
+    def load(self, widget, title=None, title_actions=None):
         """重新加载"""
-        if title_bar:
-            self.title_bar = title_bar
-            self.setTitleBarWidget(title_bar)
-        if title:
-            self.title_bar.set_title(title)
+        self.c_widget = widget
         if widget:
             self.setWidget(widget)
-        # else:
-            # widget = ExampleWidget2(parent=self)
-        self.setWidget(widget)
+        title = title if title not in [None, 'Title'] else widget.title
+        title_actions = title_actions if title_actions else widget.title_actions
+        
+        self.title_bar.set_title(title)
+        self.title_bar.set_title_actions(title_actions)
+        self.title_bar.load()
+        self.c_widget.load()
 
     def get_example_widget(self):
         """一个示例页面"""
@@ -50,81 +62,58 @@ class MainSideBar(QtWidgets.QDockWidget):
 
     def setupProperty(self):
         self.setMinimumSize(QtCore.QSize(50, 0))
+        self.setFeatures(QDockWidget.DockWidgetMovable)
+        # 设置边框
+        self.setStyleSheet('border: 1px solid #d9d9d9;')
 
-
-class ExampleWidget(QWidget):
-    def __init__(self, parent=None):
-        super().__init__(parent=parent)
-        self.parent = parent
-        self.mw = self.parent.mw
-        # print(self.parent)
-
-        # 1.标签
-        label1 = QLabel(self.tr('Folder not opend.'))
-        label1.setFont(HGF.FONT)
-        label1.setWordWrap(True)
-        label1.setStyleSheet(f"color: {HGF.COLORS.LightBlack};")
-        # 2.按钮
-        self.button1 = BlueButton(self.tr('Open Folder'), pparent=self)
-        self.button1.setObjectName(u'openDirButton2')
-        self.button1.clicked.connect(self.on_openDirButton2_clicked)
-        self.button1.setMinimumSize(QtCore.QSize(0, 30))
-        # button1.setStyleSheet(f"color: {HGF.COLORS.DimGray};")
-        # 3.提示
-        label2 = QLabel(self.tr('Please open a folder to start.'))
-        label2.setFont(HGF.FONT)
-        label2.setWordWrap(True)
-        label2.setStyleSheet(f"color: {HGF.COLORS.LightBlack};")
-        # x.spacer
-        spacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
-
-        layout = QVBoxLayout()
-        layout.addSpacing(10)
-        layout.addWidget(label1)
-        layout.addWidget(self.button1)
-        layout.addWidget(label2)
-        layout.addSpacerItem(spacer)
-        self.setLayout(layout)
+    def load_widget_by_action(self, action, *args, **kwargs):
+        """根据action加载widget"""
+        # print(f'load_widget_by_action: {action}')
+        widget = self._aw_dict.get(action, self.default_widget)
+        title = widget.windowTitle()
+        title = 'Title' if title == '' else title
+        if hasattr(widget, 'title_actions'):
+            title_actions = widget.title_actions
+        else:
+            title_actions = None
+        # print(f'load_widget_by_action: {title} {title_actions}')
+        self.load(widget=widget, title=title, title_actions=title_actions, *args, **kwargs)
     
-    @QtCore.Slot()
-    def on_openDirButton2_clicked(self):
-        # print('openDirButton2 clicked')
-        defaultOpenDirPath = self.mw.settings.value('lastDirPath', root_path)
+    def load_widget_by_name(self, name, *args, **kwargs):
+        """根据widget的name加载widget"""
+        dir = kwargs.pop('dir', None)
+        # print(f'load_widget_by_name: {name} {dir}')
+        flag = False
+        for action, widget in self._aw_dict.items():
+            if widget.objectName() == name:
+                if dir:
+                    widget.set_dir(dir)
+                self.load_widget_by_action(action, *args, **kwargs)
+                flag = True
+                break
+        if not flag:
+            logger.warning(f'`load_widget_by_name` widget {name} not found')
 
-        selected_dir = str(
-            QtWidgets.QFileDialog.getExistingDirectory(
-                self,
-                self.tr("%s - Open Directory") % __appname__,
-                defaultOpenDirPath,
-                QtWidgets.QFileDialog.ShowDirsOnly
-                | QtWidgets.QFileDialog.DontResolveSymlinks,
-            )
-        )
-        self.mw.load_file_or_dir(dir=selected_dir)
 
-class ExampleWidget2(QWidget):
+class ExampleWidget(HMainSideBarWidget):
     def __init__(self, parent=None, **kwargs):
         super().__init__(parent)
         self.setupUi()
 
     def setupUi(self):
+        label = QLabel(self.tr(
+            'Empty widget, use "msb.add_widget(w, a)" to bind widget with an action.'))
+        label.setFont(HGF.FONT)
+        label.setWordWrap(True)
+
+        spacer = QWidget()
+        spacer.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+
         self.layout = QVBoxLayout()
-        self.layout.setSpacing(0)
-        self.layout.setContentsMargins(0, 0, 0, 0)
+        self.layout.addWidget(label)
+        self.layout.addWidget(spacer)
         self.setLayout(self.layout)
 
-        # 文件系统
-        self.model = QFileSystemModel()
-        self.model.setRootPath(f"/")
-
-        # 树
-        self.tree = QTreeView()
-        self.tree.setWindowTitle('title')
-        self.tree.setModel(self.model)
-        self.tree.setRootIndex(self.model.index(f"{Path.home()}"))
-        # self.tree.setHeaderHidden(True)
-        self.tree.setColumnWidth(0, 250)
-
-        self.layout.addWidget(self.tree)
+        
 
 

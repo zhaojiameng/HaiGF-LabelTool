@@ -51,6 +51,7 @@ class AllActions(object):
             shortcut="Ctrl+I",
             icon="ai",
             tip=f'{mw.tr("AI Tools")} (Ctrl+I)',
+            checkable=True,
             )
         
         user_action = Action(

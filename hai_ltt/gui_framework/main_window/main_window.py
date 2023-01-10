@@ -48,11 +48,11 @@ class FrameworkMainWindow(QMainWindow):
         if file:
             pass
         elif dir:
-            widget = ExplorerWidget(parent=self, dir=dir)
-            self.main_side_bar.load(
-                title='Explorer',
-                widget=widget,
-                )
+            # widget = ExplorerWidget(parent=self, dir=dir)
+            self.main_side_bar.load_widget_by_name(
+                'ExplorerWidget',
+                dir=dir,
+            )
             self.main_side_bar.show()
         else:  # 没有指定文件或目录
             pass

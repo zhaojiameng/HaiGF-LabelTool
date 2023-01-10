@@ -22,7 +22,7 @@ from PySide2.QtWidgets import (QApplication, QMainWindow, QMenuBar, QPushButton,
 from ..widgets import get_toolbar, get_central_widget, get_main_side_bar, get_panel_widget
 from .. import utils
 from ...version import __appname__
-
+from ..widgets import ExplorerWidget, AIWidget
 
 class Ui_MainWindow(object):
 
@@ -33,7 +33,9 @@ class Ui_MainWindow(object):
         size = mw.settings.value('window/size', QSize(1280, 720))
         position = mw.settings.value('window/position', QPoint(0, 0))
         state = mw.settings.value('window/state', QByteArray())
-        
+        # 设置spacing为0
+        mw.layout().setSpacing(0)
+        mw.layout().setContentsMargins(0, 0, 0, 0)
         mw.resize(size)
         mw.move(position)
         mw.restoreState(state)
@@ -80,15 +82,18 @@ class Ui_MainWindow(object):
         
     def setupMainSideBar(self, mw):
         """设置主侧栏，在左侧"""
-        main_side_bar = get_main_side_bar(mw)
-        # mw.addWidget(main_side_bar)
-        main_side_bar.setFeatures(QDockWidget.DockWidgetMovable)
-        mw.main_side_bar = main_side_bar
-        mw.addDockWidget(Qt.LeftDockWidgetArea, main_side_bar)
-        mw.main_side_bar.hide()
+        msb = get_main_side_bar(mw)
+    
+        explorer_widget = ExplorerWidget(mw)
+        msb.add_widget(explorer_widget, mw.actions.explorer_action)  # 绑定主侧栏的资源浏览器按钮和控件
+        ai_widget = AIWidget(mw)
+        msb.add_widget(ai_widget, mw.actions.ai_action)  # 绑定主侧栏的ai按钮和控件
         
-        mw.setCorner(Qt.TopLeftCorner, Qt.LeftDockWidgetArea)
-        mw.setCorner(Qt.BottomLeftCorner, Qt.LeftDockWidgetArea)
+        msb.hide()  # 隐藏主侧栏
+        mw.main_side_bar = msb  # 设置主侧栏
+        mw.addDockWidget(Qt.LeftDockWidgetArea, msb)  # 添加主侧栏到左侧
+        mw.setCorner(Qt.TopLeftCorner, Qt.LeftDockWidgetArea)  # 设置主窗口左上角属于哪个DockWidgetArea
+        mw.setCorner(Qt.BottomLeftCorner, Qt.LeftDockWidgetArea)  # 设置主窗口左下角属于哪个DockWidgetArea
 
 
     def setupAuxSideBar(self, mw):

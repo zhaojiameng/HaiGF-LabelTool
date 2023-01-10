@@ -3,6 +3,7 @@ from PySide2.QtGui import *
 from PySide2.QtCore import *
 
 import damei as dm
+from hai_ltt.apis import HGF
 
 logger = dm.get_logger('tab_bar')
 
@@ -19,6 +20,7 @@ class HTabBar(QTabBar):  # HAI TabBar
         self.shadow_tabbar.raise_()
         self.c_idx = 0  # 当前tab的index
         # 设置self左对齐
+        self.setFont(HGF.TAB_FONT)
 
         self.tabCloseRequested.connect(self.on_tabCloseRequested)
 
