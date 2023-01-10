@@ -24,6 +24,7 @@ class FrameworkMainWindow(QMainWindow):
         
         self.mw_ui = Ui_MainWindow()
         self.mw_ui.setupUi(self)
+        self.setWindowTitle(self.tr('HAI GUI Framework'))
         # self.mw_ui.retranslateUi(self)
         # self.setStyleSheet("QMainWindow{background-color: rgb(255, 255, 255);}")
         # self.setStyleSheet("QMainWindow{background-color: rgb(0, 255, 255);}")

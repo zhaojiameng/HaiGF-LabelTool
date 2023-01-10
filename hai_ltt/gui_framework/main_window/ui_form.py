@@ -39,7 +39,7 @@ class Ui_MainWindow(object):
         mw.resize(size)
         mw.move(position)
         mw.restoreState(state)
-        mw.setWindowTitle('HAI GUI Framework')
+        
 
     def setupUi(self, mw):
         self.setupProperties(mw=mw)  # 设置主窗口属性

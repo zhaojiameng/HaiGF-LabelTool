@@ -44,7 +44,7 @@ class PanelWidget(QDockWidget):
         # dock添加一个widget
         page = QTextBrowser()
         page.setFont(HGF.FONT)
-        page.setText('Some outputs here... ')
+        page.setText(self.tr('Some outputs here... '))
         page.setFrameShape(QFrame.NoFrame)
         page2 = QTextEdit()
         page2.setFrameShape(QFrame.NoFrame)
@@ -53,8 +53,8 @@ class PanelWidget(QDockWidget):
         cursor = page2.textCursor()
         cursor.movePosition(QTextCursor.End)
 
-        self.add_tab('Outputs', page, tip='Output (Command+Shift+U)')
-        self.add_tab('Terminal', page2, tip='Terminal (Command+`)')
+        self.add_tab(self.tr('Outputs'), page, tip=self.tr('Outputs %s') % '(Ctrl+Shift+U)')
+        self.add_tab(self.tr('Terminal'), page2, tip=self.tr('Terminal %s') % '(Ctrl+`)')
 
         self.load()
 

@@ -74,4 +74,29 @@ class HGF(object):
             size=int(self.FONT_SIZE*0.9),
             bold=False,
             )
+    
+    @property
+    def FIRST_LEVEL_FONT(self):
+        """一级字体"""
+        return Font(
+            family=self.FONT_FAMILY, 
+            size=int(self.FONT_SIZE*1.2),
+            bold=True,
+            )
 
+    @property
+    def FIRST_LEVEL_TITLE_CSS(self):
+        """一级字体CSS"""
+        back = f'font-family: {self.FONT_FAMILY}; font-size: {int(self.FONT_SIZE*1.8)}px; \
+                font-weight: bold; color: {self.COLORS.LightBlack}; \
+                    background-color: #EE3B3B; border-radius: 4px; border: 2px solid {self.COLORS.LightBlack};'
+        # return back
+        return f'font-family: {self.FONT_FAMILY}; font-size: {int(self.FONT_SIZE*2)}px; \
+                font-weight: bold; color: {self.COLORS.LightBlack}; '
+
+    @property
+    def SECOND_LEVEL_TITLE_CSS(self):
+        """二级字体CSS"""
+        return f'font-family: {self.FONT_FAMILY}; font-size: {int(self.FONT_SIZE*1.4)}px; \
+                font-weight: bold; color: {self.COLORS.DimGray}; '
+        
