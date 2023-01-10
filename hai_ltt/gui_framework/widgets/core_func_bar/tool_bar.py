@@ -58,9 +58,10 @@ class ToolBar(QtWidgets.QToolBar):
                 # 在widget左侧画线条，粗细为10
                 x1, y1 = w_geom.left(), w_geom.top()
                 x2, y2 = w_geom.left(), w_geom.bottom()
+                print(x1, y1, x2, y2)
                 thickness = 3
                 for j in range(thickness):
-                    painter.drawLine(x1+j, y1, x2+j, y2)
+                    painter.drawLine(0+j, y1, 0+j, y2)
 
 
                 # painter.drawLine(x1, y1, x2+thickness, y2)
@@ -76,17 +77,9 @@ class ToolBar(QtWidgets.QToolBar):
     def addAction(self, action):
         if isinstance(action, QtWidgets.QWidgetAction):
             return super(ToolBar, self).addAction(action)
-        widget = QWidget()
-        layout = QHBoxLayout()
-        white_frame = QFrame()
-        # 设置颜色
-        white_frame.setStyleSheet(F"background-color: {HGF.COLORS.White};")
         btn = QtWidgets.QToolButton()
         btn.setDefaultAction(action)
-        layout.addWidget(white_frame)
-        layout.addWidget(btn)
-
-        self.addWidget(widget)
+        self.addWidget(btn)
         action.hovered.connect(partial(self.hover_event, action.text()))
         action.triggered.connect(self.action_triggered)
         # Center align
