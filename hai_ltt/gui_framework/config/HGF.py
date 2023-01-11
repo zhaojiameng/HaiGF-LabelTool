@@ -19,6 +19,7 @@ def load_config():
 class HGF(object):
 
     def __init__(self):
+        self.wsf = 1.8  # windows system font scale factor
         self.SCALE_FACTOR = self.auto_scale()
         self.COLORS = Colors()
         self.FONT_FAMILYS = FontFamilys()
@@ -90,20 +91,26 @@ class HGF(object):
     @property
     def FIRST_LEVEL_TITLE_CSS(self):
         """一级字体CSS"""
-        back = f'font-family: {self.FONT_FAMILY}; font-size: {int(self.FONT_SIZE*1.8)}px; \
+        back = f'font-family: {self.FONT_FAMILY}; font-size: {int(self.FONT_SIZE*1.8*self.wsf)}px; \
                 font-weight: bold; color: {self.COLORS.LightBlack}; \
                     background-color: #EE3B3B; border-radius: 4px; border: 2px solid {self.COLORS.LightBlack};'
         # return back
-        return f'font-family: {self.FONT_FAMILY}; font-size: {int(self.FONT_SIZE*1.8)}px; \
+        return f'font-family: {self.FONT_FAMILY}; font-size: {int(self.FONT_SIZE*1.8*self.wsf)}px; \
                 font-weight: bold; color: {self.COLORS.LightBlack}; '
 
     @property
     def SECOND_LEVEL_TITLE_CSS(self):
         """二级字体CSS"""
-        return f'font-family: {self.FONT_FAMILY}; font-size: {int(self.FONT_SIZE*1.4)}px; \
+        return f'font-family: {self.FONT_FAMILY}; font-size: {int(self.FONT_SIZE*1.4*self.wsf)}px; \
                 font-weight: bold; color: {self.COLORS.DimGray}; '
 
     @property
     def MAIN_TEXT_CSS(self):
-        return f'font-family: {self.FONT_FAMILY}; font-size: {int(self.FONT_SIZE)}px; font-weight: False; color: {self.COLORS.Black}; '
+        return f'font-family: {self.FONT_FAMILY}; font-size: {int(self.FONT_SIZE*self.wsf)}px; \
+            font-weight: False; color: {self.COLORS.Black}; '
+
+    @property
+    def MAIN_SIDE_BAR_CSS(self):
+        return f'font-family: {self.FONT_FAMILY}; font-size: {int(self.FONT_SIZE*self.wsf)}px; \
+                font-weight: False; color: {self.COLORS.Black}; '
         

@@ -28,6 +28,7 @@ class ExplorerWidget(HMainSideBarWidget):
         # self.setWindowTitle(self.tr('Explorer'))
         self._title = self.tr('Explorer')
         self._title_actions = self._init_actions()
+        self.setStyleSheet(HGF.MAIN_SIDE_BAR_CSS)
         self.load()
 
     def set_dir(self, dir):

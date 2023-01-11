@@ -43,13 +43,16 @@ class PanelWidget(QDockWidget):
         
         # dock添加一个widget
         page = QTextBrowser()
-        page.setFont(HGF.FONT)
+        # page.setFont(HGF.FONT)
         page.setText(self.tr('Some outputs here... '))
         page.setFrameShape(QFrame.NoFrame)
+        page.setStyleSheet(HGF.MAIN_TEXT_CSS)
+
         page2 = QTextEdit()
         page2.setFrameShape(QFrame.NoFrame)
-        page2.setFont(HGF.FONT)
+        # page2.setFont(HGF.FONT)
         page2.setText(self.tr('>>Please input something: '))
+        page2.setStyleSheet(HGF.MAIN_TEXT_CSS)
         cursor = page2.textCursor()
         cursor.movePosition(QTextCursor.End)
 

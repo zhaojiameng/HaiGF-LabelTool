@@ -31,7 +31,7 @@ class FrameworkMainWindow(QMainWindow):
         # 设置前景色和背景色
         self.setStyleSheet(
             "QMainWindow{"+f"background-color: {HGF.COLORS.WhiteSmoke}; \
-                color: rgb(255, 255, 255);\
+                color: rgb(255, 255, 255); font-family: {HGF.FONT_FAMILY};\
                 "+"}")
 
     def load_file_or_dir(self, file=None, dir=None):
