@@ -1,10 +1,11 @@
 from PySide2.QtWidgets import QWidget, QApplication, QLabel, QHBoxLayout
-from PySide2.QtGui import QPainter, QPixmap
+from PySide2.QtGui import QPainter, QPixmap, QFontDatabase
 from PySide2.QtCore import Qt
 import sys
 import numpy as np
 from hai_ltt.utils import general
 
+     
 
 class MyWidget(QWidget):
 
@@ -13,9 +14,14 @@ class MyWidget(QWidget):
 
         # self.setWindowFlags(Qt.FramelessWindowHint)
         # self.setAttribute(Qt.WA_TranslucentBackground)
+        
+        # id2 = QFontDatabase.addApplicationFont(f'{dir_path}/HarmonyOS_Sans_SC_Bold.ttf')
+        # font_str = QFontDatabase.applicationFontFamilies(id)[0]
+        # font_str2 = QFontDatabase.applicationFontFamilies(id2)[0]
+        # print(id, font_str, id2, font_str2)
         label = QLabel(self)
         label.setText("Hello World")
-        label.setStyleSheet("background-color: red;")
+        label.setStyleSheet("background-color: white; font-size: 40px; font-family: 'HarmonyOS Sans SC';  font-weight: bold")
         label.move(300, 100)
 
         layout = QHBoxLayout()
@@ -50,5 +56,9 @@ class MyWidget(QWidget):
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     w = MyWidget()
+    dir_path = f'./hai_ltt/gui_framework/translate/fonts/'
+    id = QFontDatabase.addApplicationFont(f'{dir_path}/HarmonyOS_Sans_SC_Medium.ttf')
+   
+
     w.show()
     sys.exit(app.exec_())

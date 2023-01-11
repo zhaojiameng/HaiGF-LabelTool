@@ -57,9 +57,11 @@ class HStartPage(HPage):
 
         self.label_2 = QLabel(self)
         self.label_2.setObjectName(u"label_4")
-        self.label_2.setFont(HGF.FONT)
+        # self.label_2.setFont(HGF.FONT)
         self.label_2.setText(self.tr('HAI GUI is a framework for convenient development of desktop applications based on AI algorithms'))
         self.label_2.setWordWrap(True)
+        print(HGF.MAIN_TEXT_CSS)
+        self.label_2.setStyleSheet(HGF.MAIN_TEXT_CSS)
 
         self.label_3 = QLabel(self)  # start up
         self.label_3.setObjectName(u"label_3")

@@ -45,6 +45,7 @@ class Colors(object):
 class FontFamilys(object):
     MicrosoftYaHei = "Microsoft YaHei"
     AlBayan = "Al Bayan"
+    HarmonyOS = "HarmonyOS Sans SC"
     
 
     

@@ -10,6 +10,7 @@ def img2pixmap(img, size=None):
 
 
 def get_screen_resolution():
+    return None
     output = subprocess.run(["xrandr"], stdout=subprocess.PIPE).stdout.decode("utf-8")
     for line in output.split("\n"):
         if "*" in line:

@@ -1,0 +1,8 @@
+pyside2
+numpy
+opencv-python
+easydict
+pyyaml
+pillow
+pyqtgraph
+

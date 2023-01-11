@@ -11,7 +11,7 @@ here = Path(__file__).parent
 def load_config():
     config_file = f'{here}/default_config.yaml'
     assert os.path.exists(config_file), f'config file {config_file} not exists'
-    with open(config_file, 'r') as f:
+    with open(config_file, 'r', encoding='utf-8') as f:
         config = yaml.load(f, Loader=yaml.FullLoader)
     return config
 
@@ -27,7 +27,8 @@ class HGF(object):
     @property
     def FONT_FAMILY(self):
         """默认字体类型"""
-        return self.FONT_FAMILYS.AlBayan
+        # return self.FONT_FAMILYS.AlBayan
+        return self.FONT_FAMILYS.HarmonyOS
     
     @property
     def FONT_SIZE(self):
@@ -60,6 +61,8 @@ class HGF(object):
     def auto_scale(self, ):
         """根据屏幕分辨率自动缩放"""
         resolution = general.get_screen_resolution()
+        if resolution is None:
+            return 1
         w, h = resolution.split('x')
         w, h = int(w), int(h)
         rw = w / 1920
@@ -91,7 +94,7 @@ class HGF(object):
                 font-weight: bold; color: {self.COLORS.LightBlack}; \
                     background-color: #EE3B3B; border-radius: 4px; border: 2px solid {self.COLORS.LightBlack};'
         # return back
-        return f'font-family: {self.FONT_FAMILY}; font-size: {int(self.FONT_SIZE*2)}px; \
+        return f'font-family: {self.FONT_FAMILY}; font-size: {int(self.FONT_SIZE*1.8)}px; \
                 font-weight: bold; color: {self.COLORS.LightBlack}; '
 
     @property
@@ -99,4 +102,8 @@ class HGF(object):
         """二级字体CSS"""
         return f'font-family: {self.FONT_FAMILY}; font-size: {int(self.FONT_SIZE*1.4)}px; \
                 font-weight: bold; color: {self.COLORS.DimGray}; '
+
+    @property
+    def MAIN_TEXT_CSS(self):
+        return f'font-family: {self.FONT_FAMILY}; font-size: {int(self.FONT_SIZE)}px; font-weight: False; color: {self.COLORS.Black}; '
         
