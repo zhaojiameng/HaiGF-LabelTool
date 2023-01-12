@@ -39,7 +39,7 @@ pyside2-lupdate <path to your .py files> -ts <.ts save path>
 
 在启动主程序前，加载翻译文件，即可自动翻译GUI界面。
 
-例如：在`__main__.py`中
+例如：在`__main__.py`中:
 ```python
 translator = QTranslator()
 translator.load("<path to .qm file>")  # 加载.qm文件，若文件不存在，则不翻译
