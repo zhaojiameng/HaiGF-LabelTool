@@ -2,6 +2,6 @@
 # theme: Light  # or Dark
 theme: Dark
 font_size: 12
-action_size: 48  # size of action in core_func_bar
+action_size: 64  # size of action in core_func_bar
 line_width: 4  # 标识选中的tab的线条宽度
 

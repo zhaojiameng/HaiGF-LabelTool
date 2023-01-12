@@ -88,7 +88,7 @@ class Ui_MainWindow(object):
         msb.add_widget(explorer_widget, mw.actions.explorer_action)  # 绑定主侧栏的资源浏览器按钮和控件
         ai_widget = AIWidget(mw)
         msb.add_widget(ai_widget, mw.actions.ai_action)  # 绑定主侧栏的ai按钮和控件
-        
+
         msb.hide()  # 隐藏主侧栏
         mw.main_side_bar = msb  # 设置主侧栏
         mw.addDockWidget(Qt.LeftDockWidgetArea, msb)  # 添加主侧栏到左侧

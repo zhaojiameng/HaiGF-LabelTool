@@ -5,6 +5,7 @@ import yaml
 from .enum import Colors, FontFamilys
 from .preset import Font
 from hai_ltt.utils import general
+import damei as dm
 
 here = Path(__file__).parent
 
@@ -19,11 +20,24 @@ def load_config():
 class HGF(object):
 
     def __init__(self):
-        self.wsf = 1.8  # windows system font scale factor
+        self.tsf = self.get_text_scale_factor()  # windows system font scale factor
         self.SCALE_FACTOR = self.auto_scale()
         self.COLORS = Colors()
         self.FONT_FAMILYS = FontFamilys()
         self.CONFIG = load_config()
+
+    def get_text_scale_factor(self, ):
+        """获取缩放系数"""
+        # mac为1，windows为1.8， linux为2
+        system = dm.current_system()
+        if system == 'windows':
+            return 1.8
+        elif system == 'linux':
+            return 2.5
+        elif system == 'macos':
+            return 1
+        else:
+            raise ValueError(f'Unsupported system: {system}')
 
     @property
     def FONT_FAMILY(self):
@@ -36,6 +50,10 @@ class HGF(object):
         """默认字体大小"""
         return self.CONFIG['font_size']
         return self.CONFIG['font_size']*self.SCALE_FACTOR
+    @property
+    def TEXT_FONT_SIZE(self):
+        """默认应用于CSS的文本字体大小，是默认字体大小的乘以文本缩放系数"""
+        return self.FONT_SIZE*self.tsf
 
     @property
     def FONT(self):
@@ -91,26 +109,26 @@ class HGF(object):
     @property
     def FIRST_LEVEL_TITLE_CSS(self):
         """一级字体CSS"""
-        back = f'font-family: {self.FONT_FAMILY}; font-size: {int(self.FONT_SIZE*1.8*self.wsf)}px; \
+        back = f'font-family: {self.FONT_FAMILY}; font-size: {int(self.TEXT_FONT_SIZE*1.8)}px; \
                 font-weight: bold; color: {self.COLORS.LightBlack}; \
                     background-color: #EE3B3B; border-radius: 4px; border: 2px solid {self.COLORS.LightBlack};'
         # return back
-        return f'font-family: {self.FONT_FAMILY}; font-size: {int(self.FONT_SIZE*1.8*self.wsf)}px; \
+        return f'font-family: {self.FONT_FAMILY}; font-size: {int(self.TEXT_FONT_SIZE*1.8)}px; \
                 font-weight: bold; color: {self.COLORS.LightBlack}; '
 
     @property
     def SECOND_LEVEL_TITLE_CSS(self):
         """二级字体CSS"""
-        return f'font-family: {self.FONT_FAMILY}; font-size: {int(self.FONT_SIZE*1.4*self.wsf)}px; \
+        return f'font-family: {self.FONT_FAMILY}; font-size: {int(self.TEXT_FONT_SIZE*1.4)}px; \
                 font-weight: bold; color: {self.COLORS.DimGray}; '
 
     @property
     def MAIN_TEXT_CSS(self):
-        return f'font-family: {self.FONT_FAMILY}; font-size: {int(self.FONT_SIZE*self.wsf)}px; \
+        return f'font-family: {self.FONT_FAMILY}; font-size: {int(self.TEXT_FONT_SIZE)}px; \
             font-weight: False; color: {self.COLORS.Black}; '
 
     @property
     def MAIN_SIDE_BAR_CSS(self):
-        return f'font-family: {self.FONT_FAMILY}; font-size: {int(self.FONT_SIZE*self.wsf)}px; \
+        return f'font-family: {self.FONT_FAMILY}; font-size: {int(self.TEXT_FONT_SIZE)}px; \
                 font-weight: False; color: {self.COLORS.Black}; '
         
