@@ -8,9 +8,7 @@ HAI GUI是可扩展、轻量化的用于开发基于机器学习算法的应用�
 + 采用基于HAI算法库的前后端分离设计，实现界面的轻量化。
 
 ## 主界面
-![hai_gui_framework](https://zhangzhengde0225.github.io/images/blog/hai_gui_framework.gif)
-
-<!-- <video src="https://zhangzhengde0225.github.io/images/blog/hai_gui_framework.mov"></video> -->
+![hai_gui_framework](https://zhangzhengde0225.github.io/images/blog/hai_gui_framework_1280.gif)
 
 
 主界面分为5个模块：核心功能栏、主侧栏、中央控件、辅助侧栏和面板栏。
@@ -31,3 +29,9 @@ HAI GUI是可扩展、轻量化的用于开发基于机器学习算法的应用�
 
 ### 5. 面板栏
 面板栏位于主界面的底部，通过对选项卡的方式实现多个输出。
+
+
+# 二、HAI GUI的使用
+
+## 添加一个新图标
+

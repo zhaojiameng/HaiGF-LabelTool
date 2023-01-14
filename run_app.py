@@ -1,4 +1,4 @@
 
-import hai_ltt
+import src
 
-hai_ltt.main(name='hai_ltt')
+src.main(name='hai_ltt')

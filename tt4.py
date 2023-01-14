@@ -3,7 +3,7 @@ from PySide2.QtGui import QPainter, QPixmap, QFontDatabase
 from PySide2.QtCore import Qt
 import sys
 import numpy as np
-from hai_ltt.utils import general
+from src.utils import general
 
      
 
