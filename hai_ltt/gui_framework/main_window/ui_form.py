@@ -22,7 +22,8 @@ from PySide2.QtWidgets import (QApplication, QMainWindow, QMenuBar, QPushButton,
 from ..widgets import get_toolbar, get_central_widget, get_main_side_bar, get_panel_widget
 from .. import utils
 from ...version import __appname__
-from ..widgets import ExplorerWidget, AIWidget
+from ..widgets import ExplorerWidget, AIWidget, HStatusBar
+from hai_ltt.apis import HGF
 
 class Ui_MainWindow(object):
 
@@ -39,6 +40,8 @@ class Ui_MainWindow(object):
         mw.resize(size)
         mw.move(position)
         mw.restoreState(state)
+        # 设置标题栏css
+
         
 
     def setupUi(self, mw):
@@ -121,10 +124,11 @@ class Ui_MainWindow(object):
         mw.addDockWidget(Qt.BottomDockWidgetArea, panel_widget)
 
     def setupStatusBar(self, mw):
-        self.statusbar = QStatusBar(mw)
+        # self.statusbar = QStatusBar(mw)
+        self.statusbar = HStatusBar(mw)
         self.statusbar.setObjectName(u"statusbar")
         # 设置状态栏背景颜色
-        # self.statusbar.setStyleSheet("background-color: rgb(255, 255, 255);")    
+         
         mw.setStatusBar(self.statusbar)
 
 

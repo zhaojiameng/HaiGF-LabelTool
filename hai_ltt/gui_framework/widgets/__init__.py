@@ -16,5 +16,7 @@ from .main_side_bar.ai_widget.ai_widget import AIWidget  # AI工具
 
 from .panel.panel_widget import get_panel_widget, PanelWidget
 
+from .status_bar.hai_status_bar import HStatusBar
+
 
 

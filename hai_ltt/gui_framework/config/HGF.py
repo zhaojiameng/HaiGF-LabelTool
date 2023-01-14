@@ -131,4 +131,9 @@ class HGF(object):
     def MAIN_SIDE_BAR_CSS(self):
         return f'font-family: {self.FONT_FAMILY}; font-size: {int(self.TEXT_FONT_SIZE)}px; \
                 font-weight: False; color: {self.COLORS.Black}; '
+
+    @property
+    def STATUS_BAR_CSS(self):
+        return f'font-family: {self.FONT_FAMILY}; font-size: {int(self.TEXT_FONT_SIZE)}px; \
+                font-weight: False; color: {self.COLORS.White}; background-color: #FF9966; '
         
