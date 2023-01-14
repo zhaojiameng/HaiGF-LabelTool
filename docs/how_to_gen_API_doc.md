@@ -3,6 +3,9 @@
 
 本文介绍如何使用[Sphinx](https://github.com/sphinx-doc/sphinx)自动生成Python软件的API文档。
 
+生成的文档通过浏览器访问，界面如图：
+
+
 ### 1. 安装Sphinx和初始化
 
 ```bash
