@@ -8,7 +8,7 @@ from PySide2.QtWidgets import (QWidget, QHBoxLayout, QTabWidget,
 import damei as dm
 import numpy as np
 
-from hai_ltt.gui_framework import utils
+from HaiGF.gui_framework import utils
 from ..core_func_bar.tool_bar import get_toolbar, ToolBar
 from .start_page import HStartPage, HExamplesPage, ExamplePage
 from .hai_tab_bar import HTabBar
