@@ -3,7 +3,7 @@ from PySide2.QtGui import *
 from PySide2.QtCore import *
 import sys
 import numpy as np
-from hai_ltt.utils import general
+from src.utils import general
 
 
 class MyWidget(QWidget):
