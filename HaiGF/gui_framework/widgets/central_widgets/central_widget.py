@@ -8,12 +8,17 @@ from PySide2.QtWidgets import (QWidget, QHBoxLayout, QTabWidget,
 import damei as dm
 
 from HaiGF.apis import HGF
+from HaiGF.gui_framework.widgets.pages import Canvas
+from HaiGF.gui_framework.widgets.pages import Canvas_1
+
+from HaiGF.apis import HGF
 from .tab_widget import HTabWidget, get_start_tab_widget
 from .hai_tab_bar import HTabBar
 from .start_page import HExamplesPage
 from ... import utils
 from .start_page import ExamplePage
 from .. import HSplitter
+
 
 logger = dm.get_logger('central_widget')
 
@@ -25,7 +30,9 @@ def get_central_widget(parent=None):
     start_tab_widget.setObjectName('StartTabW')
 
     # empty_tabw = HTabWidget(parent=central_widget)
-    empty_page = HExamplesPage(title='ex')
+    # empty_page = HExamplesPage(title='ex')
+    # empty_page = Canvas(title='ex')
+    empty_page = Canvas_1(title='ex')
     empty_page.setObjectName('EmptyPage')
     # pages = start_tab_widget.pages + [empty_page]
     # start_tab_widget.setPages(pages)
