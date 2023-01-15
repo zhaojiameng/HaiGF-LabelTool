@@ -18,7 +18,7 @@ def load_config():
 
 
 class HGF(object):
-
+    """HaiGF配置"""
     def __init__(self):
         self.tsf = self.get_text_scale_factor()  # windows system font scale factor
         self.SCALE_FACTOR = self.auto_scale()
@@ -31,11 +31,11 @@ class HGF(object):
         # mac为1，windows为1.8， linux为2
         system = dm.current_system()
         if system == 'windows':
-            return 1.8
+            return 1.5
         elif system == 'linux':
-            return 2.5
+            return 2
         elif system == 'macos':
-            return 1
+            return 0.8
         else:
             raise ValueError(f'Unsupported system: {system}')
 

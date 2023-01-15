@@ -6,6 +6,7 @@
 生成的文档通过浏览器访问，界面如图：
 ![API_doc_example](https://zhangzhengde0225.github.io/images/blog/api_doc_example.png)
 
+详细参考：[Read the Docs 从懵逼到入门](https://blog.csdn.net/lu_embedded/article/details/109006380)
 
 ### 1. 安装Sphinx和初始化
 
@@ -34,15 +35,24 @@ make html  # 生成html文档
 `conf.py`指定了项目名、版权、作者信息，以及生成文档的格式等。
 
 + **切换主题**
-在`conf.py`中，可以指定主题。默认主题是`alabaster`，可以切换到`furo`主题。
+
+    安装主题：
+    ```bash
+    pip install sphinx-rtd-theme  # 安装ReadTheDocs主题
+    pip install furo  # 安装furo主题
+    ```
+
+在`conf.py`中指定主题。默认主题是`alabaster`，可以切换到`furo`主题。
     ```python
+    extensions = ['sphinx_rtd_theme']
     html_theme = 'furo'
+    html_theme = 'sphinx_rtd_theme'
     ```
     注意：使用`furo`主题，需要安装`furo`包: `pip install furo`。
 
 #### （2） 配置`index.rst`
 
-`index.rst`采用reStructedText语法（[rst语法规则](https://blog.csdn.net/u012294613/article/details/122512623)），与markdown类似。主页面的内容可以在`index.rst`中修改。
+`index.rst`采用reStructedText语法([rst语法规则](https://zh-sphinx-doc.readthedocs.io/en/latest/rest.html))，与markdown类似。主页面的内容可以在`index.rst`中修改。
 其中，包含目录树。
 
 ### 4. 发布文档

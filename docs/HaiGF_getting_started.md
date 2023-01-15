@@ -1,6 +1,6 @@
 
 
-## INTRODUCTION
+# 一、INTRODUCTION
 
 HAI GUI是可扩展、轻量化的用于开发基于机器学习算法的应用程序的框架。
 
