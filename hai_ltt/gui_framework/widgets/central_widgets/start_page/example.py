@@ -169,9 +169,9 @@ class Ui_Form(object):
         font = QtGui.QFont()
         font.setPointSize(15)
         self.flatComboBox.setFont(font)
-        self.flatComboBox.setStyleSheet("QComboBox#flatComboBox{\n"
-"flat:true;\n"
-"}")
+#         self.flatComboBox.setStyleSheet("QComboBox#flatComboBox{\n"
+# "flat:true;\n"
+# "}")
         self.flatComboBox.setObjectName("flatComboBox")
         self.flatComboBox.addItem("")
         self.flatComboBox.addItem("")
@@ -287,7 +287,7 @@ class Ui_Form(object):
         self.menuBar.setGeometry(QtCore.QRect(10, 10, 1311, 91))
         self.menuBar.setAutoFillBackground(True)
         self.menuBar.setStyleSheet("#menuBar{\n"
-"backgroud:rgb(202, 202, 202);\n"
+"background:rgb(202, 202, 202);\n"
 "}")
         self.menuBar.setFrameShape(QtWidgets.QFrame.Box)
         self.menuBar.setFrameShadow(QtWidgets.QFrame.Plain)
@@ -374,16 +374,32 @@ class Ui_Form(object):
 "}")
         self.progressBar.setProperty("value", 24)
         self.progressBar.setObjectName("progressBar")
-        self.radioButtonsGroup_3 = QtWidgets.QGroupBox(Form)
-        self.radioButtonsGroup_3.setGeometry(QtCore.QRect(410, 410, 191, 281))
-        self.radioButtonsGroup_3.setTitle("")
-        self.radioButtonsGroup_3.setObjectName("radioButtonsGroup_3")
-        self.dial = QtWidgets.QDial(self.radioButtonsGroup_3)
+
+        #range controllers
+        self.rangeGroup = QtWidgets.QGroupBox(Form)
+        self.rangeGroup.setGeometry(QtCore.QRect(410, 410, 191, 281))
+        self.rangeGroup.setTitle("")
+        self.rangeGroup.setObjectName("rangeGroup")
+        
+        #dial
+        self.dial = QtWidgets.QDial(self.rangeGroup)
         self.dial.setGeometry(QtCore.QRect(0, 0, 181, 121))
         self.dial.setProperty("value", 0)
         self.dial.setSliderPosition(0)
         self.dial.setObjectName("dial")
-        self.horizontalSlider = QtWidgets.QSlider(self.radioButtonsGroup_3)
+        self.dial.valueChanged.connect(self.dial_value)
+        self.dial.sliderReleased.connect(self.range_label_hide)
+
+        #show value
+        self.range_label = QtWidgets.QLabel(self.rangeGroup)
+        self.range_label.setGeometry(QtCore.QRect(10, 230, 31, 16))
+        self.range_label.setStyleSheet("QLabel{border:1px solid rgb(0, 0, 0);}")
+        self.range_label.hide()
+
+        #double slider
+        
+        #single slider
+        self.horizontalSlider = QtWidgets.QSlider(self.rangeGroup)
         self.horizontalSlider.setGeometry(QtCore.QRect(10, 251, 161, 21))
         self.horizontalSlider.setStyleSheet("/*槽*/\n"
 "#horizontalSlider::groove:horizontal {\n"
@@ -406,9 +422,13 @@ class Ui_Form(object):
 "border-radius:15px;\n"
 "}\n"
 "")
+        self.horizontalSlider.setRange(0, 100)
+        self.horizontalSlider.setSingleStep(1)
         self.horizontalSlider.setProperty("value", 19)
         self.horizontalSlider.setOrientation(QtCore.Qt.Horizontal)
         self.horizontalSlider.setObjectName("horizontalSlider")
+        self.horizontalSlider.valueChanged.connect(self.sl_value)
+        self.horizontalSlider.sliderReleased.connect(self.range_label_hide)
         self.RadioButtons_3 = QtWidgets.QLabel(Form)
         self.RadioButtons_3.setGeometry(QtCore.QRect(410, 380, 191, 20))
         font = QtGui.QFont()
@@ -566,6 +586,27 @@ class Ui_Form(object):
 
     def on_spineButton_clicked(self):
                 self.stackedWidget.setCurrentIndex(1)
+
+    def sl_value(self):
+        sl1 = self.horizontalSlider.value() #读取当前滑动条值
+        sl2 = str(sl1)
+        x = self.horizontalSlider.x()
+        y = self.horizontalSlider.y()
+        self.range_label.move(x + sl1, y - 21)
+        self.range_label.show()
+        self.range_label.setText(sl2) #做了个强转，不然报错：label框需要str类型值
+
+    def dial_value(self):
+        value1 = self.dial.value()
+        value2 = str(value1)
+        point = self.dial.pos()
+        self.range_label.move(point)
+        self.range_label.show()
+        self.range_label.setText(value2)
+
+    def range_label_hide(self):
+        self.range_label.hide()
+
 
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate

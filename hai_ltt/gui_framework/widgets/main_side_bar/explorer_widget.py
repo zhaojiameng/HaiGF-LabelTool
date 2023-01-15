@@ -37,3 +37,4 @@ class ExplorerWidget(QWidget):
 
     def mouseDoubleClickEvent(self, ev):
         logger.debug(f'mouseDoubleClickEvent, ev={ev}')
+        
