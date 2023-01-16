@@ -9,6 +9,12 @@ Usage:
 from .preset import Font
 
 class Colors(object):
+    """
+    Those are the colors presets with #RRGGBB format.\n
+    Colors: \n
+    White, WhiteSmoke, Gainsboro, LightGray, Silver, DarkGray, Gray, DimGray, LightSlateGray, SlateGray, DarkSlateGray, LightBlack, Black
+    Blue, MediumBlue, MidnightBlue, DarkBlue, Navy, RoyalBlue, CornflowerBlue, LightSteelBlue, LightSlateBlue, SlateBlue, DarkSlateBlue, Indigo, DarkOliveGreen
+    """
     White = "#FFFFFF"  # 255, 255, 255
     WhiteSmoke = "#F5F5F5"  # 245, 245, 245
     Gainsboro = "#DCDCDC"  # 220, 220, 220

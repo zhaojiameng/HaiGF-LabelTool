@@ -6,12 +6,20 @@ HaiGF.HGF are the colors, fonts, css, and themes presets.
 
 Usage
 ------
+.. code-block:: python
 
-```python
->>> from HaiGF import HGF
-```
+    >>> from HaiGF import HGF
+    >>> HGF.COLORS.White  # lots of colors presets
+    >>> HGF.FONT_FAMILY
+    >>> HGF.FIRST_LEVEL_FONT
+    >>> HGF.FIRST_LEVEL_TLTILE_CSS
 
 HGF.COLORS
 -------------
+.. autofunction:: HaiGF.HGF()
 
-.. autofunction:: HaiGF.HGF
+.. automethod:: HaiGF.HGF.COLORS()
+
+    xxx
+
+.. .. automethod:: HaiGF.HGF.COLORS.White

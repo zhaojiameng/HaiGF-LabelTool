@@ -26,14 +26,23 @@ Feautures
    `HAI GUI Framework`_ project.
 
 
-Getting Started
-----------------
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
+   :caption: Getting started
 
-   ../HaiGF_getting_started.md
-   HaiGF.HGF
+   HaiGF_getting_started.md
+
+
+.. toctree::
+   :maxdepth: 2
+   :caption: API
+   
+   HMainWindow
+   mw.CoreFuncBar
+   mw.CentralWidget
+   HPlugin
+   HPage
+   HGF
    
 
 

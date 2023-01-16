@@ -5,6 +5,28 @@ import os, sys
 
 
 class HPlugin(QtWidgets.QWidget):
+    """
+    这是HaiGF的插件基类，所有插件都应该继承自此类，其继承自QWidget。
+
+    Usage:
+        >>> from HaiGF import HPlugin
+        >>> class MyPlugin(HPlugin):
+        >>>     def __init__(self, parent=None):
+        >>>         super().__init__(parent)
+        >>>    
+        >>>     def install(self):
+        >>>         # Please override this method by wirting your own code to install the plugin.
+        >>>         pass
+
+    继承后，自动连接到如下对象
+        >>> self.mw:  HMainWindow  # 主窗口
+        >>> self.cfb: HMainWidow.core_func_bar  # 核心功能栏
+        >>> self.msb: HMainWindow.main_side_bar  # 主侧边栏
+        >>> self.cw:  HMainWindow.central_widget  # 中央控件
+        >>> self.asb: HMainWindow.aux_side_bar  # 辅助侧边栏
+        >>> self.pw:  HMainWindow.panel_widget  # 面板控件
+        >>> self.sb:  HMainWindow.status_bar  # 状态栏
+    """
 
     def __init__(self, parent, *args, **kwargs):
         super().__init__(parent, *args, **kwargs)

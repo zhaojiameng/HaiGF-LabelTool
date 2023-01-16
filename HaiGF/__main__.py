@@ -7,11 +7,12 @@ from PySide2.QtGui import QFontDatabase
 here = Path(__file__).parent
 
 
-from .gui_framework import HMainWindow
+from .apis import HMainWindow
 # from .plugins import AppMainWindow
 from .apis import __version__, __appname__
 
 from .plugins.hai_tools import AIPlugin
+from .plugins.load_img import LoadImagePlugin
 
 
 def run(name='framework'):
@@ -36,6 +37,7 @@ def run(name='framework'):
         mw = AppMainWindow()
 
     mw.install_plugin(AIPlugin)
+    mw.install_plugin(LoadImagePlugin)
 
     mw.show()
     mw.raise_()

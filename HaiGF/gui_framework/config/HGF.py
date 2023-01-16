@@ -18,7 +18,7 @@ def load_config():
 
 
 class HGF(object):
-    """HaiGF配置"""
+    """HaiGF.HGF are the colors, fonts, css, and themes presets."""
     def __init__(self):
         self.tsf = self.get_text_scale_factor()  # windows system font scale factor
         self.SCALE_FACTOR = self.auto_scale()
@@ -107,8 +107,26 @@ class HGF(object):
             )
 
     @property
+    def SECOND_LEVEL_FONT(self):
+        """二级字体"""
+        return Font(
+            family=self.FONT_FAMILY, 
+            size=int(self.FONT_SIZE*1.0),
+            bold=True,
+            )
+    
+    @property
+    def MAIN_FONT(self):
+        """主字体"""
+        return Font(
+            family=self.FONT_FAMILY, 
+            size=self.FONT_SIZE,
+            bold=False,
+            )
+
+    @property
     def FIRST_LEVEL_TITLE_CSS(self):
-        """一级字体CSS"""
+        
         back = f'font-family: {self.FONT_FAMILY}; font-size: {int(self.TEXT_FONT_SIZE*1.8)}px; \
                 font-weight: bold; color: {self.COLORS.LightBlack}; \
                     background-color: #EE3B3B; border-radius: 4px; border: 2px solid {self.COLORS.LightBlack};'

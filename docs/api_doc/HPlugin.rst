@@ -1,0 +1,6 @@
+HPlugin
+========
+
+.. autofunction:: HaiGF.HPlugin
+
+    

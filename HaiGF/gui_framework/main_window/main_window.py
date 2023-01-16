@@ -9,13 +9,19 @@ from .ui_form import Ui_MainWindow
 from HaiGF.apis import __version__, __appname__
 from .actions.actions import AllActions
 from HaiGF.apis import HGF
+from HaiGF.apis import HPlugin
 
-from ..widgets import ExplorerWidget
+# from ..widgets import ExplorerWidget
 
 logger = dm.get_logger('hai_main_window')
 
 class HMainWindow(QMainWindow):
+    """
+    This is the main window of the hai gui framework, inherited from QMainWindow.
+    Alias: `mw`.
+    """
     def __init__(self, parent=None):
+        """This is the init function of the main window."""
         super().__init__(parent)
         self.cfg = HGF.CONFIG
         
@@ -37,8 +43,13 @@ class HMainWindow(QMainWindow):
                 "+"}")
 
 
-    def install_plugin(self, plugin):
+    def install_plugin(self, plugin: HPlugin):
+        """
+        Call the `install` method of the custom plugin to install it.\n
+        :param plugin: A plugin instance in inherited from `HPlugin`.
+        """
         # 判断model是否已经安装，如果已经安装则不再安装
+        # assert isinstance(plugin, HPlugin), 'plugin must be a HPlugin instance'
         plugin = plugin(self)  # 实例化plugin
         if plugin in self._plugins:
             return

@@ -7,6 +7,7 @@
   <title>HaiGF - Hep AI Gui Framework &mdash; HaiGF 1.0.0 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/copybutton.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -17,10 +18,12 @@
         <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
         <script src="_static/sphinx_highlight.js"></script>
+        <script src="_static/clipboard.min.js"></script>
+        <script src="_static/copybutton.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="HaiGF.HGF" href="HaiGF.HGF.html" /> 
+    <link rel="next" title="1. 介绍" href="HaiGF_getting_started.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -38,9 +41,19 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+              <p class="caption" role="heading"><span class="caption-text">Getting started</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="HaiGF.HGF.html">HaiGF.HGF</a></li>
+<li class="toctree-l1"><a class="reference internal" href="HaiGF_getting_started.html">1. 介绍</a></li>
+<li class="toctree-l1"><a class="reference internal" href="HaiGF_getting_started.html#id8">2. 如何开发插件</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="HMainWindow.html">HMainWindow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mw.CoreFuncBar.html">mw.CoreFuncBar</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mw.CentralWidget.html">mw.CentralWidget</a></li>
+<li class="toctree-l1"><a class="reference internal" href="HPlugin.html">HPlugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="HPage.html">HPage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="HGF.html">HGF</a></li>
 </ul>
 
         </div>
@@ -69,7 +82,7 @@
              
   <section id="haigf-hep-ai-gui-framework">
 <h1>HaiGF - Hep AI Gui Framework<a class="headerlink" href="#haigf-hep-ai-gui-framework" title="Permalink to this heading"></a></h1>
-<p><strong>HaiGF</strong> (High energy physics Artificial Intelligence Graphical user interface Framework) is a python package for building graphical user interfaces
+<p><strong>HaiGF</strong> (High energy physics Artificial Intelligence Graphical user interface Framework) is a framework for building graphical user interfaces
 based on HAI algorithm library for high energy physics analysis. It is based on the <cite>PyQt5</cite> library and the <cite>Qt5</cite> framework.</p>
 <section id="interface">
 <h2>Interface<a class="headerlink" href="#interface" title="Permalink to this heading"></a></h2>
@@ -81,15 +94,69 @@ based on HAI algorithm library for high energy physics analysis. It is based on 
 <li><p>Modular design, easy to extend, easy to use.</p></li>
 <li><p>The GUI front and AI algorithm backend are completely separated based on the <cite>HAI</cite> library so that the application will be very lightweight.</p></li>
 </ul>
-</section>
-<section id="getting-started">
-<h2>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this heading"></a></h2>
 <div class="toctree-wrapper compound">
-<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<p class="caption" role="heading"><span class="caption-text">Getting started</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="HaiGF.HGF.html">HaiGF.HGF</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="HaiGF.HGF.html#usage">Usage</a></li>
-<li class="toctree-l2"><a class="reference internal" href="HaiGF.HGF.html#hgf-colors">HGF.COLORS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="HaiGF_getting_started.html">1. 介绍</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="HaiGF_getting_started.html#id2">1.1 主界面</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="HaiGF_getting_started.html#id8">2. 如何开发插件</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="HaiGF_getting_started.html#id9">2.1 创建插件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="HaiGF_getting_started.html#ui">2.2 在UI启动时安装插件</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">API</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="HMainWindow.html">HMainWindow</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="HMainWindow.html#HaiGF.apis.mw.install_plugin"><code class="docutils literal notranslate"><span class="pre">mw.install_plugin()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="mw.CoreFuncBar.html">mw.CoreFuncBar</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="mw.CoreFuncBar.html#HaiGF.apis.cfb.add_action"><code class="docutils literal notranslate"><span class="pre">cfb.add_action()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="mw.CoreFuncBar.html#HaiGF.apis.cfb.insert_action"><code class="docutils literal notranslate"><span class="pre">cfb.insert_action()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="mw.CoreFuncBar.html#HaiGF.apis.cfb.mousePressEvent"><code class="docutils literal notranslate"><span class="pre">cfb.mousePressEvent()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="mw.CentralWidget.html">mw.CentralWidget</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="mw.CentralWidget.html#HaiGF.apis.cw.addTabWidget"><code class="docutils literal notranslate"><span class="pre">cw.addTabWidget()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="mw.CentralWidget.html#HaiGF.apis.cw.addPage"><code class="docutils literal notranslate"><span class="pre">cw.addPage()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="mw.CentralWidget.html#HaiGF.apis.cw.current_tab_widget"><code class="docutils literal notranslate"><span class="pre">cw.current_tab_widget()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="mw.CentralWidget.html#HaiGF.apis.cw.create_tab_widget_by_source_tabw"><code class="docutils literal notranslate"><span class="pre">cw.create_tab_widget_by_source_tabw()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="mw.CentralWidget.html#HaiGF.apis.cw.get_current_splitter_by_tab_widget"><code class="docutils literal notranslate"><span class="pre">cw.get_current_splitter_by_tab_widget()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="mw.CentralWidget.html#HaiGF.apis.cw.judge_need_delete_source_tabw"><code class="docutils literal notranslate"><span class="pre">cw.judge_need_delete_source_tabw()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="mw.CentralWidget.html#HaiGF.apis.cw.judge_need_create_new_splitter"><code class="docutils literal notranslate"><span class="pre">cw.judge_need_create_new_splitter()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="mw.CentralWidget.html#HaiGF.apis.cw.split_screen"><code class="docutils literal notranslate"><span class="pre">cw.split_screen()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="mw.CentralWidget.html#HaiGF.apis.cw.sort_new_tabw_vs_ttabw"><code class="docutils literal notranslate"><span class="pre">cw.sort_new_tabw_vs_ttabw()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="mw.CentralWidget.html#HaiGF.apis.cw.move_one_tab_to_another_tabw"><code class="docutils literal notranslate"><span class="pre">cw.move_one_tab_to_another_tabw()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="mw.CentralWidget.html#HaiGF.apis.cw.closeEvent"><code class="docutils literal notranslate"><span class="pre">cw.closeEvent()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="mw.CentralWidget.html#HaiGF.apis.cw.mousePressEvent"><code class="docutils literal notranslate"><span class="pre">cw.mousePressEvent()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="mw.CentralWidget.html#HaiGF.apis.cw.mouseMoveEvent"><code class="docutils literal notranslate"><span class="pre">cw.mouseMoveEvent()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="mw.CentralWidget.html#HaiGF.apis.cw.moving_tab"><code class="docutils literal notranslate"><span class="pre">cw.moving_tab()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="mw.CentralWidget.html#HaiGF.apis.cw.moved_tab"><code class="docutils literal notranslate"><span class="pre">cw.moved_tab()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="mw.CentralWidget.html#HaiGF.apis.cw.clear_splitters"><code class="docutils literal notranslate"><span class="pre">cw.clear_splitters()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="HPlugin.html">HPlugin</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="HPlugin.html#HaiGF.HPlugin"><code class="docutils literal notranslate"><span class="pre">HPlugin()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="HPage.html">HPage</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="HPage.html#HaiGF.apis.HPage.set_icon"><code class="docutils literal notranslate"><span class="pre">HPage.set_icon()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="HPage.html#HaiGF.apis.HPage.set_title"><code class="docutils literal notranslate"><span class="pre">HPage.set_title()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="HGF.html">HGF</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="HGF.html#HaiGF.HGF.COLORS"><code class="docutils literal notranslate"><span class="pre">HGF.COLORS()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="HGF.html#HaiGF.HGF.FIRST_LEVEL_FONT"><code class="docutils literal notranslate"><span class="pre">HGF.FIRST_LEVEL_FONT()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="HGF.html#HaiGF.HGF.SECOND_LEVEL_FONT"><code class="docutils literal notranslate"><span class="pre">HGF.SECOND_LEVEL_FONT()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="HGF.html#HaiGF.HGF.FIRST_LEVEL_TITLE_CSS"><code class="docutils literal notranslate"><span class="pre">HGF.FIRST_LEVEL_TITLE_CSS()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="HGF.html#HaiGF.HGF.SECOND_LEVEL_TITLE_CSS"><code class="docutils literal notranslate"><span class="pre">HGF.SECOND_LEVEL_TITLE_CSS()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="HGF.html#HaiGF.HGF.MAIN_TEXT_CSS"><code class="docutils literal notranslate"><span class="pre">HGF.MAIN_TEXT_CSS()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="HGF.html#HaiGF.HGF.FONT_FAMILY"><code class="docutils literal notranslate"><span class="pre">HGF.FONT_FAMILY()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -109,7 +176,7 @@ based on HAI algorithm library for high energy physics analysis. It is based on 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="HaiGF.HGF.html" class="btn btn-neutral float-right" title="HaiGF.HGF" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="HaiGF_getting_started.html" class="btn btn-neutral float-right" title="1. 介绍" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>1. 介绍 &mdash; HaiGF 1.0.0 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/copybutton.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+        <script src="_static/clipboard.min.js"></script>
+        <script src="_static/copybutton.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="HMainWindow" href="HMainWindow.html" />
+    <link rel="prev" title="HaiGF - Hep AI Gui Framework" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> HaiGF
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting started</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">1. 介绍</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id2">1.1 主界面</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id3">1.1.1 核心功能栏</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id4">1.1.2. 主侧栏</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id5">1.1.3. 中央控件</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id6">1.1.4. 辅助侧栏</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id7">1.1.5. 面板栏</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="#id8">2. 如何开发插件</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id9">2.1 创建插件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ui">2.2 在UI启动时安装插件</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="HMainWindow.html">HMainWindow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mw.CoreFuncBar.html">mw.CoreFuncBar</a></li>
+<li class="toctree-l1"><a class="reference internal" href="HPlugin.html">HPlugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="HGF.html">HaiGF.HGF</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">HaiGF</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a></li>
+      <li class="breadcrumb-item active">1. 介绍</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/HaiGF_getting_started.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="id1">
+<h1>1. 介绍<a class="headerlink" href="#id1" title="Permalink to this heading"></a></h1>
+<p>HAI GUI是可扩展、轻量化的用于开发基于机器学习算法的应用程序的框架。</p>
+<ul class="simple">
+<li><p>采用模块化设计，可扩展性强，可灵活添加新的模块。</p></li>
+<li><p>采用基于HAI算法库的前后端分离设计，实现界面的轻量化。</p></li>
+</ul>
+<section id="id2">
+<h2>1.1 主界面<a class="headerlink" href="#id2" title="Permalink to this heading"></a></h2>
+<p><img alt="hai_gui_framework" src="https://zhangzhengde0225.github.io/images/blog/hai_gui_framework_1280.gif" /></p>
+<p>主界面分为5个模块：核心功能栏、主侧栏、中央控件、辅助侧栏和面板栏。</p>
+<section id="id3">
+<h3>1.1.1 核心功能栏<a class="headerlink" href="#id3" title="Permalink to this heading"></a></h3>
+<p>核心功能栏在左侧，由图标工具组成，例如：资源管理器、标注工具、AI工具等，可通过点击图标切换到相应的模块。可通过开发插件添加新的功能。</p>
+</section>
+<section id="id4">
+<h3>1.1.2. 主侧栏<a class="headerlink" href="#id4" title="Permalink to this heading"></a></h3>
+<p>主侧栏是核心功能的具体展开，由一个不可移动的左侧Dock坞构成，包含标题、标题右侧工具图标和内容工具。可开发控件添加到主侧栏，并与核心功能绑定。</p>
+</section>
+<section id="id5">
+<h3>1.1.3. 中央控件<a class="headerlink" href="#id5" title="Permalink to this heading"></a></h3>
+<p>中央控件用于展示核心功能的具体内容、可视化数据并与人进行交互。
+中央控件基于选项卡(Tab)和页面(Page)的设计，可通过选项卡切换不同的页面。可通过开发控件添加到中央控件，并与核心功能或主侧栏的操作绑定。
+在中央控件内部，通过QSplitter实现自动分屏器，可通过拖动Tab实现自动分屏。</p>
+</section>
+<section id="id6">
+<h3>1.1.4. 辅助侧栏<a class="headerlink" href="#id6" title="Permalink to this heading"></a></h3>
+<p>辅助侧栏位于主界面的右侧，用于展示详细属性、信息，设置一些参数等。</p>
+</section>
+<section id="id7">
+<h3>1.1.5. 面板栏<a class="headerlink" href="#id7" title="Permalink to this heading"></a></h3>
+<p>面板栏位于主界面的底部，通过对选项卡的方式实现多个输出。</p>
+</section>
+</section>
+</section>
+<section id="id8">
+<h1>2. 如何开发插件<a class="headerlink" href="#id8" title="Permalink to this heading"></a></h1>
+<p>以<code class="docutils literal notranslate"><span class="pre">hai_tools</span></code>插件为例，介绍如何开发插件。
+开发插件请在<code class="docutils literal notranslate"><span class="pre">gui_src/plugins</span></code>目录下创建新的文件夹，文件夹名即为插件名，例如：<code class="docutils literal notranslate"><span class="pre">hai_tools</span></code>。</p>
+<section id="id9">
+<h2>2.1 创建插件<a class="headerlink" href="#id9" title="Permalink to this heading"></a></h2>
+<p>HGF提供了插件父类<code class="docutils literal notranslate"><span class="pre">HPlugin</span></code>，继承该类后，自动获得主窗口及其五个主要部件的引用, 便于窗口交互。</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">HaiGF</span> <span class="kn">import</span> <span class="n">HPlugin</span>
+
+<span class="k">class</span> <span class="nc">YourPluginName</span><span class="p">(</span><span class="n">HPlugin</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">YourPlugin</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        继承后，自动获得如下对象：</span>
+<span class="sd">        self.mw:  HMainWindow  # 主窗口</span>
+<span class="sd">        self.cfb: HMainWidow.core_func_bar  # 核心功能栏</span>
+<span class="sd">        self.msb: HMainWindow.main_side_bar  # 主侧边栏</span>
+<span class="sd">        self.cw:  HMainWindow.central_widget  # 中央控件</span>
+<span class="sd">        self.asb: HMainWindow.aux_side_bar  # 辅助侧边栏</span>
+<span class="sd">        self.pw:  HMainWindow.panel_widget  # 面板控件</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+    
+    <span class="k">def</span> <span class="nf">install</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        需要重写该函数，实现插件安装时的操作，例如：在核心功能栏添加action，在主侧栏添加控件等。</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+</pre></div>
+</div>
+<p>插件与主界面的交互详见文档。</p>
+</section>
+<section id="ui">
+<h2>2.2 在UI启动时安装插件<a class="headerlink" href="#ui" title="Permalink to this heading"></a></h2>
+<p>在<code class="docutils literal notranslate"><span class="pre">HaiGF/__main__.py</span></code>中，调用<code class="docutils literal notranslate"><span class="pre">install_plugin</span></code>函数，安装插件。</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">HaiGF.plugins.</span><span class="o">&lt;</span><span class="n">YOUR</span> <span class="n">PLUGIN</span> <span class="n">PATH</span><span class="o">&gt;</span> <span class="kn">import</span> <span class="nn">YourPluginName</span>
+
+<span class="n">mw</span><span class="o">.</span><span class="n">install_plugin</span><span class="p">(</span><span class="n">YourPluginName</span><span class="p">)</span>  <span class="c1"># 继承了HPlugin的自定义类直接传入即可</span>
+</pre></div>
+</div>
+<p>.. autofunction:: HaiGF.HGF</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="HaiGF - Hep AI Gui Framework" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="HMainWindow.html" class="btn btn-neutral float-right" title="HMainWindow" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Zhengde Zhang.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -8,8 +8,8 @@ from PySide2.QtWidgets import (QWidget, QHBoxLayout, QTabWidget,
 import damei as dm
 
 from HaiGF.apis import HGF
-from HaiGF.gui_framework.widgets.pages import Canvas
-from HaiGF.gui_framework.widgets.pages import Canvas_1
+# from HaiGF.gui_framework.widgets.pages import Canvas
+# from HaiGF.gui_framework.widgets.pages import Canvas_1
 
 from HaiGF.apis import HGF
 from .tab_widget import HTabWidget, get_start_tab_widget
@@ -18,6 +18,7 @@ from .start_page import HExamplesPage
 from ... import utils
 from .start_page import ExamplePage
 from .. import HSplitter
+from .. import HPage
 
 
 logger = dm.get_logger('central_widget')
@@ -30,10 +31,10 @@ def get_central_widget(parent=None):
     start_tab_widget.setObjectName('StartTabW')
 
     # empty_tabw = HTabWidget(parent=central_widget)
-    # empty_page = HExamplesPage(title='ex')
+    empty_page = HExamplesPage(title='ex')
     # empty_page = Canvas(title='ex')
-    empty_page = Canvas_1(title='ex')
-    empty_page.setObjectName('EmptyPage')
+    # empty_page = Canvas_1(title='ex')
+    # empty_page.setObjectName('EmptyPage')
     # pages = start_tab_widget.pages + [empty_page]
     # start_tab_widget.setPages(pages)
     # empty_tabw.setPages([empty_page])
@@ -57,10 +58,11 @@ def get_central_widget(parent=None):
 
 class CentralWidget(QWidget):
     """
-    自定义Widget控件，网格布局
-    布局内有1个控件
-    Qsplitter切分，内容是TabWidget
-    继承关系(父到子)：CentralWidget -> Splitter -> QTabWidget -> Tab和Page
+    This is the central widget of the main window, inherited from QWidget.
+    It contains a grid layout, which contains multiple splitter.
+    The splitter split tab widgets, which contains multiple tab and pages.\n
+    Inherit relationship (parent to child)：CentralWidget -> Splitter -> QTabWidget -> Tab and Page\n
+    Alias：`cw`, `mw.cw`
     """
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -82,11 +84,14 @@ class CentralWidget(QWidget):
         return self._splitters
 
     @property
-    def tab_widgets(self):
+    def tab_widgets(self) -> list:
+        """返回所有的TabWidget"""
         return self._tab_widgets
 
-    def current_tab_widget(self, pos=None):
-        """获取当前TabWidget"""
+    def current_tab_widget(self, pos=None) -> HTabWidget:
+        """
+        Return the current tab widget which contains the activate page.
+        """
         tabws = self.tab_widgets
         if tabws is None:
             return
@@ -176,13 +181,30 @@ class CentralWidget(QWidget):
 
         return splitter
 
-    def addTabWidget(self, tab_widget, *args):
-        """添加TabWidget到_tab_widgets列表，并设置其parrent为splitter中"""
+    def addTabWidget(self, tab_widget: HTabWidget, *args):
+        """添加TabWidget到_tab_widgets列表，自动分配分屏器"""
         self._tab_widgets.append(tab_widget)
         # 分配spliter，分配方案：不知道
         splitter = self.asign_spliter(tab_widget, *args)
         splitter.addWidget(tab_widget)  # 添加TabWidget到分屏器
         self.setSplitter(splitter)
+
+    def addPage(self, page: HPage, tabw_idx: int=None, *args):
+        """
+        添加Page到当前TabWidget.\n
+        :param page: HPage
+        :param tabw_idx: int, TabWidget的index，指定添加到哪个tabw, 默认为None，表示添加到当前TabWidget
+        """
+        # 什么时候创建TabWidget？
+        if self.tab_widgets == []:
+            tab_widget = self.create_tab_widget()
+            self.addTabWidget(tab_widget)
+        elif len(self.tab_widgets) == 1:
+            tab_widget = self.tab_widgets[0]
+        else:
+            raise NotImplementedError('多个TabWidget时，需要实现')
+
+        tab_widget.addPage(page, *args)
 
     def create_tab_widget_by_source_tabw(self, source_tabw):
         """
@@ -196,17 +218,6 @@ class CentralWidget(QWidget):
         tabw.setPages([page])
         return tabw
 
-    def on_tabBarClicked(self, index):
-        logger.info(f'tabBarClicked. tabw: {self.current_tab_widget}, tab idx: {index}')
-        current_tab = self.current_tab_widget.tabBar()
-        print(f'current_tab={current_tab} {current_tab.tabText(index)}')
-        # current_tab =
-
-    def on_tabBarDoubleClicked(self, index):
-        logger.info(f'tabBarDoubleClicked. index: {index}')
-        # current_tab = self.current_tab_widget.tabBar()
-        # print(f'current_tab={current_tab}')
-        self.split_screen(index)
 
     def get_current_splitter_by_tab_widget(self, tab_widget):
         """获取当前TabWidget所在的Splitter"""

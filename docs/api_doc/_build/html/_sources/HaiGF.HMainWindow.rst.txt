@@ -1,0 +1,10 @@
+.. HaiGF.HMainWindow
+.. ==================
+
+.. autofunction:: HaiGF.HMainWindow
+
+.. .. automethod:: HaiGF.HMainWindow.__init__
+
+.. automethod:: HaiGF.HMainWindow.install_plugin
+
+

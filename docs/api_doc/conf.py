@@ -23,6 +23,7 @@ extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.doctest',
     'sphinx.ext.duration',
+    'sphinx_copybutton',
     'sphinx_rtd_theme',  # 支持readthedocs主题
     'recommonmark',  # 支持markdown
 ]

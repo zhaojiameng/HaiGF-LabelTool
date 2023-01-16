@@ -9,7 +9,7 @@ import damei as dm
 import numpy as np
 
 from HaiGF.gui_framework import utils
-from ..core_func_bar.tool_bar import get_toolbar, ToolBar
+from ..core_func_bar.tool_bar import get_toolbar, CoreFuncBar
 from .start_page import HStartPage, HExamplesPage, ExamplePage
 from .hai_tab_bar import HTabBar
 

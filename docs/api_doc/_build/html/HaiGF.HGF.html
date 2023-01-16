@@ -20,7 +20,7 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="prev" title="Welcome to HAI GUI Framework’s documentation!" href="index.html" /> 
+    <link rel="prev" title="HPlugin" href="HPlugin.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -38,12 +38,22 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+              <p class="caption" role="heading"><span class="caption-text">Getting started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="HaiGF_getting_started.html">1. 介绍</a></li>
+<li class="toctree-l1"><a class="reference internal" href="HaiGF_getting_started.html#id8">2. 如何开发插件</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="HaiGF.HMainWindow.html"><code class="docutils literal notranslate"><span class="pre">HMainWindow()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="HPlugin.html">HPlugin</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">HaiGF.HGF</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#usage">Usage</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#hgf-colors">HGF.COLORS</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#HaiGF.HGF"><code class="docutils literal notranslate"><span class="pre">HGF()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#HaiGF.HGF"><code class="docutils literal notranslate"><span class="pre">HGF()</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#HaiGF.HGF.COLORS"><code class="docutils literal notranslate"><span class="pre">HGF.COLORS()</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -79,9 +89,13 @@
 <p>HaiGF.HGF are the colors, fonts, css, and themes presets.</p>
 <section id="usage">
 <h2>Usage<a class="headerlink" href="#usage" title="Permalink to this heading"></a></h2>
-<p><code class="docutils literal notranslate"><span class="pre">`python</span>
-<span class="pre">&gt;&gt;&gt;</span> <span class="pre">from</span> <span class="pre">HaiGF</span> <span class="pre">import</span> <span class="pre">HGF</span>
-<span class="pre">`</span></code></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">HaiGF</span> <span class="kn">import</span> <span class="n">HGF</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">HGF</span><span class="o">.</span><span class="n">COLORS</span><span class="o">.</span><span class="n">White</span>  <span class="c1"># lots of colors presets</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">HGF</span><span class="o">.</span><span class="n">FONT_FAMILY</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">HGF</span><span class="o">.</span><span class="n">FIRST_LEVEL_FONT</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">HGF</span><span class="o">.</span><span class="n">FIRST_LEVEL_TLTILE_CSS</span>
+</pre></div>
+</div>
 </section>
 <section id="hgf-colors">
 <h2>HGF.COLORS<a class="headerlink" href="#hgf-colors" title="Permalink to this heading"></a></h2>
@@ -91,6 +105,13 @@
 <dd><p>HaiGF配置</p>
 </dd></dl>
 
+<dl class="py method">
+<dt class="sig sig-object py" id="HaiGF.HGF.COLORS">
+<span class="sig-prename descclassname"><span class="pre">HGF.</span></span><span class="sig-name descname"><span class="pre">COLORS</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HaiGF.HGF.COLORS" title="Permalink to this definition"></a></dt>
+<dd><p>This is the colors</p>
+<p>xxx</p>
+</dd></dl>
+
 </section>
 </section>
 
@@ -98,7 +119,7 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="index.html" class="btn btn-neutral float-left" title="Welcome to HAI GUI Framework’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="HPlugin.html" class="btn btn-neutral float-left" title="HPlugin" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
   <hr/>

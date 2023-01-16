@@ -21,9 +21,7 @@ class AIPlugin(HPlugin):
     
     def install(self):
         """在此处实现模块的安装"""
-        # action = self.mw.actions.ai_action
-        action = self.get_action()
-        self.cfb.add_action(action)
+        self.cfb.add_action(self.get_action())
         pass
 
 

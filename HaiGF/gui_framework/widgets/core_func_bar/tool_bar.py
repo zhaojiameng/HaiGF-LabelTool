@@ -16,7 +16,7 @@ def get_toolbar(title, parent=None, actions=None):
     """
     创建一个工具栏
     """
-    toolbar = ToolBar(title, parent=parent)
+    toolbar = CoreFuncBar(title, parent=parent)
     toolbar.setObjectName(f"title")
     # toolbar.setOrientation(QtCore.Qt.Vertical)
     toolbar.setToolButtonStyle(QtCore.Qt.ToolButtonTextUnderIcon)
@@ -25,9 +25,13 @@ def get_toolbar(title, parent=None, actions=None):
     # print(toolbar.sizeHint())
     return toolbar
 
-class ToolBar(QtWidgets.QToolBar):
+class CoreFuncBar(QtWidgets.QToolBar):
+    """
+    This is the Core Function Bar of the main window, inherited from `QToolBar`.\n
+    Alias: `cfb`, `mw.cfb`.
+    """
     def __init__(self, title, parent=None):
-        super(ToolBar, self).__init__(title, parent=parent)
+        super(CoreFuncBar, self).__init__(title, parent=parent)
         self.p = parent
         self.layout = self.layout()
 
@@ -66,15 +70,26 @@ class ToolBar(QtWidgets.QToolBar):
         painter.end()
 
     
-    def add_action(self, action):
-        """仅在全几个action之间添加，不添加到最后"""
+    def add_action(self, action: QAction) -> None:
+        """
+        Add action on the behind of the last action.\n
+        :param action: QAction
+        """
         self.addAction(action, index=-3)
 
+    
+    def insert_action(self, action: QAction, index: int) -> None:
+        """
+        Insert action on the behind of the index action.\n
+        :param action: QAction
+        :param index: int
+        """
+        self.addAction(action, index=index)
 
         
     def addAction(self, action, index=None):
         if isinstance(action, QtWidgets.QWidgetAction):
-            return super(ToolBar, self).addAction(action)
+            return super(CoreFuncBar, self).addAction(action)
         btn = QtWidgets.QToolButton()
         btn.setDefaultAction(action)
         self._tool_btns.append(btn)
@@ -101,9 +116,12 @@ class ToolBar(QtWidgets.QToolBar):
     def toggleViewAction(self):
         logger.info("toggleViewAction")
 
-    def mousePressEvent(self, ev):
-        super().mousePressEvent(ev)
-        pass
+    # def mousePressEvent(self, ev):
+    #     """
+    #     Mouse press event.
+    #     """
+    #     super().mousePressEvent(ev)
+    #     pass
 
     def action_triggered(self, action):
         # logger.info('action triggered')
