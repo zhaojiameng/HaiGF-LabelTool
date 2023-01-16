@@ -1,6 +1,8 @@
 
 
 from HaiGF import HPlugin, HAction
+from .main_side_bar.main_side_bar import HaiWidget
+from .widgets.page import WorkflowPage
 
 
 class AIPlugin(HPlugin):
@@ -21,8 +23,25 @@ class AIPlugin(HPlugin):
     
     def install(self):
         """在此处实现模块的安装"""
-        self.cfb.add_action(self.get_action())
+        self.action = self.get_action()
+        self.cfb.add_action(self.action)
+
+        # 主侧栏
+        self.msb_widget = HaiWidget(self.mw)
+        self.msb_widget.set_title(self.tr('AI Tools'))
+        self.msb_widget.set_title_actions([HAction(text='test', parent=self.mw, slot=self.test)])
+
+        self.msb.add_widget(self.msb_widget, self.action)
+
+        # 中央控件
+        page = WorkflowPage(self.mw)
+        self.cw.addPage(page)
+
+
         pass
+
+    def test(self):
+        print('test')
 
 
     def get_action(self):

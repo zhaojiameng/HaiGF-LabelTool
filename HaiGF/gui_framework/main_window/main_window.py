@@ -20,6 +20,9 @@ class HMainWindow(QMainWindow):
     This is the main window of the hai gui framework, inherited from QMainWindow.
     Alias: `mw`.
     """
+    newFileExecuted = QtCore.Signal(bool)
+    fileBeenLoaded = QtCore.Signal()
+
     def __init__(self, parent=None):
         """This is the init function of the main window."""
         super().__init__(parent)
@@ -31,7 +34,7 @@ class HMainWindow(QMainWindow):
         
         self.mw_ui = Ui_MainWindow()
         self.mw_ui.setupUi(self)
-        self.setWindowTitle(self.tr('HAI GUI Framework'))
+        self.setWindowTitle(f'{__appname__} v{__version__}')
         # self.setWindowFlags(QtCore.Qt.WindowCloseButtonHint | QtCore.Qt.WindowMinimizeButtonHint)
         # self.mw_ui.retranslateUi(self)
         # self.setStyleSheet("QMainWindow{background-color: rgb(255, 255, 255);}")
@@ -94,6 +97,12 @@ class HMainWindow(QMainWindow):
 
     def show_warning(self, msg):
         self.mw_ui.statusbar.showMessage(msg, 5000)
+
+    def onRequestFillProperties(self, propertiesFillDelegate):
+        logger.info(f'onRequestFillProperties: {propertiesFillDelegate}')
+
+    def onRequestClearProperties(self):
+        logger.info('onRequestClearProperties')
 
 if __name__ == "__main__":
 

@@ -108,7 +108,8 @@ class HTabWidget(QTabWidget):
             elif not page.icon and page.title:
                 tab_bar.addTab(page.title)
             else:
-                raise ValueError("page.icon and page.title can't be None at the same time")
+                tab_bar.addTab('Default')
+                # raise ValueError("page.icon and page.title can't be None at the same time")
         
         # tab_bar设置stretch
         # tab_bar.setStretchLastSection(True)

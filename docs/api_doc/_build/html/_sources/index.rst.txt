@@ -39,6 +39,7 @@ Feautures
    
    HMainWindow
    mw.CoreFuncBar
+   mw.MainSideBar
    mw.CentralWidget
    HPlugin
    HPage

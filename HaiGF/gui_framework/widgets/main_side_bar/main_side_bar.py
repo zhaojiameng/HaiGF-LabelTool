@@ -18,6 +18,11 @@ def get_main_side_bar(parent=None, **kwargs):
     return MainSideBar(parent=parent, **kwargs)
 
 class MainSideBar(QtWidgets.QDockWidget):
+    """
+    This is the main side bar of the main window, inherited from `QDockWidget`.\n
+    It contains a title bar with actions and a widget.\n
+    Alias: `msb`, `mw.msb`.
+    """
     def __init__(self, parent=None, **kwargs):
         super().__init__(parent)
         self.mw = parent
@@ -36,8 +41,23 @@ class MainSideBar(QtWidgets.QDockWidget):
         self.setWidget(self.default_widget)
         self.setupProperty()
 
-    def add_widget(self, widget, action):
-        """添加一个widget, 对应一个action"""
+    # def set_title(self, title: str):
+    #     """
+    #     Set the title text of the main side bar.\n
+    #     """
+    #     self.title_bar.set_title(title)
+
+    # def set_title_actions(self, actions: list):
+    #     """
+    #     Set the actions of the title bar.\n
+    #     """
+    #     self.title_bar.set_title_actions(actions)
+
+    def add_widget(self, widget: QWidget, action: QAction):
+        """
+        Add a widget corresponding to an action (in the core func bar) to the main side bar.\n
+        The widget will be loaded when the action is triggered.\n
+        """
         # self._widgets.append(widget)
         assert action not in self._aw_dict.keys(), f'action {action} already exists'
         self._aw_dict[action] = widget
@@ -48,8 +68,22 @@ class MainSideBar(QtWidgets.QDockWidget):
         self.c_widget = widget
         if widget:
             self.setWidget(widget)
-        title = title if title not in [None, 'Title'] else widget.title
-        title_actions = title_actions if title_actions else widget.title_actions
+        if title in [None, 'Title']:
+            if hasattr(widget, 'title'):
+                title = widget.title
+            else:
+                title = widget.windowTitle()
+        else:
+            title = title
+        # title = title if title not in [None, 'Title'] else widget.title
+        if title_actions is None:
+            if hasattr(widget, 'title_actions'):
+                title_actions = widget.title_actions
+            else:
+                title_actions = None
+        else:
+            title_actions = title_actions
+        # title_actions = title_actions if title_actions else widget.title_actions
         
         self.title_bar.set_title(title)
         self.title_bar.set_title_actions(title_actions)

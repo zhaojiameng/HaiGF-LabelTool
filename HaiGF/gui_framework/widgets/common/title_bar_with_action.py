@@ -24,8 +24,7 @@ class TitleBarWithAction(QtWidgets.QWidget):
         # 2.占位符
         spacer = QtWidgets.QWidget()
         spacer.setSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
-        # 设置绿色
-        # spacer.setStyleSheet("background-color: green;")
+
         # 3.标题右侧的工具按钮
         self.toolbar = TitleToolBar(parent=self)
         self.toolbar.setSizePolicy(QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Expanding)
@@ -73,7 +72,8 @@ class TitleBarWithAction(QtWidgets.QWidget):
         # print(self._title)
         # print(self._title_actions)
         actions = self._title_actions
-        # 设置标题
+        # 设置标题l
+        print(self._title)
         self.title_bar.setTabText(0, self._title)
         # 设置右侧的工具按钮
         # 清空
