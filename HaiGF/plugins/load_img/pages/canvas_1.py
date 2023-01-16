@@ -1,4 +1,4 @@
-from hai_ltt.gui_framework.widgets.common.hai_page import HPage
+from HaiGF import HPage
 from PySide2 import QtWidgets, QtGui
 import cv2
 import numpy as np
