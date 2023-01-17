@@ -363,7 +363,7 @@ class CentralWidget(QWidget):
     def move_one_tab_to_another_tabw(self, source_tabw, target_tabw):
         """将一个TabWidget中的一个Tab移动到另一个TabWidget中"""
         source_page = source_tabw.currentWidget()
-        print(source_page)
+        # print(source_page)
         # target_tabw.addPage(source_page)
         old_pages = target_tabw.pages
         old_pages.append(source_page)

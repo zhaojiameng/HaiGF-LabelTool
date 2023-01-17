@@ -26,10 +26,11 @@ try:
 except:
     from inspect import getargspec
 
-from Qt import QtCore
-from Qt import QtGui
-from Qt import QtWidgets
+# from Qt import QtCore
+# from Qt import QtGui
+# from Qt import QtWidgets
 # from Qt.QtWidgets import *
+from PySide2 import QtCore, QtGui, QtWidgets
 from PySide2.QtWidgets import *
 
 from PyFlow.UI.EditorHistory import EditorHistory
@@ -57,6 +58,10 @@ from PyFlow import getRawNodeInstance
 from PyFlow.Core.Common import *
 
 from PyFlow.UI.Utils.stylesheet import editableStyleSheet
+
+import damei as dm
+
+_logger = dm.get_logger('BlueprintCanvas')
 
 
 def getNodeInstance(jsonTemplate, canvas, parentGraph=None):
@@ -344,6 +349,7 @@ class BlueprintCanvas(CanvasBase):
             node.shoutDown()
 
     def mouseDoubleClickEvent(self, event):
+        _logger.info("mouseDoubleClickEvent")
         QGraphicsView.mouseDoubleClickEvent(self, event)
         self.OnDoubleClick(self.mapToScene(event.pos()))
         event.accept()
@@ -874,7 +880,7 @@ class BlueprintCanvas(CanvasBase):
                     self._mouseDownConnectionsSelection = [node for node in self.selectedConnections()]
                     if modifiers not in [QtCore.Qt.ShiftModifier, QtCore.Qt.ControlModifier]:
                         self.clearSelection()
-                else:
+                else:  # 右键单击到空白区域
                     if hasattr(self, "_selectionRect") and self._selectionRect is not None:
                         self._selectionRect.destroy()
                         self._selectionRect = None
@@ -1741,23 +1747,23 @@ class BlueprintCanvasWidget(QWidget):
     """docstring for BlueprintCanvasWidget."""
     def __init__(self, graphManager, pyFlowInstance, parent=None):
         super(BlueprintCanvasWidget, self).__init__(parent)
-        self.manager = graphManager
-        self.pyFlowInstance = pyFlowInstance
+        self.manager = graphManager  # GraphManager
+        self.pyFlowInstance = pyFlowInstance  # PyFlowApp, i.e. main window
 
-        self.mainLayout = QVBoxLayout(self)
+        self.mainLayout = QVBoxLayout(self)  # 水平布局
         self.mainLayout.setSpacing(1)
         self.mainLayout.setContentsMargins(1, 1, 1, 1)
         self.setContentsMargins(1, 1, 1, 1)
         self.mainLayout.setObjectName("canvasWidgetMainLayout")
-        self.pathLayout = QHBoxLayout()
+        self.pathLayout = QHBoxLayout()  # 水平， 路径布局
         self.mainLayout.addLayout(self.pathLayout)
-        self.compoundPropertiesWidget = QWidget()
+        self.compoundPropertiesWidget = QWidget()  # 混合属性窗口
         self.compoundPropertiesWidget.setContentsMargins(1, 1, 1, 1)
         self.compoundPropertiesWidget.setObjectName("compoundPropertiesWidget")
         self.compoundPropertiesLayout = QHBoxLayout(self.compoundPropertiesWidget)
         self.compoundPropertiesLayout.setSpacing(1)
         self.compoundPropertiesLayout.setContentsMargins(1, 1, 1, 1)
-        self.mainLayout.addWidget(self.compoundPropertiesWidget)
+        self.mainLayout.addWidget(self.compoundPropertiesWidget)  # 添加混合属性窗口
 
         self.leCompoundName = QLineEdit()
         self.leCompoundName.setObjectName("leCompoundName")

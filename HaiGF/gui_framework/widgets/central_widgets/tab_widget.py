@@ -101,14 +101,14 @@ class HTabWidget(QTabWidget):
         for i, page in enumerate(self._pages):
             # print(f'[{i+1}/{len(self._pages)}] page: {page.title}')
             # print('xx', page.parent)
-            self.addTab(page, 'test title')  # 添加一个page
+            self.addTab(page, self.tr('test title'))  # 添加一个page
             # 设置tab bar的tab
             if page.icon and page.title:
                 tab_bar.addTab(page.icon, page.title)
             elif not page.icon and page.title:
                 tab_bar.addTab(page.title)
             else:
-                tab_bar.addTab('Default')
+                tab_bar.addTab(self.tr('Default'))
                 # raise ValueError("page.icon and page.title can't be None at the same time")
         
         # tab_bar设置stretch

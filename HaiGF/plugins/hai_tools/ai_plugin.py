@@ -23,8 +23,8 @@ class AIPlugin(HPlugin):
     """
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        print('mw, ', self.mw)
-        print('cfb, ', self.cfb)
+        # print('mw, ', self.mw)
+        # print('cfb, ', self.cfb)
         self._haic = None
         self.hai_ip = '47.114.37.111'
         self.hai_port = 9999
@@ -86,11 +86,11 @@ class AIPlugin(HPlugin):
         """
         _logger.info('ai action clicked')
         if self.haic is None or not self.haic.connected:
-            self.errorMessage(
-                title='Connect Error', 
-                message=f'Failed to connect to HAI server "{self.config["ip"]}:{self.config["port"]}", \
-                    please check.')
-            self.ml.clean()
+            self.mw.errorMessage(
+                title=self.tr('Connect Error'), 
+                message=self.tr('Failed to connect to HAI server %s:%s please check.' % (self.hai_ip, self.hai_port))
+            )
+            self.msb_widget.clean()
             return 
         moduels = self.haic.hub.list(ret_fmt='json')
         print(moduels)

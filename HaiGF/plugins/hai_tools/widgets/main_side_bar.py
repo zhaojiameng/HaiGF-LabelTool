@@ -43,15 +43,6 @@ class HaiWidget(HMainSideBarWidget):
         hlayout = QtWidgets.QHBoxLayout()
         hlayout.addWidget(self.iconlist)
         self.setLayout(hlayout)
-        
-        self.init_ui()
-
-    def init_ui(self):
-        label = QLabel("HAI Tools")
-        self.layout = QVBoxLayout(self)
-        self.layout.addWidget(label)
-        self.setLayout(self.layout)
-
 
     @property
     def default_img_data(self):

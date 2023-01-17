@@ -1,15 +1,18 @@
 # This Python file uses the following encoding: utf-8
 import sys
-from PySide2.QtWidgets import QApplication, QMainWindow
-from PySide2 import QtCore
-import damei as dm
+from PySide2 import QtCore, QtGui, QtWidgets
+from PySide2.QtCore import *
+from PySide2.QtGui import *
+from PySide2.QtWidgets import *
 from pathlib import Path
+import damei as dm
 
 from .ui_form import Ui_MainWindow
 from HaiGF.apis import __version__, __appname__
 from .actions.actions import AllActions
 from HaiGF.apis import HGF
 from HaiGF.apis import HPlugin
+
 
 # from ..widgets import ExplorerWidget
 
@@ -35,6 +38,7 @@ class HMainWindow(QMainWindow):
         self.mw_ui = Ui_MainWindow()
         self.mw_ui.setupUi(self)
         self.setWindowTitle(f'{__appname__} v{__version__}')
+        self.setWindowIcon(HGF.ICONS('anno'))
         # self.setWindowFlags(QtCore.Qt.WindowCloseButtonHint | QtCore.Qt.WindowMinimizeButtonHint)
         # self.mw_ui.retranslateUi(self)
         # self.setStyleSheet("QMainWindow{background-color: rgb(255, 255, 255);}")
@@ -103,6 +107,11 @@ class HMainWindow(QMainWindow):
 
     def onRequestClearProperties(self):
         logger.info('onRequestClearProperties')
+
+    def errorMessage(self, title, message):
+        return QMessageBox.critical(
+            self, title, "<p><b>%s</b></p>%s" % (title, message)
+        )
 
 if __name__ == "__main__":
 

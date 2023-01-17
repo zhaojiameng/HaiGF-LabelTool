@@ -31,8 +31,8 @@ class Ui_Widget(object):
         self.label = QLabel(Widget)
         self.label.setObjectName(u"label")
         self.label.setStyleSheet(HGF.FIRST_LEVEL_TITLE_CSS)
-        print(Widget)
-        print(Widget.tr('Start up'))
+        # print(Widget)
+        # print(Widget.tr('Start up'))
         self.label.setText(Widget.tr("Welcome to HAI GUI Framework!"))
         self.label.setWordWrap(True)
 

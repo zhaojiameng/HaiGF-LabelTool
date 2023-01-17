@@ -4,6 +4,7 @@ from pathlib import Path
 import yaml
 from .enum import Colors, FontFamilys
 from .preset import Font
+from .icons import Icons
 from HaiGF.utils import general
 import damei as dm
 
@@ -25,6 +26,8 @@ class HGF(object):
         self.COLORS = Colors()
         self.FONT_FAMILYS = FontFamilys()
         self.CONFIG = load_config()
+        self.ICONS = Icons()
+
 
     def get_text_scale_factor(self, ):
         """获取缩放系数"""
