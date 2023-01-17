@@ -33,7 +33,7 @@ class HGF(object):
         if system == 'windows':
             return 1.5
         elif system == 'linux':
-            return 2
+            return 2.2
         elif system == 'macos':
             return 1
         else:

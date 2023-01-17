@@ -1,4 +1,6 @@
 
+[![Source_codes](https://img.shields.io/static/v1?label=Docs&message=Readthedoc&color=Green)](
+http://47.114.37.111)
 
 ## HAI GUI 框架
 
