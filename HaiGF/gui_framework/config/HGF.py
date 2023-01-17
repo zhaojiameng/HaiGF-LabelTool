@@ -35,7 +35,7 @@ class HGF(object):
         elif system == 'linux':
             return 2
         elif system == 'macos':
-            return 0.8
+            return 1
         else:
             raise ValueError(f'Unsupported system: {system}')
 
@@ -155,3 +155,10 @@ class HGF(object):
         return f'font-family: {self.FONT_FAMILY}; font-size: {int(self.TEXT_FONT_SIZE)}px; \
                 font-weight: False; color: {self.COLORS.White}; background-color: #FF9966; '
         
+    @property
+    def CFB_ACTION_SIZE(self):
+        """核心功能栏动作按钮大小"""
+        if dm.current_system() == 'macos':
+            return self.CONFIG['action_size']*0.6
+        return self.CONFIG['action_size']
+

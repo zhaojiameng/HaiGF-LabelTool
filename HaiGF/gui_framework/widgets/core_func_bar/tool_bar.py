@@ -43,7 +43,7 @@ class CoreFuncBar(QtWidgets.QToolBar):
         self.setMovable(False)
         self.layout.setAlignment(QtCore.Qt.AlignCenter)
         self.setLayout(self.layout)
-        self.setIconSize(QtCore.QSize(HGF.CONFIG['action_size'], HGF.CONFIG['action_size']))
+        self.setIconSize(QtCore.QSize(HGF.CFB_ACTION_SIZE, HGF.CFB_ACTION_SIZE))
 
         self._tool_btns = []
 
