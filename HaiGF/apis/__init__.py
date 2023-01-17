@@ -24,3 +24,6 @@ from ..gui_framework.main_window.main_window import HMainWindow as mw
 ## 其他
 
 from ..gui_framework.utils import newAction, newIcon
+
+# HaiClient
+from .hai_client import hai_client

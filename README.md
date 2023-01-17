@@ -7,9 +7,9 @@ https://github.com/zhangzhengde0225/damei/archive/refs/heads/master.zip) -->
 [![Source_codes](https://img.shields.io/static/v1?label=ReadDocs&message=API&color=blue)](
 http://47.114.37.111)
 
-## HAI GUI 框架
+## HaiGF
 
-HAI GUI Framework是可扩展、轻量化的用于开发基于机器学习算法的应用程序的框架。
+HaiGF(HAI GUI Framework)是可扩展、轻量化的用于开发基于机器学习算法的应用程序的框架。
 
 + 采用模块化设计，可扩展性强，可灵活添加新的模块。
 + 采用基于HAI算法库的前后端分离设计，实现界面的轻量化。
