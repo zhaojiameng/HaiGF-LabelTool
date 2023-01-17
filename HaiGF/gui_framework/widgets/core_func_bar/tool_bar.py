@@ -45,13 +45,16 @@ class CoreFuncBar(QtWidgets.QToolBar):
         self.setLayout(self.layout)
         self.setIconSize(QtCore.QSize(HGF.CFB_ACTION_SIZE, HGF.CFB_ACTION_SIZE))
 
+        # self.setStyleSheet(F"background-color: {HGF.CORE_FUNC_BAR_BACKGOUND_COLOR};")
+        self.setStyleSheet(HGF.CFB_CSS)
+
         self._tool_btns = []
 
     def paintEvent(self, ev):
         # 绘制背景
         painter = QtWidgets.QStylePainter(self)
         painter.setPen(QtCore.Qt.NoPen)
-        painter.setBrush(QColor(HGF.CORE_FUNC_BAR_BACKGOUND_COLOR))
+        painter.setBrush(QColor(HGF.CFB_BACKGOUND_COLOR))
         painter.drawRect(self.rect())  # 绘制rect为LightGray
         # 绘制选中Checked的
         for i, tool_btn in enumerate(self._tool_btns):
@@ -65,7 +68,7 @@ class CoreFuncBar(QtWidgets.QToolBar):
                     painter.drawLine(0+j, y1, 0+j, y2)
 
         # 设置背景颜色灰色
-        self.setStyleSheet(F"background-color: {HGF.CORE_FUNC_BAR_BACKGOUND_COLOR};")
+        # s
         # self.setStyleSheet(F"background-color: {HGF.COLORS.RoyalBlue};")
         painter.end()
 

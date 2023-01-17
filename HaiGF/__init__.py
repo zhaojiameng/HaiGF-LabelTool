@@ -8,3 +8,5 @@ from .apis import CentralWidget, AuxSideBar, PanelWidget, HStatusBar
 from .apis import HAction, HPage, HPlugin, HMainSideBarWidget
 
 from .apis import HaiClient
+
+from . import utils

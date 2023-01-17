@@ -69,14 +69,6 @@ class HGF(object):
         """主题"""
         return self.CONFIG['theme']
 
-    @property
-    def CORE_FUNC_BAR_BACKGOUND_COLOR(self):
-        """核心功能栏背景色"""
-        if self.THEME == 'Dark':
-            return self.COLORS.LightBlack
-        elif self.THEME == 'Light':
-            return self.COLORS.LightGray
-
     def auto_scale(self, ):
         """根据屏幕分辨率自动缩放"""
         resolution = general.get_screen_resolution()
@@ -154,11 +146,25 @@ class HGF(object):
     def STATUS_BAR_CSS(self):
         return f'font-family: {self.FONT_FAMILY}; font-size: {int(self.TEXT_FONT_SIZE)}px; \
                 font-weight: False; color: {self.COLORS.White}; background-color: #FF9966; '
-        
+    
+    @property
+    def CFB_BACKGOUND_COLOR(self):
+        """核心功能栏背景色"""
+        if self.THEME == 'Dark':
+            return self.COLORS.LightBlack
+        elif self.THEME == 'Light':
+            return self.COLORS.LightGray
+
     @property
     def CFB_ACTION_SIZE(self):
         """核心功能栏动作按钮大小"""
         if dm.current_system() == 'macos':
             return self.CONFIG['action_size']*0.6
         return self.CONFIG['action_size']
+
+    @property
+    def CFB_CSS(self):
+        """核心功能栏CSS"""
+        return f'font-family: {self.FONT_FAMILY}; font-size: {int(self.TEXT_FONT_SIZE*1.2)}px; \
+                font-weight: False; color: {self.COLORS.White}; background-color: {self.CFB_BACKGOUND_COLOR}; '
 
