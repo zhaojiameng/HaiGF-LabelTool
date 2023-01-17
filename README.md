@@ -4,7 +4,7 @@ https://github.com/zhangzhengde0225/damei)
 https://github.com/zhangzhengde0225/damei/issues)
 [![Source_codes](https://img.shields.io/static/v1?label=Download&message=src&color=orange)](
 https://github.com/zhangzhengde0225/damei/archive/refs/heads/master.zip) -->
-[![Source_codes](https://img.shields.io/static/v1?label=Docs&message=Readthedoc&color=Green)](
+[![Source_codes](https://img.shields.io/static/v1?label=Docs&message=Readthedoc&color=blue)](
 http://47.114.37.111)
 
 ## HAI GUI 框架
