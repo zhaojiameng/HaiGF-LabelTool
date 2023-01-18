@@ -1,6 +1,6 @@
 
 
-from HaiGF import HPlugin, HAction
+from HaiGF.apis import HPlugin, HAction
 import damei as dm
 
 

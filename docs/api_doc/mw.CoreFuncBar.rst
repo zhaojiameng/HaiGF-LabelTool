@@ -1,4 +1,4 @@
-mw.CoreFuncBar
+CoreFuncBar
 ================
 
 .. automodule:: HaiGF.apis.cfb

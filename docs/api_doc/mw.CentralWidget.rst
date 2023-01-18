@@ -1,4 +1,4 @@
-mw.CentralWidget
+CentralWidget
 ==================
 
 .. automodule:: HaiGF.apis.cw

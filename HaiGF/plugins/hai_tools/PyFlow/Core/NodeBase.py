@@ -534,6 +534,7 @@ class NodeBase(INode):
         return p
 
     def createOutputPin(self, pinName, dataType, defaultValue=None, structure=StructureType.Single, constraint=None, structConstraint=None, supportedPinDataTypes=[], group=""):
+    # def createOutputPin(self, pinName, dataType, defaultValue=None, structure=None, constraint=None, structConstraint=None, supportedPinDataTypes=[], group=""):
         """Creates output pin
 
         :param pinName: Pin name

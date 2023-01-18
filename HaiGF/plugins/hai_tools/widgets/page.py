@@ -46,12 +46,20 @@ class WorkflowPage(HPage):
         jsonTemplate["x"] = 0
         jsonTemplate["y"] = 100
         # 添加一个节点
-        alg_node = NodeBase(name='test', uid=None)  # Nodebase对象
+        # alg_node = NodeBase(name='test', uid=None)  # Nodebase对象
+        alg_node = AlgorithmNode(name='test', uid=None)  # Nodebase对象
         alg_node.setDeprecated(True)
-        alg_node.setExperimental()
+        # alg_node.setExperimental()
+        # 添加input pin
+        # input_pin = alg_node.createInputPin('input', 'StringPin')
+        # alg_node.addInputPin('input', 'StringPin')
 
 
         alg_node = UINodeBase(alg_node)  # NodeBase转为QGraphicsWidget
+
+        lb = QLabel('test')
+        alg_node.addWidget(lb)
+
         self.canvas.addNode(alg_node, jsonTemplate, parentGraph=None)
         pass
 
@@ -60,4 +68,14 @@ class WorkflowPage(HPage):
     
 class AlgorithmNode(NodeBase):
     def __init__(self, name, uid=None):
-        super().__init__(name, uid) 
+        super().__init__(name, uid)
+
+        # self.inExec = self.createInputPin('inExec', 'ExecPin', None, self.compute)
+        # self.entity = self.createInputPin('path', 'StringPin')
+
+        from ..PyFlow.Core.Common import StructureType
+        self.outExec = self.createOutputPin(pinName='outExec', dataType='ExecPin', defaultValue=None)
+
+
+    def compute(self, *args, **kwargs):
+        return super().compute(*args, **kwargs)
