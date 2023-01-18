@@ -3,8 +3,8 @@
 from HaiGF import HPlugin, HAction
 import damei as dm
 
-from .widgets.main_side_bar import HaiWidget
-from .widgets.page import WorkflowPage
+
+
 from .utils import general
 
 
@@ -32,6 +32,9 @@ class AIPlugin(HPlugin):
     
     def install(self):
         """在此处实现模块的安装"""
+        from .widgets.page import WorkflowPage
+        from .widgets.main_side_bar import HaiWidget
+
         self.action = self.get_action()
         self.cfb.add_action(self.action)
 
@@ -39,13 +42,12 @@ class AIPlugin(HPlugin):
         self.msb_widget = HaiWidget(self.mw)
         self.msb_widget.set_title(self.tr('AI Tools'))
         self.msb_widget.set_title_actions([HAction(text='test', parent=self.mw, slot=self.test)])
-
         self.msb.add_widget(self.msb_widget, self.action)
 
         # 中央控件
-        page = WorkflowPage(self.mw)
-        self.cw.addPage(page)
-        pass
+        workflow_page = WorkflowPage(self.mw)
+        self.cw.addPage(workflow_page)
+        
 
 
     @property

@@ -11,8 +11,7 @@ from .apis import HMainWindow
 # from .plugins import AppMainWindow
 from .apis import __version__, __appname__
 
-from .plugins.hai_tools import AIPlugin
-from .plugins.load_img import LoadImagePlugin
+
 
 
 def run(name='framework'):
@@ -30,13 +29,12 @@ def run(name='framework'):
     # print(xx)
     # font_str = QFontDatabase.applicationFontFamilies(id)[0]
 
-    
-    if name == 'framework':
-        mw = HMainWindow()
-    else:
-        mw = AppMainWindow()
+    mw = HMainWindow()
 
+    from .plugins.hai_tools import AIPlugin
     mw.install_plugin(AIPlugin)
+
+    from .plugins.load_img import LoadImagePlugin
     mw.install_plugin(LoadImagePlugin)
 
     mw.show()

@@ -141,9 +141,11 @@ class BlueprintCanvas(CanvasBase):
         self.tempnode = None
 
     def getApp(self):
+        """Returns reference to main application instance"""
         return self.pyFlowInstance
 
     def onGraphChanged(self, newGraph):
+        """Callback for graph change event"""
         for node in self.nodes.values():
             bVisible = node._rawNode.graph() == newGraph
             node.setVisible(bVisible)
@@ -169,6 +171,7 @@ class BlueprintCanvas(CanvasBase):
         QtCore.QTimer.singleShot(100, nodeShapeUpdater)
 
     def setSelectedNodesCollapsed(self, collapsed=True):
+        """Collapses or expands selected nodes"""
         for node in self.selectedNodes():
             node.collapsed = collapsed
 
@@ -277,6 +280,7 @@ class BlueprintCanvas(CanvasBase):
         self.graphManager.selectGraphByName(activeGraphName)
 
     def populateMenu(self):
+        """Populate menu with actions"""
         self.actionCollapseSelectedNodes = self.menu.addAction("Collapse selected nodes")
         self.actionCollapseSelectedNodes.triggered.connect(lambda: self.setSelectedNodesCollapsed(True))
 
