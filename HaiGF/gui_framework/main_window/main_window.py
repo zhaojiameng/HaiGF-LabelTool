@@ -48,6 +48,30 @@ class HMainWindow(QMainWindow):
             "QMainWindow{"+f"background-color: {HGF.COLORS.WhiteSmoke}; \
                 color: rgb(255, 255, 255); font-family: {HGF.FONT_FAMILY};\
                 "+"}")
+    
+    @property
+    def mw(self):
+        return self
+        
+    @property
+    def msb(self):
+        return self.main_side_bar
+
+    @property
+    def cfb(self):
+        return self.core_func_bar
+
+    @property
+    def cw(self):
+        return self.central_widget
+
+    @property
+    def asb(self):
+        return self.aux_side_bar
+
+    @property
+    def pw(self):
+        return self.panel_widget
 
 
     def install_plugin(self, plugin: HPlugin):

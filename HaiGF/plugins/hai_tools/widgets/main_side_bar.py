@@ -14,11 +14,14 @@ from PySide2.QtWidgets import *
 import numpy as np
 import cv2
 from HaiGF import utils
+import damei as dm
+
+logger = dm.get_logger('main_side_bar')
 
 
 here = Path(__file__).parent
 
-class HaiWidget(HMainSideBarWidget):
+class HaiWidget(HMainSideBarWidget):  # QWidget
     
     itemDoubleClicked = QtCore.Signal(QtWidgets.QListWidgetItem)
     itemCheckStateChanged = QtCore.Signal()
@@ -29,7 +32,8 @@ class HaiWidget(HMainSideBarWidget):
         self.parent = parent
         self.num_mm = 1
 
-        self.iconlist = QtWidgets.QListWidget(self)
+        # self.iconlist = QtWidgets.QListWidget(self)
+        self.iconlist = AlgorithmListWdiget(self)
         self.iconlist.setViewMode(QtWidgets.QListView.IconMode)
         self.iconlist.setSpacing(10)
         self.iconlist.setIconSize(QtCore.QSize(200, 200))
@@ -40,7 +44,7 @@ class HaiWidget(HMainSideBarWidget):
         self.modals = []  # 
         self._default_img_data = None
         # self.try_init()
-        hlayout = QtWidgets.QHBoxLayout()
+        hlayout = QtWidgets.QVBoxLayout()
         hlayout.addWidget(self.iconlist)
         self.setLayout(hlayout)
 
@@ -89,10 +93,10 @@ class HaiWidget(HMainSideBarWidget):
             img_byte = utils.imgdata2qt(mw, img_data, filename=f'multi modal: {modal}')
             img_pixmap = QtGui.QPixmap.fromImage(img_byte)
 
-            item = QtWidgets.QListWidgetItem()  # Item in the list
+            item = QtWidgets.QListWidgetItem()  # Item in the list 该item
             item.setText(modal)
-            # item.setSizeHint(QtCore.QSize(200, 200))
             item.setIcon(QtGui.QIcon(img_pixmap))
+
             if modals_new is not None:
                 if modal in modals_new:
                     item.setCheckState(Qt.Checked)
@@ -115,3 +119,49 @@ class HaiWidget(HMainSideBarWidget):
 
     def clean(self):
         self.updateModals(modals=[])
+
+
+class AlgorithmListWdiget(QListWidget):
+
+    def __init__(self, parent=None) -> None:
+        super().__init__(parent)
+        self.p = parent
+
+        # self.shadow_item = QListWidgetItem(self)
+        self.shadow_item = QLabel(self)
+        self.shadow_item.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
+        self.shadow_item.raise_()
+        self.shadow_item._clicked = False
+
+    # item被点击事件
+    def mousePressEvent(self, event):
+        super().mousePressEvent(event)
+        logger.info('mousePressEvent')
+
+        # 被选择的item
+        c_item = self.itemAt(event.pos())
+        if isinstance(c_item, QListWidgetItem):  # 选中某个item
+            # print(c_item.text())
+            self.shadow_item.setText(c_item.text())
+            # 更新尺寸
+            self.shadow_item.adjustSize()
+            # self.shadow_item.setIcon(c_item.icon())
+            self.shadow_item.hide()
+            self.shadow_item._clicked = True
+
+    def mouseMoveEvent(self, event):
+        super().mouseMoveEvent(event)
+        logger.info('mouseMoveEvent')
+        if self.shadow_item._clicked:
+            # 将位置映射到当前控件的坐标系
+            self.p.p.cw.moving_node(event, self.shadow_item)
+            
+            
+
+    def mouseReleaseEvent(self, event):
+        super().mouseReleaseEvent(event)
+        logger.info('mouseReleaseEvent')
+        if self.shadow_item._clicked:
+            self.shadow_item.hide()
+            self.shadow_item._clicked = False
+

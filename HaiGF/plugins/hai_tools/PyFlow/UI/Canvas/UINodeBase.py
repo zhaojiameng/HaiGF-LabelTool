@@ -15,12 +15,10 @@
 
 from nine import str
 import logging
-# from Qt import QtCore
-# from Qt import QtGui
-# from Qt import QtSvg
-# from Qt.QtWidgets import *
-from PySide2.QtWidgets import *
-from PySide2 import QtCore, QtGui, QtWidgets, QtSvg
+from Qt import QtCore
+from Qt import QtGui
+from Qt import QtSvg
+from Qt.QtWidgets import *
 from PyFlow.ConfigManager import ConfigManager
 from PyFlow.Core.Common import *
 from PyFlow.UI.Canvas.UIPinBase import (
@@ -247,22 +245,22 @@ class UINodeBase(QGraphicsWidget, IPropertiesViewSupport, IUINode):
 
     def __init__(self, raw_node, w=80, color=Colors.NodeBackgrounds, headColorOverride=None):
         super(UINodeBase, self).__init__()
-        self.setFlag(QGraphicsWidget.ItemIsMovable)  # Enable moving
-        self.setFlag(QGraphicsWidget.ItemIsFocusable)  # Enable focus
-        self.setFlag(QGraphicsWidget.ItemIsSelectable)  # Enable selection
-        self.setFlag(QGraphicsWidget.ItemSendsGeometryChanges)  # Enable geometry change
-        self.setCacheMode(QGraphicsItem.DeviceCoordinateCache)  # Enable caching
-        self.setFocusPolicy(QtCore.Qt.StrongFocus)  # Set focus policy
-        self.setAcceptHoverEvents(True)  # Enable hover events
-        self.setZValue(NodeDefaults().Z_LAYER)  # 1000000
+        self.setFlag(QGraphicsWidget.ItemIsMovable)
+        self.setFlag(QGraphicsWidget.ItemIsFocusable)
+        self.setFlag(QGraphicsWidget.ItemIsSelectable)
+        self.setFlag(QGraphicsWidget.ItemSendsGeometryChanges)
+        self.setCacheMode(QGraphicsItem.DeviceCoordinateCache)
+        self.setFocusPolicy(QtCore.Qt.StrongFocus)
+        self.setAcceptHoverEvents(True)
+        self.setZValue(NodeDefaults().Z_LAYER)
 
         # Raw Node Definition
         self.dirty = True
         self.computing = False
         self._rawNode = raw_node
         self._rawNode.setWrapper(self)
-        self._rawNode.killed.connect(self.kill) 
-        self._rawNode.tick.connect(self.Tick)  
+        self._rawNode.killed.connect(self.kill)
+        self._rawNode.tick.connect(self.Tick)
         self._rawNode.errorOccured.connect(self.onNodeErrorOccurred)
         self._rawNode.errorCleared.connect(self.onNodeErrorCleared)
         self._rawNode.setDirty.connect(self.setDirty)
@@ -278,24 +276,24 @@ class UINodeBase(QGraphicsWidget, IPropertiesViewSupport, IUINode):
         self.opt_selected_pen_color = Colors.NodeSelectedPenColor
         self.optPenSelectedType = QtCore.Qt.SolidLine
         self.optPenErrorType = QtCore.Qt.DashLine
-        self._collapsed = False  # Collapsed state
-        self._left_stretch = 0  # Left stretch
+        self._collapsed = False
+        self._left_stretch = 0
         self.color = color
         if self.drawlabel is None:
             self.drawlabel = True
-        self.headColorOverride = headColorOverride  # Override head color
+        self.headColorOverride = headColorOverride
         self.headColor = NodeDefaults().PURE_NODE_HEAD_COLOR
         if raw_node.headerColor is not None:
             self.headColorOverride = QtGui.QColor.fromRgb(*raw_node.headerColor)
-        self._w = 0  # Width
-        self.h = 30  # Height
-        self.minWidth = 50  # Minimum width
+        self._w = 0
+        self.h = 30
+        self.minWidth = 50
         self.minHeight = self.h
         self._labelTextColor = QtCore.Qt.white
 
         # Font Options
         self.nodeNameFont = QtGui.QFont("Consolas")
-        self.nodeNameFont.setPointSize(6)  # 标题的字体和大小
+        self.nodeNameFont.setPointSize(6)
 
         # GUI Layout
         self.drawLayoutsDebug = False
@@ -414,20 +412,16 @@ class UINodeBase(QGraphicsWidget, IPropertiesViewSupport, IUINode):
         self._rawNode.computed.connect(self.onComputed)
 
     def onRefresh(self):
-        """Refresh the node"""
         self._rawNode.processNode()
 
     def onCopyPathToClipboard(self):
-        """Copy the node path to the clipboard"""
         QApplication.clipboard().clear()
         QApplication.clipboard().setText(self.path())
 
     def getLastErrorMessage(self):
-        """Return the last error message"""
         return self._rawNode.getLastErrorMessage()
 
     def hoverEnterEvent(self, event):
-        """Hover enter event"""
         super(UINodeBase, self).hoverEnterEvent(event)
         if not self.isValid():
             self.setToolTip(self.getLastErrorMessage())
@@ -438,19 +432,15 @@ class UINodeBase(QGraphicsWidget, IPropertiesViewSupport, IUINode):
         pass
 
     def setSingleLineName(self, bSingleLine=True):
-        """quickly set the name to be single line or not"""
         self.nodeNameWidget.labelItem.singleLine = bSingleLine
 
     def setNameValidationEnabled(self, bEnabled=True):
-        """Enable/Disable the name validation"""
         self.nodeNameWidget.labelItem.validator = None if not bEnabled else NodeNameValidator()
 
     def isNameValidationEnabled(self):
-        """Return True if the name validation is enabled"""
         return self.nodeNameWidget.labelItem.validator is not None
 
     def onToggleExposeProperties(self):
-        """Toggle the expose properties to compound"""
         self.setExposePropertiesToCompound(not self.bExposeInputsToCompound)
         EditorHistory().saveState("{} exposing widgets".format("Start" if self.bExposeInputsToCompound else "Stop"), modify=True)
 
@@ -978,9 +968,6 @@ class UINodeBase(QGraphicsWidget, IPropertiesViewSupport, IUINode):
                 action.setVisible(False)
 
     def addWidget(self, widget):
-        """
-        Add a widget to the node in the custom layout.
-        """
         if not self.hasCustomLayout:
             self.nodeLayout.insertItem(1, self.customLayout)
             self.hasCustomLayout = True

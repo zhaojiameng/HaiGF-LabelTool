@@ -64,16 +64,14 @@ class WorkflowPage(HPage):
         pass
 
 
-
-    
 class AlgorithmNode(NodeBase):
     def __init__(self, name, uid=None):
         super().__init__(name, uid)
+        from ..PyFlow import INITIALIZE
+        INITIALIZE()
 
-        # self.inExec = self.createInputPin('inExec', 'ExecPin', None, self.compute)
-        # self.entity = self.createInputPin('path', 'StringPin')
-
-        from ..PyFlow.Core.Common import StructureType
+        self.inExec = self.createInputPin('inExec', 'ExecPin', None, self.compute)
+        self.entity = self.createInputPin('path', 'StringPin')
         self.outExec = self.createOutputPin(pinName='outExec', dataType='ExecPin', defaultValue=None)
 
 

@@ -428,6 +428,21 @@ class CentralWidget(QWidget):
         ctabw.clear_mask()  # 清除蒙版
         self.split_screen(stabw, ctabw, mr) 
 
+    def moving_node(self, ev, shadow_node):
+        """鼠标拖动节点中"""
+        sn = shadow_node
+        sn.setParent(self.p.mw)
+        ev_posw = self.p.mw.mapFromGlobal(QPoint(ev.globalX(), ev.globalY()))
+        x = ev_posw.x() - sn.width() / 2
+        y = ev_posw.y() - sn.height() / 2
+        sn.move(x, y)
+        sn.show()
+        print(f'ev_posw={ev_posw}')
+
+        # 如果鼠标在cw中，确保显示workflow页面
+        if self.rect().contains(ev_posw):
+            self.show_workflow_page()
+
     
     def clear_splitters(self):
         """清除所有分屏器"""

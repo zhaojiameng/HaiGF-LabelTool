@@ -103,24 +103,19 @@ class NodeBase(INode):
         self._computingTime = None
 
     def setDeprecated(self, message):
-        """Sets node as deprecated."""
         self._deprecated = True
         self._deprecationMessage = "This node will be removed in later releases! {}".format(message)
 
     def isDeprecated(self):
-        """Returns True if node is deprecated."""
         return self._deprecated
 
     def isExperimental(self):
-        """Returns True if node is experimental."""
         return self._experimental
 
     def setExperimental(self):
-        """Sets node as experimental."""
         self._experimental = True
 
     def deprecationMessage(self):
-        """Returns deprecation message."""
         return self._deprecationMessage
 
     def getMetaData(self):
@@ -534,7 +529,6 @@ class NodeBase(INode):
         return p
 
     def createOutputPin(self, pinName, dataType, defaultValue=None, structure=StructureType.Single, constraint=None, structConstraint=None, supportedPinDataTypes=[], group=""):
-    # def createOutputPin(self, pinName, dataType, defaultValue=None, structure=None, constraint=None, structConstraint=None, supportedPinDataTypes=[], group=""):
         """Creates output pin
 
         :param pinName: Pin name
