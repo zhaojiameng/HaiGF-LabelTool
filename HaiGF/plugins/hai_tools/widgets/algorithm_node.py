@@ -46,10 +46,11 @@ def get_node(title, **kwargs):
     pix_img = QPixmap(image)
     w, h = ui_node.nodeNameWidget.size().width(), ui_node.nodeNameWidget.size().height()
     lb.setMaximumHeight(3*h)
+    # lb.setPixmap(pix_img)
     lb.setScaledContents(True)  # 让图片自适应label大小
     # 防止锯齿
     lb.setPixmap(pix_img.scaled(lb.size(), QtCore.Qt.KeepAspectRatio, QtCore.Qt.SmoothTransformation))
-    print(lb.size())
+    # print(lb.size())
     # lb.setText('test widget')s
     ui_node.addWidget(lb)
 
