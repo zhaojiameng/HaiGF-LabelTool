@@ -3,7 +3,9 @@
 from HaiGF.apis import HPlugin, HAction
 import damei as dm
 
+from .PyFlow.Core.GraphManager import GraphManagerSingleton
 from .utils import general
+from .widgets.algorithm_node import get_node
 
 
 _logger = dm.get_logger('ai_plugin')
@@ -44,7 +46,12 @@ class AIPlugin(HPlugin):
         self.msb.add_widget(self.msb_widget, self.action)
 
         # 中央控件
-        workflow_page = WorkflowPage(self.mw)
+        graph_manager = GraphManagerSingleton().get()
+        workflow_page = WorkflowPage(self.mw, graph_manager=graph_manager)
+        node = get_node('yolov5', x=-300, y=-200)
+        node2 = get_node('resnet')
+        workflow_page.add_node(node)
+        workflow_page.add_node(node2)
         self.cw.addPage(workflow_page)
         
 

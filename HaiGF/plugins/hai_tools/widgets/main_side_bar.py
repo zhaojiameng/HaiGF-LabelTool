@@ -157,7 +157,6 @@ class AlgorithmListWdiget(QListWidget):
             self.p.p.cw.moving_node(event, self.shadow_item)
             
             
-
     def mouseReleaseEvent(self, event):
         super().mouseReleaseEvent(event)
         logger.info('mouseReleaseEvent')

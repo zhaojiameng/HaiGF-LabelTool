@@ -170,6 +170,13 @@ class NodeBase(INode):
     def packageName(self):
         return self._packageName
 
+    @packageName.setter
+    def packageName(self, value):
+        self._packageName = value
+
+    def set_package_name(self, value):
+        self._packageName = value
+
     @property
     def constraints(self):
         return self._constraints
@@ -201,7 +208,7 @@ class NodeBase(INode):
                 raise Exception("Could not find signature for __getitem__:{0}".format(type(pinName)))
 
     @property
-    def pins(self):
+    def pins(self):  # 所有pin，包括PinDirection.Input和PinDirection.Output
         return self._pins
 
     @property
@@ -282,7 +289,7 @@ class NodeBase(INode):
 
     @uid.setter
     def uid(self, value):
-        if self.graph is not None:
+        if self.graph is not None:  # 如果graph不为空，就把自己从graph的nodes中删除，然后再添加
             self.graph().getNodes()[value] = self.graph().getNodes().pop(self._uid)
         self._uid = value
 
@@ -301,6 +308,15 @@ class NodeBase(INode):
                     }
         return template
 
+    def set_lib(self, lib):
+        self.lib = lib
+
+    def set_graph(self, graph):
+        self.graph = graph
+
+    def set_pins(self, pins):
+        self._pins = pins
+
     def serialize(self):
         template = NodeBase.jsonTemplate()
 
@@ -311,7 +327,10 @@ class NodeBase(INode):
         template['lib'] = self.lib
         template['type'] = self.__class__.__name__
         template['name'] = nodeName
-        template['owningGraphName'] = self.graph().name
+        if self.graph is not None:
+            template['owningGraphName'] = self.graph().name
+        else:
+            template['owningGraphName'] = None
         template['uuid'] = uidString
         template['inputs'] = [i.serialize() for i in self.inputs.values()]
         template['outputs'] = [o.serialize() for o in self.outputs.values()]

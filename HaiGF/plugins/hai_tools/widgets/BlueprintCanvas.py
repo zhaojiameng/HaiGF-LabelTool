@@ -1684,7 +1684,7 @@ class BlueprintCanvas(CanvasBase):
         else:
             # When copy paste compound node. we are actually pasting a tree of graphs
             # So we need to put each node under correct graph
-            assert(parentGraph is not None), "Parent graph is invalid"
+            assert(parentGraph is not None), f"Parent graph is invalid, node {uiNode._rawNode.name}"
             parentGraph.addNode(uiNode._rawNode, jsonTemplate)
 
         uiNode.postCreate(jsonTemplate)

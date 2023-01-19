@@ -14,7 +14,7 @@ from ..PyFlow.UI.Canvas.UINodeBase import UINodeBase
 from ..PyFlow.Core import NodeBase\
 
 class WorkflowPage(HPage):
-    def __init__(self, parent=None, *args, **kwargs):
+    def __init__(self, parent=None, graph_manager=None, *args, **kwargs):
         
         # super().__init__(self.graphManager.get(), parent, *args, **kwargs)
         super().__init__(parent)
@@ -27,55 +27,16 @@ class WorkflowPage(HPage):
         self.layout = QVBoxLayout(self)
         self.layout.setContentsMargins(0, 0, 0, 0)
 
-        self.graphManager = GraphManagerSingleton().get()
+        self.graphManager = graph_manager if graph_manager else GraphManagerSingleton().get()
         self.canvas = BlueprintCanvas(self.graphManager, self.p)
         self.layout.addWidget(self.canvas)
 
-        self.add_node()
 
-
-
-    def add_node(self):
-
-        # 
+    def add_node(self, node: UINodeBase):
+        """添加一个node到画布，"""
         # self.graphManager.get().addNode(node)
-        jsonTemplate = NodeBase.jsonTemplate()
-        jsonTemplate["type"] = "nodeClass"
-        jsonTemplate["name"] = "yolov5"
-        jsonTemplate["package"] = "packageName"
-        jsonTemplate["uuid"] = str(uuid.uuid4())
-        jsonTemplate["x"] = -100
-        jsonTemplate["y"] = -100
-        # 添加一个节点
-        # alg_node = NodeBase(name='test', uid=None)  # Nodebase对象
-        alg_node = AlgorithmNode(name='test', uid=None)  # Nodebase对象
-        alg_node.setDeprecated(True)
-        # alg_node.setExperimental()
-        # 添加input pin
-        # input_pin = alg_node.createInputPin('input', 'StringPin')
-        # alg_node.addInputPin('input', 'StringPin')
+        template = node._rawNode.serialize()
+        self.canvas.addNode(node, template, parentGraph=node._rawNode.graph)
 
 
-        alg_node = UINodeBase(alg_node)  # NodeBase转为QGraphicsWidget
-        # alg_node.setFont(HGF.MAIN_FONT)
 
-        lb = QLabel('test')
-        alg_node.addWidget(lb)
-
-        self.canvas.addNode(alg_node, jsonTemplate, parentGraph=None)
-        pass
-
-
-class AlgorithmNode(NodeBase):
-    def __init__(self, name, uid=None):
-        super().__init__(name, uid)
-        from ..PyFlow import INITIALIZE
-        INITIALIZE()
-
-        self.inExec = self.createInputPin('inExec', 'ExecPin', None, self.compute)
-        self.entity = self.createInputPin('path', 'StringPin')
-        self.outExec = self.createOutputPin(pinName='outExec', dataType='ExecPin', defaultValue=None)
-
-
-    def compute(self, *args, **kwargs):
-        return super().compute(*args, **kwargs)
