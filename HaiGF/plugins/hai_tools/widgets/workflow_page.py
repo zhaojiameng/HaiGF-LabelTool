@@ -4,13 +4,14 @@ from PySide2.QtWidgets import *
 from PySide2.QtCore import *
 from PySide2.QtGui import *
 from PyFlow.Core.GraphManager import GraphManagerSingleton
+
 from HaiGF import HPage
 from HaiGF.apis import HGF
 
 from .BlueprintCanvas import BlueprintCanvasWidget, BlueprintCanvas, getNodeInstance
 
 from ..PyFlow.UI.Canvas.UINodeBase import UINodeBase
-from ..PyFlow.Core import NodeBase
+from ..PyFlow.Core import NodeBase\
 
 class WorkflowPage(HPage):
     def __init__(self, parent=None, *args, **kwargs):
@@ -40,11 +41,11 @@ class WorkflowPage(HPage):
         # self.graphManager.get().addNode(node)
         jsonTemplate = NodeBase.jsonTemplate()
         jsonTemplate["type"] = "nodeClass"
-        jsonTemplate["name"] = "nodename"
+        jsonTemplate["name"] = "yolov5"
         jsonTemplate["package"] = "packageName"
         jsonTemplate["uuid"] = str(uuid.uuid4())
-        jsonTemplate["x"] = 0
-        jsonTemplate["y"] = 100
+        jsonTemplate["x"] = -100
+        jsonTemplate["y"] = -100
         # 添加一个节点
         # alg_node = NodeBase(name='test', uid=None)  # Nodebase对象
         alg_node = AlgorithmNode(name='test', uid=None)  # Nodebase对象
@@ -56,6 +57,7 @@ class WorkflowPage(HPage):
 
 
         alg_node = UINodeBase(alg_node)  # NodeBase转为QGraphicsWidget
+        # alg_node.setFont(HGF.MAIN_FONT)
 
         lb = QLabel('test')
         alg_node.addWidget(lb)

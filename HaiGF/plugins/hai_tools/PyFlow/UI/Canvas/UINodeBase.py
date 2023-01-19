@@ -15,10 +15,12 @@
 
 from nine import str
 import logging
-from Qt import QtCore
-from Qt import QtGui
-from Qt import QtSvg
-from Qt.QtWidgets import *
+# from Qt import QtCore
+# from Qt import QtGui
+# from Qt import QtSvg
+# from Qt.QtWidgets import *
+from PySide2 import QtCore, QtGui, QtSvg
+from PySide2.QtWidgets import *
 from PyFlow.ConfigManager import ConfigManager
 from PyFlow.Core.Common import *
 from PyFlow.UI.Canvas.UIPinBase import (
@@ -196,8 +198,16 @@ class NodeName(QGraphicsWidget):
     def setHtml(self, html):
         self.prepareGeometryChange()
         self.labelItem.setHtml(html)
-        self._font.setPointSize(6)
+        # self._font.setPointSize(6)
         self.labelItem.setFont(self._font)
+        self.updateGeometry()
+        self.update()
+    
+    def setFont(self, font):
+        # print('setfont')
+        super(NodeName, self).setFont(font)
+        self._font = font
+        self.labelItem.setFont(font)
         self.updateGeometry()
         self.update()
 
@@ -233,6 +243,7 @@ class NodeName(QGraphicsWidget):
         super(QGraphicsWidget, self).setGeometry(rect)
         self.setPos(rect.topLeft())
         self.labelItem.setGeometry(rect)
+        
 
 
 class UINodeBase(QGraphicsWidget, IPropertiesViewSupport, IUINode):
@@ -430,6 +441,11 @@ class UINodeBase(QGraphicsWidget, IPropertiesViewSupport, IUINode):
 
     def eventDropOnCanvas(self):
         pass
+
+    def setFont(self, font):
+        super(UINodeBase, self).setFont(font)
+        self.nodeNameWidget.setFont(font)
+        # self.rePaint()
 
     def setSingleLineName(self, bSingleLine=True):
         self.nodeNameWidget.labelItem.singleLine = bSingleLine

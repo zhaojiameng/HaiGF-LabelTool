@@ -24,8 +24,8 @@ class AIPlugin(HPlugin):
         # print('mw, ', self.mw)
         # print('cfb, ', self.cfb)
         self._haic = None
-        # self.hai_ip = '47.114.37.111'
-        self.hai_ip = '192.168.32.148'
+        self.hai_ip = '47.114.37.111'
+        # self.hai_ip = '192.168.32.148'
         self.hai_port = 9999
 
     

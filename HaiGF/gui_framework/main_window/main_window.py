@@ -44,6 +44,7 @@ class HMainWindow(QMainWindow):
         # self.setStyleSheet("QMainWindow{background-color: rgb(255, 255, 255);}")
         # self.setStyleSheet("QMainWindow{background-color: rgb(0, 255, 255);}")
         # 设置前景色和背景色
+        self.setFont(HGF.MAIN_FONT)
         self.setStyleSheet(
             "QMainWindow{"+f"background-color: {HGF.COLORS.WhiteSmoke}; \
                 color: rgb(255, 255, 255); font-family: {HGF.FONT_FAMILY};\
