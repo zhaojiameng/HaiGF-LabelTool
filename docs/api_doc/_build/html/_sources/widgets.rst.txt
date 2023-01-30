@@ -1,0 +1,4 @@
+HWidgets
+-----------
+
+HWidgets is a library for creating GUIs in Haskell. It is based on the.

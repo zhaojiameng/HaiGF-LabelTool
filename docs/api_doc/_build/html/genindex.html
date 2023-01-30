@@ -41,19 +41,20 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Getting started</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="HaiGF_getting_started.html">1. 介绍</a></li>
-<li class="toctree-l1"><a class="reference internal" href="HaiGF_getting_started.html#id8">2. 如何开发插件</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">1. Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html#how-to-develop-plugin">2. How to develop plugin</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="HMainWindow.html">HMainWindow</a></li>
-<li class="toctree-l1"><a class="reference internal" href="mw.CoreFuncBar.html">CoreFuncBar</a></li>
-<li class="toctree-l1"><a class="reference internal" href="mw.MainSideBar.html">MainSideBar</a></li>
-<li class="toctree-l1"><a class="reference internal" href="mw.CentralWidget.html">CentralWidget</a></li>
+<li class="toctree-l1"><a class="reference internal" href="main_ui.html">Main UI</a></li>
 <li class="toctree-l1"><a class="reference internal" href="HPlugin.html">HPlugin</a></li>
 <li class="toctree-l1"><a class="reference internal" href="HPage.html">HPage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="HGF.html">HGF</a></li>
 <li class="toctree-l1"><a class="reference internal" href="workflow.html">Workflow</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">FAQ</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">Frequently Asked Questions</a></li>
 </ul>
 
         </div>
@@ -97,13 +98,15 @@
 <h2 id="A">A</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="mw.MainSideBar.html#HaiGF.apis.msb.add_widget">add_widget() (HaiGF.apis.msb method)</a>
+      <li><a href="main_ui.html#HaiGF.apis.cfb.add_action">add_action() (HaiGF.apis.cfb method)</a>
+</li>
+      <li><a href="main_ui.html#HaiGF.apis.msb.add_widget">add_widget() (HaiGF.apis.msb method)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="mw.CentralWidget.html#HaiGF.apis.cw.addPage">addPage() (HaiGF.apis.cw method)</a>
+      <li><a href="main_ui.html#HaiGF.apis.cw.addPage">addPage() (HaiGF.apis.cw method)</a>
 </li>
-      <li><a href="mw.CentralWidget.html#HaiGF.apis.cw.addTabWidget">addTabWidget() (HaiGF.apis.cw method)</a>
+      <li><a href="main_ui.html#HaiGF.apis.cw.addTabWidget">addTabWidget() (HaiGF.apis.cw method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -111,17 +114,17 @@
 <h2 id="C">C</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="mw.CentralWidget.html#HaiGF.apis.cw.clear_splitters">clear_splitters() (HaiGF.apis.cw method)</a>
+      <li><a href="main_ui.html#HaiGF.apis.cw.clear_splitters">clear_splitters() (HaiGF.apis.cw method)</a>
 </li>
-      <li><a href="mw.CentralWidget.html#HaiGF.apis.cw.closeEvent">closeEvent() (HaiGF.apis.cw method)</a>
+      <li><a href="main_ui.html#HaiGF.apis.cw.closeEvent">closeEvent() (HaiGF.apis.cw method)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="HGF.html#HaiGF.HGF.COLORS">COLORS() (HaiGF.HGF method)</a>
 </li>
-      <li><a href="mw.CentralWidget.html#HaiGF.apis.cw.create_tab_widget_by_source_tabw">create_tab_widget_by_source_tabw() (HaiGF.apis.cw method)</a>
+      <li><a href="main_ui.html#HaiGF.apis.cw.create_tab_widget_by_source_tabw">create_tab_widget_by_source_tabw() (HaiGF.apis.cw method)</a>
 </li>
-      <li><a href="mw.CentralWidget.html#HaiGF.apis.cw.current_tab_widget">current_tab_widget() (HaiGF.apis.cw method)</a>
+      <li><a href="main_ui.html#HaiGF.apis.cw.current_tab_widget">current_tab_widget() (HaiGF.apis.cw method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -143,7 +146,7 @@
 <h2 id="G">G</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="mw.CentralWidget.html#HaiGF.apis.cw.get_current_splitter_by_tab_widget">get_current_splitter_by_tab_widget() (HaiGF.apis.cw method)</a>
+      <li><a href="main_ui.html#HaiGF.apis.cw.get_current_splitter_by_tab_widget">get_current_splitter_by_tab_widget() (HaiGF.apis.cw method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -152,10 +155,24 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li>
+    HaiGF.apis.cfb
+
+      <ul>
+        <li><a href="main_ui.html#module-HaiGF.apis.cfb">module</a>
+</li>
+      </ul></li>
+      <li>
     HaiGF.apis.cw
 
       <ul>
-        <li><a href="mw.CentralWidget.html#module-HaiGF.apis.cw">module</a>
+        <li><a href="main_ui.html#module-HaiGF.apis.cw">module</a>
+</li>
+      </ul></li>
+      <li>
+    HaiGF.apis.HMainSideBarWidget
+
+      <ul>
+        <li><a href="hwidgets.html#module-HaiGF.apis.HMainSideBarWidget">module</a>
 </li>
       </ul></li>
       <li>
@@ -165,15 +182,15 @@
         <li><a href="HPage.html#module-HaiGF.apis.HPage">module</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     HaiGF.apis.msb
 
       <ul>
-        <li><a href="mw.MainSideBar.html#module-HaiGF.apis.msb">module</a>
+        <li><a href="main_ui.html#module-HaiGF.apis.msb">module</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     HaiGF.HGF()
 
@@ -185,7 +202,7 @@
     HaiGF.HMainWindow
 
       <ul>
-        <li><a href="HMainWindow.html#module-HaiGF.HMainWindow">module</a>
+        <li><a href="main_ui.html#module-HaiGF.HMainWindow">module</a>
 </li>
       </ul></li>
       <li><a href="HPlugin.html#HaiGF.HPlugin">HPlugin() (in module HaiGF)</a>
@@ -196,7 +213,11 @@
 <h2 id="I">I</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="HMainWindow.html#HaiGF.apis.mw.install_plugin">install_plugin() (HaiGF.apis.mw method)</a>
+      <li><a href="main_ui.html#HaiGF.apis.cfb.insert_action">insert_action() (HaiGF.apis.cfb method)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="main_ui.html#HaiGF.apis.mw.install_plugin">install_plugin() (HaiGF.apis.mw method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -204,11 +225,11 @@
 <h2 id="J">J</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="mw.CentralWidget.html#HaiGF.apis.cw.judge_need_create_new_splitter">judge_need_create_new_splitter() (HaiGF.apis.cw method)</a>
+      <li><a href="main_ui.html#HaiGF.apis.cw.judge_need_create_new_splitter">judge_need_create_new_splitter() (HaiGF.apis.cw method)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="mw.CentralWidget.html#HaiGF.apis.cw.judge_need_delete_source_tabw">judge_need_delete_source_tabw() (HaiGF.apis.cw method)</a>
+      <li><a href="main_ui.html#HaiGF.apis.cw.judge_need_delete_source_tabw">judge_need_delete_source_tabw() (HaiGF.apis.cw method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -222,28 +243,36 @@
     module
 
       <ul>
-        <li><a href="mw.CentralWidget.html#module-HaiGF.apis.cw">HaiGF.apis.cw</a>
+        <li><a href="main_ui.html#module-HaiGF.apis.cfb">HaiGF.apis.cfb</a>
+</li>
+        <li><a href="main_ui.html#module-HaiGF.apis.cw">HaiGF.apis.cw</a>
+</li>
+        <li><a href="hwidgets.html#module-HaiGF.apis.HMainSideBarWidget">HaiGF.apis.HMainSideBarWidget</a>
 </li>
         <li><a href="HPage.html#module-HaiGF.apis.HPage">HaiGF.apis.HPage</a>
 </li>
-        <li><a href="mw.MainSideBar.html#module-HaiGF.apis.msb">HaiGF.apis.msb</a>
+        <li><a href="main_ui.html#module-HaiGF.apis.msb">HaiGF.apis.msb</a>
 </li>
         <li><a href="HGF.html#module-HaiGF.HGF">HaiGF.HGF()</a>
 </li>
-        <li><a href="HMainWindow.html#module-HaiGF.HMainWindow">HaiGF.HMainWindow</a>
+        <li><a href="main_ui.html#module-HaiGF.HMainWindow">HaiGF.HMainWindow</a>
 </li>
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="mw.CentralWidget.html#HaiGF.apis.cw.mouseMoveEvent">mouseMoveEvent() (HaiGF.apis.cw method)</a>
+      <li><a href="main_ui.html#HaiGF.apis.cw.mouseMoveEvent">mouseMoveEvent() (HaiGF.apis.cw method)</a>
 </li>
-      <li><a href="mw.CentralWidget.html#HaiGF.apis.cw.mousePressEvent">mousePressEvent() (HaiGF.apis.cw method)</a>
+      <li><a href="main_ui.html#HaiGF.apis.cfb.mousePressEvent">mousePressEvent() (HaiGF.apis.cfb method)</a>
+
+      <ul>
+        <li><a href="main_ui.html#HaiGF.apis.cw.mousePressEvent">(HaiGF.apis.cw method)</a>
 </li>
-      <li><a href="mw.CentralWidget.html#HaiGF.apis.cw.move_one_tab_to_another_tabw">move_one_tab_to_another_tabw() (HaiGF.apis.cw method)</a>
+      </ul></li>
+      <li><a href="main_ui.html#HaiGF.apis.cw.move_one_tab_to_another_tabw">move_one_tab_to_another_tabw() (HaiGF.apis.cw method)</a>
 </li>
-      <li><a href="mw.CentralWidget.html#HaiGF.apis.cw.moved_tab">moved_tab() (HaiGF.apis.cw method)</a>
+      <li><a href="main_ui.html#HaiGF.apis.cw.moved_tab">moved_tab() (HaiGF.apis.cw method)</a>
 </li>
-      <li><a href="mw.CentralWidget.html#HaiGF.apis.cw.moving_tab">moving_tab() (HaiGF.apis.cw method)</a>
+      <li><a href="main_ui.html#HaiGF.apis.cw.moving_tab">moving_tab() (HaiGF.apis.cw method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -257,13 +286,19 @@
 </li>
       <li><a href="HPage.html#HaiGF.apis.HPage.set_icon">set_icon() (HaiGF.apis.HPage method)</a>
 </li>
+      <li><a href="hwidgets.html#HaiGF.apis.HMainSideBarWidget.set_title">set_title() (HaiGF.apis.HMainSideBarWidget method)</a>
+
+      <ul>
+        <li><a href="HPage.html#HaiGF.apis.HPage.set_title">(HaiGF.apis.HPage method)</a>
+</li>
+      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="HPage.html#HaiGF.apis.HPage.set_title">set_title() (HaiGF.apis.HPage method)</a>
+      <li><a href="hwidgets.html#HaiGF.apis.HMainSideBarWidget.set_title_actions">set_title_actions() (HaiGF.apis.HMainSideBarWidget method)</a>
 </li>
-      <li><a href="mw.CentralWidget.html#HaiGF.apis.cw.sort_new_tabw_vs_ttabw">sort_new_tabw_vs_ttabw() (HaiGF.apis.cw method)</a>
+      <li><a href="main_ui.html#HaiGF.apis.cw.sort_new_tabw_vs_ttabw">sort_new_tabw_vs_ttabw() (HaiGF.apis.cw method)</a>
 </li>
-      <li><a href="mw.CentralWidget.html#HaiGF.apis.cw.split_screen">split_screen() (HaiGF.apis.cw method)</a>
+      <li><a href="main_ui.html#HaiGF.apis.cw.split_screen">split_screen() (HaiGF.apis.cw method)</a>
 </li>
   </ul></td>
 </tr></table>

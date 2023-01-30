@@ -53,7 +53,7 @@ class MainSideBar(QtWidgets.QDockWidget):
     #     """
     #     self.title_bar.set_title_actions(actions)
 
-    def add_widget(self, widget: QWidget, action: QAction):
+    def add_widget(self, widget: HMainSideBarWidget, action: QAction):
         """
         Add a widget corresponding to an action (in the core func bar) to the main side bar.\n
         The widget will be loaded when the action is triggered.\n

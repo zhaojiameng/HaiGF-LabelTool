@@ -30,21 +30,24 @@ Feautures
    :maxdepth: 2
    :caption: Getting started
 
-   HaiGF_getting_started.md
+   getting_started.md
 
 
 .. toctree::
    :maxdepth: 2
    :caption: API
    
-   HMainWindow
-   mw.CoreFuncBar
-   mw.MainSideBar
-   mw.CentralWidget
+   main_ui
    HPlugin
    HPage
    HGF
    workflow
+
+.. toctree::
+   :maxdepth: 2
+   :caption: FAQ
+
+   faq.rst
 
 
 Indices and tables

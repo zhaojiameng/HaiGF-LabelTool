@@ -1,0 +1,39 @@
+HMainSideBarWidget
+-------------------
+
+.. automodule:: HaiGF.apis.HMainSideBarWidget
+
+
+Example:
+
+.. code-block:: python
+
+    from HaiGF.apis import HMainSideBarWidget
+
+    class CustomerMSBWidget(HMainSideBarWidget):
+
+        def __init__(self, parent=None):
+
+            super(CustomerMSBWidget, self).__init__(parent)
+
+            self.set_title('Customer')
+
+            self.set_title_actions([
+                HAction('Add', self.add_customer),
+                HAction('Edit', self.edit_customer),
+                HAction('Delete', self.delete_customer),
+            ])
+
+            self.set_content(CustomerListWidget())
+
+            # other codes for defining the widget
+
+
+.. automethod:: HaiGF.apis.HMainSideBarWidget.set_title
+
+.. automethod:: HaiGF.apis.HMainSideBarWidget.set_title_actions
+
+
+
+.. .. automethod:: HaiGF.apis.HMainSideBarWidget.HMainSideBarWidget
+

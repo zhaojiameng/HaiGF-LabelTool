@@ -1,13 +1,13 @@
 
 
-# 1. 介绍
+# 1. Introduction
 
 HAI GUI是可扩展、轻量化的用于开发基于机器学习算法的应用程序的框架。
 
 + 采用模块化设计，可扩展性强，可灵活添加新的模块。
 + 采用基于HAI算法库的前后端分离设计，实现界面的轻量化。
 
-## 1.1 主界面
+## 1.1 Main Window
 ![hai_gui_framework](https://zhangzhengde0225.github.io/images/blog/hai_gui_framework_1280.gif)
 
 
@@ -31,20 +31,24 @@ HAI GUI是可扩展、轻量化的用于开发基于机器学习算法的应用�
 面板栏位于主界面的底部，通过对选项卡的方式实现多个输出。
 
 
-# 2. 如何开发插件
+# 2. How to develop plugin
 
-以`hai_tools`插件为例，介绍如何开发插件。
-开发插件请在`HaiGF/plugins`目录下创建新的文件夹，文件夹名即为插件名，例如：`hai_tools`。
+实现插件的主要步骤如下：
+- 在`HaiGF/plugins`目录下创建新的文件夹，文件夹名即为插件名，例如：`hai_tools`。
+- 在`hai_tools`文件夹下创建`__init__.py`文件，用于初始化插件。
+- 在`__init__.py`文件中创建插件类，继承`HPlugin`类，并重写`install`方法。
+- 在`HaiGF/__main__.py`中启动UI时，安装插件。
+- 插件安装后，可通过插件类名访问插件对象，例如`hai_tools`插件类名为`AIPlugin`，通过`mw.AIPlugin`访问插件。
 
-## 2.1 创建插件
+## 2.1 Create custom plugin
 
 HGF提供了插件父类`HPlugin`，继承该类后，自动获得主窗口及其五个主要部件的引用, 便于窗口交互。
 ```python
 from HaiGF import HPlugin
 
-class YourPluginName(HPlugin):
+class CustomerPlugin(HPlugin):
     def __init__(self, parent=None):
-        super(YourPlugin, self).__init__(parent)
+        super(CustomerPlugin, self).__init__(parent)
         """
         继承后，自动获得如下对象：
         self.mw:  HMainWindow  # 主窗口
@@ -61,20 +65,24 @@ class YourPluginName(HPlugin):
         需要重写该函数，实现插件安装时的操作，例如：在核心功能栏添加action，在主侧栏添加控件等。
         """
         pass
+
+    def custom_func(self):
+        """
+        自定义函数，可通过插件类名访问，例如：mw.CustomerPlugin.custom_func()
+        """
+        pass
 ```
 插件与主界面的交互详见文档。
 
-## 2.2 在UI启动时安装插件
+## 2.2 Install plugin when start UI
 
 在`HaiGF/__main__.py`中，调用`install_plugin`函数，安装插件。
 ```python
-from HaiGF.plugins.<YOUR PLUGIN PATH> import YourPluginName
+from HaiGF.plugins.<CUSTOMER PLUGIN FOLD> import CustomerPlugin
 
-mw.install_plugin(YourPluginName)  # 继承了HPlugin的自定义类直接传入即可
+mw.install_plugin(CustomerPlugin)  # 继承了HPlugin的自定义类直接传入即可
 ```
 
-
-.. autofunction:: HaiGF.HGF
 
 
 

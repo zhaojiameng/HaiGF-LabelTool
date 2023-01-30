@@ -1,5 +1,51 @@
-CentralWidget
-==================
+Main UI
+========
+
+
+Main Window
+------------
+
+.. automodule:: HaiGF.HMainWindow
+
+Usage:
+
+.. code-block:: python
+    
+    import sys
+    from PySide2.QtWidgets import QApplication
+    from HaiGF import HMainWindow
+    
+    app = QApplication(sys.argv)
+    mw = HMainWindow()
+    mw.show()
+    mw.raise_()
+    sys.exit(app.exec_())
+
+
+.. .. automethod:: HaiGF.HMainWindow.__init__
+
+.. automethod:: HaiGF.apis.mw.install_plugin
+
+Core Func Bar
+-----------------
+
+.. automodule:: HaiGF.apis.cfb
+
+.. automethod:: HaiGF.apis.cfb.add_action
+.. automethod:: HaiGF.apis.cfb.insert_action
+.. automethod:: HaiGF.apis.cfb.mousePressEvent
+
+
+Main Side Bar
+-------------
+
+.. automodule:: HaiGF.apis.msb
+
+.. automethod:: HaiGF.apis.msb.add_widget
+
+
+Central Widget
+--------------
 
 .. automodule:: HaiGF.apis.cw
 
@@ -7,7 +53,7 @@ CentralWidget
 
 .. automethod:: HaiGF.apis.cw.addTabWidget
 
-    Usage:
+    Example:
 
     .. code-block:: python
 
@@ -23,7 +69,7 @@ CentralWidget
 
 .. automethod:: HaiGF.apis.cw.addPage
 
-    Usage:
+    Example:
 
     .. code-block:: python
 
@@ -32,7 +78,7 @@ CentralWidget
         page = HPage(parent=cw, 
                     title='page_title', 
                     icon='icon_name')  # create a page
-        cw.addPage(page)  # add a page into central widget
+        cw.addPage(page)  # add a page into current tab widget on central widget
 
 .. automethod:: HaiGF.apis.cw.current_tab_widget
 
@@ -61,3 +107,12 @@ CentralWidget
 .. automethod:: HaiGF.apis.cw.moved_tab
 
 .. automethod:: HaiGF.apis.cw.clear_splitters
+
+
+HWidgets
+---------
+.. toctree::
+    :maxdepth: 1
+    :caption: Contents:
+    
+    hwidgets

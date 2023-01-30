@@ -12,6 +12,7 @@ from HaiGF.apis import __version__, __appname__
 from .actions.actions import AllActions
 from HaiGF.apis import HGF
 from HaiGF.apis import HPlugin
+from ..utils.plugin_manager import PluginManager
 
 
 # from ..widgets import ExplorerWidget
@@ -33,7 +34,8 @@ class HMainWindow(QMainWindow):
         
         self.actions = AllActions(parent=self)
         self.settings = QtCore.QSettings(__appname__, __appname__)
-        self._plugins = []
+
+        self.plugin_manager = PluginManager()
         
         self.mw_ui = Ui_MainWindow()
         self.mw_ui.setupUi(self)
@@ -83,10 +85,12 @@ class HMainWindow(QMainWindow):
         # 判断model是否已经安装，如果已经安装则不再安装
         # assert isinstance(plugin, HPlugin), 'plugin must be a HPlugin instance'
         plugin = plugin(self)  # 实例化plugin
-        if plugin in self._plugins:
-            return
-        self._plugins.append(plugin)
+        plugin_name = plugin.__class__.__name__
+        if plugin_name in self.plugin_manager.plugins:
+            raise Exception(f'Plugin {plugin_name} has been installed')
+        self.plugin_manager.register_plugin(plugin_name=plugin_name, plugin=plugin)
         plugin.install()
+        # print(self.plugin_manager.plugin_names)
 
     def load_file_or_dir(self, file=None, dir=None):
         # assert file or dir, 'file or dir must be specified'

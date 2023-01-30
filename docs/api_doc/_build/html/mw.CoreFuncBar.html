@@ -50,7 +50,12 @@
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="HMainWindow.html">HMainWindow</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">CoreFuncBar</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">CoreFuncBar</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#HaiGF.apis.cfb.add_action"><code class="docutils literal notranslate"><span class="pre">cfb.add_action()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#HaiGF.apis.cfb.insert_action"><code class="docutils literal notranslate"><span class="pre">cfb.insert_action()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#HaiGF.apis.cfb.mousePressEvent"><code class="docutils literal notranslate"><span class="pre">cfb.mousePressEvent()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="mw.MainSideBar.html">MainSideBar</a></li>
 <li class="toctree-l1"><a class="reference internal" href="mw.CentralWidget.html">CentralWidget</a></li>
 <li class="toctree-l1"><a class="reference internal" href="HPlugin.html">HPlugin</a></li>
@@ -83,8 +88,40 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="corefuncbar">
-<h1>CoreFuncBar<a class="headerlink" href="#corefuncbar" title="Permalink to this heading"></a></h1>
+  <section id="module-HaiGF.apis.cfb">
+<span id="corefuncbar"></span><h1>CoreFuncBar<a class="headerlink" href="#module-HaiGF.apis.cfb" title="Permalink to this heading"></a></h1>
+<p>This is the Core Function Bar of the main window, inherited from <cite>QToolBar</cite>.</p>
+<p>Alias: <cite>cfb</cite>, <cite>mw.cfb</cite>.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="HaiGF.apis.cfb.add_action">
+<span class="sig-prename descclassname"><span class="pre">cfb.</span></span><span class="sig-name descname"><span class="pre">add_action</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">action</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QAction</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#HaiGF.apis.cfb.add_action" title="Permalink to this definition"></a></dt>
+<dd><p>Add action on the behind of the last action.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>action</strong> – QAction</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HaiGF.apis.cfb.insert_action">
+<span class="sig-prename descclassname"><span class="pre">cfb.</span></span><span class="sig-name descname"><span class="pre">insert_action</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">action</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QAction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#HaiGF.apis.cfb.insert_action" title="Permalink to this definition"></a></dt>
+<dd><p>Insert action on the behind of the index action.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>action</strong> – QAction</p></li>
+<li><p><strong>index</strong> – int</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HaiGF.apis.cfb.mousePressEvent">
+<span class="sig-prename descclassname"><span class="pre">cfb.</span></span><span class="sig-name descname"><span class="pre">mousePressEvent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">event</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">PySide2.QtGui.QMouseEvent</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#HaiGF.apis.cfb.mousePressEvent" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
 </section>
 
 

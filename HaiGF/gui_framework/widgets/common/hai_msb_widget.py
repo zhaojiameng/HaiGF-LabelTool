@@ -9,6 +9,9 @@ from PySide2.QtGui import *
 from HaiGF.apis import HGF
 
 class HMainSideBarWidget(QWidget):
+    """
+    Inherited from `QWidget`, this is the base class of all widgets in the main side bar.
+    """
     def __init__(self, parent, *args, **kwargs):
         super().__init__(parent, *args, **kwargs)
 

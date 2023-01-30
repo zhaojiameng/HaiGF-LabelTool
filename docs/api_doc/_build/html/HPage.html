@@ -44,15 +44,12 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Getting started</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="HaiGF_getting_started.html">1. 介绍</a></li>
-<li class="toctree-l1"><a class="reference internal" href="HaiGF_getting_started.html#id8">2. 如何开发插件</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">1. Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html#how-to-develop-plugin">2. How to develop plugin</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="HMainWindow.html">HMainWindow</a></li>
-<li class="toctree-l1"><a class="reference internal" href="mw.CoreFuncBar.html">mw.CoreFuncBar</a></li>
-<li class="toctree-l1"><a class="reference internal" href="mw.MainSideBar.html">mw.MainSideBar</a></li>
-<li class="toctree-l1"><a class="reference internal" href="mw.CentralWidget.html">mw.CentralWidget</a></li>
+<li class="toctree-l1"><a class="reference internal" href="main_ui.html">Main UI</a></li>
 <li class="toctree-l1"><a class="reference internal" href="HPlugin.html">HPlugin</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">HPage</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#HaiGF.apis.HPage.set_icon"><code class="docutils literal notranslate"><span class="pre">HPage.set_icon()</span></code></a></li>
@@ -60,6 +57,11 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="HGF.html">HGF</a></li>
+<li class="toctree-l1"><a class="reference internal" href="workflow.html">Workflow</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">FAQ</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">Frequently Asked Questions</a></li>
 </ul>
 
         </div>
@@ -91,6 +93,22 @@
 <p>HaiGF的基本页面类，继承于QWidget，可添加到中央控件中。</p>
 <p>一个页面包含一个标题栏和一个空的控件。</p>
 <p>标题栏包含标题图标、标题文本、关闭按钮等。</p>
+<p>Example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">HaiGF</span> <span class="kn">import</span> <span class="n">HPage</span>
+
+<span class="k">class</span> <span class="nc">CustomerPage</span><span class="p">(</span><span class="n">HPage</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s1">&#39;Customer Page&#39;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_icon</span><span class="p">(</span><span class="o">&lt;</span><span class="n">QIcon</span><span class="o">&gt;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">setup_ui</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">setup_ui</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># setup customer ui here (QWidget).</span>
+        <span class="k">pass</span>
+</pre></div>
+</div>
 <dl class="py method">
 <dt class="sig sig-object py" id="HaiGF.apis.HPage.set_icon">
 <span class="sig-prename descclassname"><span class="pre">HPage.</span></span><span class="sig-name descname"><span class="pre">set_icon</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">icon</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QIcon</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HaiGF.apis.HPage.set_icon" title="Permalink to this definition"></a></dt>

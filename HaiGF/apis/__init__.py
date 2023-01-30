@@ -9,6 +9,7 @@ from ..gui_framework.widgets import HAction, HPage, HPlugin, HMainSideBarWidget
 from ..gui_framework.widgets import CoreFuncBar, MainSideBar, CentralWidget, AuxSideBar, PanelWidget, HStatusBar
 
 from ..gui_framework.main_window.main_window import HMainWindow
+from ..gui_framework.utils.plugin_manager import PluginManager
 
 
 

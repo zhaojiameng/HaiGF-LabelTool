@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CentralWidget &mdash; HaiGF 1.0.0 documentation</title>
+  <title>Main UI &mdash; HaiGF 1.0.0 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/copybutton.css" type="text/css" />
@@ -23,8 +23,8 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="HPlugin" href="HPlugin.html" />
-    <link rel="prev" title="MainSideBar" href="mw.MainSideBar.html" /> 
+    <link rel="next" title="HMainSideBarWidget" href="hwidgets.html" />
+    <link rel="prev" title="1. Introduction" href="getting_started.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -44,37 +44,59 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Getting started</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="HaiGF_getting_started.html">1. 介绍</a></li>
-<li class="toctree-l1"><a class="reference internal" href="HaiGF_getting_started.html#id8">2. 如何开发插件</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">1. Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html#how-to-develop-plugin">2. How to develop plugin</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="HMainWindow.html">HMainWindow</a></li>
-<li class="toctree-l1"><a class="reference internal" href="mw.CoreFuncBar.html">CoreFuncBar</a></li>
-<li class="toctree-l1"><a class="reference internal" href="mw.MainSideBar.html">MainSideBar</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">CentralWidget</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#HaiGF.apis.cw.addTabWidget"><code class="docutils literal notranslate"><span class="pre">cw.addTabWidget()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#HaiGF.apis.cw.addPage"><code class="docutils literal notranslate"><span class="pre">cw.addPage()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#HaiGF.apis.cw.current_tab_widget"><code class="docutils literal notranslate"><span class="pre">cw.current_tab_widget()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#HaiGF.apis.cw.create_tab_widget_by_source_tabw"><code class="docutils literal notranslate"><span class="pre">cw.create_tab_widget_by_source_tabw()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#HaiGF.apis.cw.get_current_splitter_by_tab_widget"><code class="docutils literal notranslate"><span class="pre">cw.get_current_splitter_by_tab_widget()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#HaiGF.apis.cw.judge_need_delete_source_tabw"><code class="docutils literal notranslate"><span class="pre">cw.judge_need_delete_source_tabw()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#HaiGF.apis.cw.judge_need_create_new_splitter"><code class="docutils literal notranslate"><span class="pre">cw.judge_need_create_new_splitter()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#HaiGF.apis.cw.split_screen"><code class="docutils literal notranslate"><span class="pre">cw.split_screen()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#HaiGF.apis.cw.sort_new_tabw_vs_ttabw"><code class="docutils literal notranslate"><span class="pre">cw.sort_new_tabw_vs_ttabw()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#HaiGF.apis.cw.move_one_tab_to_another_tabw"><code class="docutils literal notranslate"><span class="pre">cw.move_one_tab_to_another_tabw()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#HaiGF.apis.cw.closeEvent"><code class="docutils literal notranslate"><span class="pre">cw.closeEvent()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#HaiGF.apis.cw.mousePressEvent"><code class="docutils literal notranslate"><span class="pre">cw.mousePressEvent()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#HaiGF.apis.cw.mouseMoveEvent"><code class="docutils literal notranslate"><span class="pre">cw.mouseMoveEvent()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#HaiGF.apis.cw.moving_tab"><code class="docutils literal notranslate"><span class="pre">cw.moving_tab()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#HaiGF.apis.cw.moved_tab"><code class="docutils literal notranslate"><span class="pre">cw.moved_tab()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#HaiGF.apis.cw.clear_splitters"><code class="docutils literal notranslate"><span class="pre">cw.clear_splitters()</span></code></a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Main UI</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#module-HaiGF.HMainWindow">Main Window</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#HaiGF.apis.mw.install_plugin"><code class="docutils literal notranslate"><span class="pre">mw.install_plugin()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-HaiGF.apis.cfb">Core Func Bar</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#HaiGF.apis.cfb.add_action"><code class="docutils literal notranslate"><span class="pre">cfb.add_action()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#HaiGF.apis.cfb.insert_action"><code class="docutils literal notranslate"><span class="pre">cfb.insert_action()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#HaiGF.apis.cfb.mousePressEvent"><code class="docutils literal notranslate"><span class="pre">cfb.mousePressEvent()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-HaiGF.apis.msb">Main Side Bar</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#HaiGF.apis.msb.add_widget"><code class="docutils literal notranslate"><span class="pre">msb.add_widget()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-HaiGF.apis.cw">Central Widget</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#HaiGF.apis.cw.addTabWidget"><code class="docutils literal notranslate"><span class="pre">cw.addTabWidget()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#HaiGF.apis.cw.addPage"><code class="docutils literal notranslate"><span class="pre">cw.addPage()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#HaiGF.apis.cw.current_tab_widget"><code class="docutils literal notranslate"><span class="pre">cw.current_tab_widget()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#HaiGF.apis.cw.create_tab_widget_by_source_tabw"><code class="docutils literal notranslate"><span class="pre">cw.create_tab_widget_by_source_tabw()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#HaiGF.apis.cw.get_current_splitter_by_tab_widget"><code class="docutils literal notranslate"><span class="pre">cw.get_current_splitter_by_tab_widget()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#HaiGF.apis.cw.judge_need_delete_source_tabw"><code class="docutils literal notranslate"><span class="pre">cw.judge_need_delete_source_tabw()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#HaiGF.apis.cw.judge_need_create_new_splitter"><code class="docutils literal notranslate"><span class="pre">cw.judge_need_create_new_splitter()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#HaiGF.apis.cw.split_screen"><code class="docutils literal notranslate"><span class="pre">cw.split_screen()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#HaiGF.apis.cw.sort_new_tabw_vs_ttabw"><code class="docutils literal notranslate"><span class="pre">cw.sort_new_tabw_vs_ttabw()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#HaiGF.apis.cw.move_one_tab_to_another_tabw"><code class="docutils literal notranslate"><span class="pre">cw.move_one_tab_to_another_tabw()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#HaiGF.apis.cw.closeEvent"><code class="docutils literal notranslate"><span class="pre">cw.closeEvent()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#HaiGF.apis.cw.mousePressEvent"><code class="docutils literal notranslate"><span class="pre">cw.mousePressEvent()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#HaiGF.apis.cw.mouseMoveEvent"><code class="docutils literal notranslate"><span class="pre">cw.mouseMoveEvent()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#HaiGF.apis.cw.moving_tab"><code class="docutils literal notranslate"><span class="pre">cw.moving_tab()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#HaiGF.apis.cw.moved_tab"><code class="docutils literal notranslate"><span class="pre">cw.moved_tab()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#HaiGF.apis.cw.clear_splitters"><code class="docutils literal notranslate"><span class="pre">cw.clear_splitters()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#hwidgets">HWidgets</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="hwidgets.html">HMainSideBarWidget</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="HPlugin.html">HPlugin</a></li>
 <li class="toctree-l1"><a class="reference internal" href="HPage.html">HPage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="HGF.html">HGF</a></li>
 <li class="toctree-l1"><a class="reference internal" href="workflow.html">Workflow</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">FAQ</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">Frequently Asked Questions</a></li>
 </ul>
 
         </div>
@@ -91,9 +113,9 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home"></a></li>
-      <li class="breadcrumb-item active">CentralWidget</li>
+      <li class="breadcrumb-item active">Main UI</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="_sources/mw.CentralWidget.rst.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/main_ui.rst.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -101,8 +123,86 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="module-HaiGF.apis.cw">
-<span id="centralwidget"></span><h1>CentralWidget<a class="headerlink" href="#module-HaiGF.apis.cw" title="Permalink to this heading"></a></h1>
+  <section id="main-ui">
+<h1>Main UI<a class="headerlink" href="#main-ui" title="Permalink to this heading"></a></h1>
+<section id="module-HaiGF.HMainWindow">
+<span id="main-window"></span><h2>Main Window<a class="headerlink" href="#module-HaiGF.HMainWindow" title="Permalink to this heading"></a></h2>
+<p>This is the main window of the hai gui framework, inherited from QMainWindow.
+Alias: <cite>mw</cite>.</p>
+<p>Usage:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">from</span> <span class="nn">PySide2.QtWidgets</span> <span class="kn">import</span> <span class="n">QApplication</span>
+<span class="kn">from</span> <span class="nn">HaiGF</span> <span class="kn">import</span> <span class="n">HMainWindow</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">QApplication</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span>
+<span class="n">mw</span> <span class="o">=</span> <span class="n">HMainWindow</span><span class="p">()</span>
+<span class="n">mw</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="n">mw</span><span class="o">.</span><span class="n">raise_</span><span class="p">()</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="n">app</span><span class="o">.</span><span class="n">exec_</span><span class="p">())</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="HaiGF.apis.mw.install_plugin">
+<span class="sig-prename descclassname"><span class="pre">mw.</span></span><span class="sig-name descname"><span class="pre">install_plugin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">plugin</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">HPlugin</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HaiGF.apis.mw.install_plugin" title="Permalink to this definition"></a></dt>
+<dd><p>Call the <cite>install</cite> method of the custom plugin to install it.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>plugin</strong> – A plugin instance in inherited from <cite>HPlugin</cite>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-HaiGF.apis.cfb">
+<span id="core-func-bar"></span><h2>Core Func Bar<a class="headerlink" href="#module-HaiGF.apis.cfb" title="Permalink to this heading"></a></h2>
+<p>This is the Core Function Bar of the main window, inherited from <cite>QToolBar</cite>.</p>
+<p>Alias: <cite>cfb</cite>, <cite>mw.cfb</cite>.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="HaiGF.apis.cfb.add_action">
+<span class="sig-prename descclassname"><span class="pre">cfb.</span></span><span class="sig-name descname"><span class="pre">add_action</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">action</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QAction</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#HaiGF.apis.cfb.add_action" title="Permalink to this definition"></a></dt>
+<dd><p>Add action on the behind of the last action.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>action</strong> – QAction</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HaiGF.apis.cfb.insert_action">
+<span class="sig-prename descclassname"><span class="pre">cfb.</span></span><span class="sig-name descname"><span class="pre">insert_action</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">action</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QAction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#HaiGF.apis.cfb.insert_action" title="Permalink to this definition"></a></dt>
+<dd><p>Insert action on the behind of the index action.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>action</strong> – QAction</p></li>
+<li><p><strong>index</strong> – int</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HaiGF.apis.cfb.mousePressEvent">
+<span class="sig-prename descclassname"><span class="pre">cfb.</span></span><span class="sig-name descname"><span class="pre">mousePressEvent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">event</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">PySide2.QtGui.QMouseEvent</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#HaiGF.apis.cfb.mousePressEvent" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-HaiGF.apis.msb">
+<span id="main-side-bar"></span><h2>Main Side Bar<a class="headerlink" href="#module-HaiGF.apis.msb" title="Permalink to this heading"></a></h2>
+<p>This is the main side bar of the main window, inherited from <cite>QDockWidget</cite>.</p>
+<p>It contains a title bar with actions and a widget.</p>
+<p>Alias: <cite>msb</cite>, <cite>mw.msb</cite>.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="HaiGF.apis.msb.add_widget">
+<span class="sig-prename descclassname"><span class="pre">msb.</span></span><span class="sig-name descname"><span class="pre">add_widget</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">widget</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">HMainSideBarWidget</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">action</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QAction</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HaiGF.apis.msb.add_widget" title="Permalink to this definition"></a></dt>
+<dd><p>Add a widget corresponding to an action (in the core func bar) to the main side bar.</p>
+<p>The widget will be loaded when the action is triggered.</p>
+</dd></dl>
+
+</section>
+<section id="module-HaiGF.apis.cw">
+<span id="central-widget"></span><h2>Central Widget<a class="headerlink" href="#module-HaiGF.apis.cw" title="Permalink to this heading"></a></h2>
 <p>This is the central widget of the main window, inherited from QWidget.
 It contains a grid layout, which contains multiple splitter.
 The splitter split tab widgets, which contains multiple tab and pages.</p>
@@ -112,7 +212,7 @@ The splitter split tab widgets, which contains multiple tab and pages.</p>
 <dt class="sig sig-object py" id="HaiGF.apis.cw.addTabWidget">
 <span class="sig-prename descclassname"><span class="pre">cw.</span></span><span class="sig-name descname"><span class="pre">addTabWidget</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tab_widget</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">HTabWidget</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HaiGF.apis.cw.addTabWidget" title="Permalink to this definition"></a></dt>
 <dd><p>添加TabWidget到_tab_widgets列表，自动分配分屏器</p>
-<p>Usage:</p>
+<p>Example:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">HaiGF</span> <span class="kn">import</span> <span class="n">HTabWidget</span>
 <span class="kn">from</span> <span class="nn">HaiGF</span> <span class="kn">import</span> <span class="n">HPage</span>
 
@@ -138,13 +238,13 @@ The splitter split tab widgets, which contains multiple tab and pages.</p>
 </ul>
 </dd>
 </dl>
-<p>Usage:</p>
+<p>Example:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">HaiGF</span> <span class="kn">import</span> <span class="n">HPage</span>
 
 <span class="n">page</span> <span class="o">=</span> <span class="n">HPage</span><span class="p">(</span><span class="n">parent</span><span class="o">=</span><span class="n">cw</span><span class="p">,</span>
             <span class="n">title</span><span class="o">=</span><span class="s1">&#39;page_title&#39;</span><span class="p">,</span>
             <span class="n">icon</span><span class="o">=</span><span class="s1">&#39;icon_name&#39;</span><span class="p">)</span>  <span class="c1"># create a page</span>
-<span class="n">cw</span><span class="o">.</span><span class="n">addPage</span><span class="p">(</span><span class="n">page</span><span class="p">)</span>  <span class="c1"># add a page into central widget</span>
+<span class="n">cw</span><span class="o">.</span><span class="n">addPage</span><span class="p">(</span><span class="n">page</span><span class="p">)</span>  <span class="c1"># add a page into current tab widget on central widget</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -233,13 +333,23 @@ The splitter split tab widgets, which contains multiple tab and pages.</p>
 </dd></dl>
 
 </section>
+<section id="hwidgets">
+<h2>HWidgets<a class="headerlink" href="#hwidgets" title="Permalink to this heading"></a></h2>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="hwidgets.html">HMainSideBarWidget</a></li>
+</ul>
+</div>
+</section>
+</section>
 
 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="mw.MainSideBar.html" class="btn btn-neutral float-left" title="MainSideBar" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="HPlugin.html" class="btn btn-neutral float-right" title="HPlugin" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="getting_started.html" class="btn btn-neutral float-left" title="1. Introduction" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="hwidgets.html" class="btn btn-neutral float-right" title="HMainSideBarWidget" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
