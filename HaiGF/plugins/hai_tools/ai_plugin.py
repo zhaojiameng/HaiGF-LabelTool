@@ -55,7 +55,6 @@ class AIPlugin(HPlugin):
         self.cw.addPage(workflow_page)
         
 
-
     @property
     def haic(self):
         if self._haic is None:
@@ -93,6 +92,8 @@ class AIPlugin(HPlugin):
         逻辑：点击算法，如果已连接，刷新算法，未连接时，弹出连接服务端界面，连接。
         """
         _logger.info('ai action clicked')
+
+        # TODO: 优化界面显示过程，避免卡顿
         if self.haic is None or not self.haic.connected:
             self.mw.errorMessage(
                 title=self.tr('Connect Error'), 
