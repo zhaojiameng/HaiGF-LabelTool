@@ -76,6 +76,10 @@ class HMainWindow(QMainWindow):
     def pw(self):
         return self.panel_widget
 
+    @property
+    def plugins(self):
+        return self.plugin_manager.plugins
+
 
     def install_plugin(self, plugin: HPlugin):
         """

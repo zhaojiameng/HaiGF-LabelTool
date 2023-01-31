@@ -20,3 +20,13 @@ class PyEditorPlugin(HPlugin):
         需要重写该函数，实现插件安装时的操作，例如：在核心功能栏添加action，在主侧栏添加控件等。
         """
         pass
+
+    def open_file(self, file_path):
+        """
+        接口，打开一个Py文件，向中央控件添加新的页面
+        安装本插件后再其他地方调用：mw.PyEditorPlugin.open_file()
+        """
+        print('open_file')
+        # text = text if text else f'import os\n\nprint(os.getcwd())'
+
+        pass

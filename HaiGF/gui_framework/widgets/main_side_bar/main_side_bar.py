@@ -115,7 +115,7 @@ class MainSideBar(QtWidgets.QDockWidget):
     
     def load_widget_by_name(self, name, *args, **kwargs):
         """根据widget的name加载widget"""
-        dir = kwargs.pop('dir', None)
+        dir = kwargs.pop('dir', None)  # 处理资源管理器传入dir的情况
         # print(f'load_widget_by_name: {name} {dir}')
         flag = False
         for action, widget in self._aw_dict.items():

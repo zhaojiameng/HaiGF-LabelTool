@@ -38,7 +38,7 @@ HAI GUI是可扩展、轻量化的用于开发基于机器学习算法的应用�
 - 在`hai_tools`文件夹下创建`__init__.py`文件，用于初始化插件。
 - 在`__init__.py`文件中创建插件类，继承`HPlugin`类，并重写`install`方法。
 - 在`HaiGF/__main__.py`中启动UI时，安装插件。
-- 插件安装后，可通过插件类名访问插件对象，例如`hai_tools`插件类名为`AIPlugin`，通过`mw.AIPlugin`访问插件。
+- 插件安装后，可通过插件类名访问插件对象，例如`hai_tools`插件类名为`AIPlugin`，通过`mw.AIPlugin`或`mw.plugins["AIPlugin"]`访问插件。
 
 ## 2.1 Create custom plugin
 
@@ -81,6 +81,16 @@ class CustomerPlugin(HPlugin):
 from HaiGF.plugins.<CUSTOMER PLUGIN FOLD> import CustomerPlugin
 
 mw.install_plugin(CustomerPlugin)  # 继承了HPlugin的自定义类直接传入即可
+```
+
+## 2.3 Access plugin object
+
+插件安装后，可通过插件类名`mw.<PLUGIN NAME>`或`mw.plugins["<PLUGIN NAME>"]`访问插件对象.
+
+Example:
+```python
+ai_plugin = mw.CustomerPlugin  # 通过插件类名访问插件对象
+ai_plugin = mw.plugins["CustomerPlugin"]  # 通过插件类名访问插件对象
 ```
 
 

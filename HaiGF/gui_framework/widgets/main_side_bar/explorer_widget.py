@@ -1,4 +1,4 @@
-
+import os
 from PySide2 import QtCore
 from PySide2.QtCore import *
 from PySide2.QtGui import *
@@ -18,7 +18,7 @@ class ExplorerWidget(HMainSideBarWidget):
     """资源浏览器空间，包含标题、标题工具和内容区域，被放置在MainSideBar中"""
     def __init__(self, parent=None, dir=None, **kwargs):
         super().__init__(parent=parent)
-        self.p = parent
+        self.p = parent  # mw
         self.dir = dir
         layout = QVBoxLayout()
         self.setLayout(layout)
@@ -82,13 +82,11 @@ class ExplorerWidget(HMainSideBarWidget):
         # 文件系统
         self.model = QFileSystemModel()
         self.model.setRootPath(f"/")
-        self.tree = QTreeView()  # 树
+        self.tree = HTreeView(self)  # 树
         # self.tree.setWindowTitle('title')
         self.tree.setModel(self.model)
         self.tree.setRootIndex(self.model.index(dir))
-        # self.tree.setHeaderHidden(True)
-        self.tree.setColumnWidth(0, 250)
-
+        
         self.layout().addWidget(self.tree)
         self.layout().setContentsMargins(0, 0, 0, 0)
         self.layout().setSpacing(0)
@@ -115,3 +113,37 @@ class ExplorerWidget(HMainSideBarWidget):
                 text='Explorer action',
                 icon='more',)
         return [action]
+
+
+
+class HTreeView(QTreeView):
+    def __init__(self, parent=None, *args, **kwargs):
+        super().__init__(parent=parent, *args, **kwargs)
+        self.p = parent  # explorer widget
+        self.setColumnWidth(0, 250)
+        # self.setHeaderHidden(True)
+        # self.setContextMenuPolicy(Qt.CustomContextMenu)
+        self.customContextMenuRequested.connect(self.on_context_menu)
+
+    def mouseDoubleClickEvent(self, event):
+        """
+        双击事件
+        """
+        mw = self.p.p
+        # 如果双击文件，则打开文件
+        index = self.indexAt(event.pos())
+        if index.isValid():
+            file_path = self.model().filePath(index)
+            # print('file_path', file_path)
+            if os.path.isfile(file_path):
+                
+                plg  = mw.plugins['PyEditorPlugin']
+                plg.open_file(file_path)
+
+            elif os.path.isdir(file_path):  # 如果是文件夹
+                logger.info(f'folder double clicked: {file_path}')
+                pass
+                # self.p.load_file_or_dir(dir=file_path)
+
+    def on_context_menu(self):
+        print('on_context_menu')

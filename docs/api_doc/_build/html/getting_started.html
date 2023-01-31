@@ -58,6 +58,7 @@
 <li class="toctree-l1"><a class="reference internal" href="#how-to-develop-plugin">2. How to develop plugin</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#create-custom-plugin">2.1 Create custom plugin</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#install-plugin-when-start-ui">2.2 Install plugin when start UI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#access-plugin-object">2.3 Access plugin object</a></li>
 </ul>
 </li>
 </ul>
@@ -141,7 +142,7 @@
 <li><p>在<code class="docutils literal notranslate"><span class="pre">hai_tools</span></code>文件夹下创建<code class="docutils literal notranslate"><span class="pre">__init__.py</span></code>文件，用于初始化插件。</p></li>
 <li><p>在<code class="docutils literal notranslate"><span class="pre">__init__.py</span></code>文件中创建插件类，继承<code class="docutils literal notranslate"><span class="pre">HPlugin</span></code>类，并重写<code class="docutils literal notranslate"><span class="pre">install</span></code>方法。</p></li>
 <li><p>在<code class="docutils literal notranslate"><span class="pre">HaiGF/__main__.py</span></code>中启动UI时，安装插件。</p></li>
-<li><p>插件安装后，可通过插件类名访问插件对象，例如<code class="docutils literal notranslate"><span class="pre">hai_tools</span></code>插件类名为<code class="docutils literal notranslate"><span class="pre">AIPlugin</span></code>，通过<code class="docutils literal notranslate"><span class="pre">mw.AIPlugin</span></code>访问插件。</p></li>
+<li><p>插件安装后，可通过插件类名访问插件对象，例如<code class="docutils literal notranslate"><span class="pre">hai_tools</span></code>插件类名为<code class="docutils literal notranslate"><span class="pre">AIPlugin</span></code>，通过<code class="docutils literal notranslate"><span class="pre">mw.AIPlugin</span></code>或<code class="docutils literal notranslate"><span class="pre">mw.plugins[&quot;AIPlugin&quot;]</span></code>访问插件。</p></li>
 </ul>
 <section id="create-custom-plugin">
 <h2>2.1 Create custom plugin<a class="headerlink" href="#create-custom-plugin" title="Permalink to this heading"></a></h2>
@@ -183,6 +184,15 @@
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">HaiGF.plugins.</span><span class="o">&lt;</span><span class="n">CUSTOMER</span> <span class="n">PLUGIN</span> <span class="n">FOLD</span><span class="o">&gt;</span> <span class="kn">import</span> <span class="nn">CustomerPlugin</span>
 
 <span class="n">mw</span><span class="o">.</span><span class="n">install_plugin</span><span class="p">(</span><span class="n">CustomerPlugin</span><span class="p">)</span>  <span class="c1"># 继承了HPlugin的自定义类直接传入即可</span>
+</pre></div>
+</div>
+</section>
+<section id="access-plugin-object">
+<h2>2.3 Access plugin object<a class="headerlink" href="#access-plugin-object" title="Permalink to this heading"></a></h2>
+<p>插件安装后，可通过插件类名<code class="docutils literal notranslate"><span class="pre">mw.&lt;PLUGIN</span> <span class="pre">NAME&gt;</span></code>或<code class="docutils literal notranslate"><span class="pre">mw.plugins[&quot;&lt;PLUGIN</span> <span class="pre">NAME&gt;&quot;]</span></code>访问插件对象.</p>
+<p>Example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ai_plugin</span> <span class="o">=</span> <span class="n">mw</span><span class="o">.</span><span class="n">CustomerPlugin</span>  <span class="c1"># 通过插件类名访问插件对象</span>
+<span class="n">ai_plugin</span> <span class="o">=</span> <span class="n">mw</span><span class="o">.</span><span class="n">plugins</span><span class="p">[</span><span class="s2">&quot;CustomerPlugin&quot;</span><span class="p">]</span>  <span class="c1"># 通过插件类名访问插件对象</span>
 </pre></div>
 </div>
 </section>
