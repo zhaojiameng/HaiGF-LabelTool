@@ -37,6 +37,9 @@ def run(name='framework'):
     from .plugins.load_img import LoadImagePlugin
     mw.install_plugin(LoadImagePlugin)
 
+    from .plugins.annotation_tools import AnnoPlugin
+    mw.install_plugin(AnnoPlugin)
+
     mw.show()
     mw.raise_()
     sys.exit(app.exec_())

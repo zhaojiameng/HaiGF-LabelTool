@@ -18,6 +18,7 @@ from ..utils.plugin_manager import PluginManager
 # from ..widgets import ExplorerWidget
 
 logger = dm.get_logger('hai_main_window')
+here = Path(__file__).parent
 
 class HMainWindow(QMainWindow):
     """
@@ -35,7 +36,7 @@ class HMainWindow(QMainWindow):
         self.actions = AllActions(parent=self)
         self.settings = QtCore.QSettings(__appname__, __appname__)
 
-        self.plugin_manager = PluginManager()
+        
         
         self.mw_ui = Ui_MainWindow()
         self.mw_ui.setupUi(self)
@@ -51,6 +52,8 @@ class HMainWindow(QMainWindow):
             "QMainWindow{"+f"background-color: {HGF.COLORS.WhiteSmoke}; \
                 color: rgb(255, 255, 255); font-family: {HGF.FONT_FAMILY};\
                 "+"}")
+            
+        self.plugin_manager = PluginManager()
     
     @property
     def mw(self):
@@ -145,6 +148,12 @@ class HMainWindow(QMainWindow):
         return QMessageBox.critical(
             self, title, "<p><b>%s</b></p>%s" % (title, message)
         )
+
+    def init_plugins(self):
+        print('init_plugins')
+        # register plugins
+        
+
 
 if __name__ == "__main__":
 

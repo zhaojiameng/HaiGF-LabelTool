@@ -1,6 +1,8 @@
 """
 插件管理器
 """
+import os
+import sys
 
 class PluginManager(object):
     """

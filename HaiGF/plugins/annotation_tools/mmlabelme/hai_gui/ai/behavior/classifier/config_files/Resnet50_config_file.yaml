@@ -1,0 +1,21 @@
+
+device: '0'
+consecutive_frame: 5
+feature_size: [192, 128]  # h, w, 单个人的大小
+keypoints_radius: 3
+skeleton_thickness: 2
+use_raw_image_rather_grayscale_as_convas: False
+num_classes: 7
+weights: '~/weights/resnet50/42EPexp/weights/best.pt'
+batch_size: 8
+
+
+# 设置床面区域，
+# 无床
+# bed_area: 'None'  #
+# 一个多个床，每个床有名字：bed1 bed2 xxx,
+bed_area:
+  bed1: [[1558, 922], [1588, 834], [2370, 948], [2402, 1084], [1936, 1048], [1564, 996], [1564, 996]]
+  # bed2: [[1, 2], [2, 3], [4, 8]]  # 添加更多床
+
+lying_iou_thresh: 0.2  # 判断人是躺在床上的iou阈值

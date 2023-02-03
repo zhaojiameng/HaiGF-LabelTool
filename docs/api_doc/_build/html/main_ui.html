@@ -65,8 +65,8 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#module-HaiGF.apis.cw">Central Widget</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#HaiGF.apis.cw.addTabWidget"><code class="docutils literal notranslate"><span class="pre">cw.addTabWidget()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#HaiGF.apis.cw.addPage"><code class="docutils literal notranslate"><span class="pre">cw.addPage()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#HaiGF.apis.cw.add_tab_widget"><code class="docutils literal notranslate"><span class="pre">cw.add_tab_widget()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#HaiGF.apis.cw.add_page"><code class="docutils literal notranslate"><span class="pre">cw.add_page()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#HaiGF.apis.cw.current_tab_widget"><code class="docutils literal notranslate"><span class="pre">cw.current_tab_widget()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#HaiGF.apis.cw.create_tab_widget_by_source_tabw"><code class="docutils literal notranslate"><span class="pre">cw.create_tab_widget_by_source_tabw()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#HaiGF.apis.cw.get_current_splitter_by_tab_widget"><code class="docutils literal notranslate"><span class="pre">cw.get_current_splitter_by_tab_widget()</span></code></a></li>
@@ -81,6 +81,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#HaiGF.apis.cw.moving_tab"><code class="docutils literal notranslate"><span class="pre">cw.moving_tab()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#HaiGF.apis.cw.moved_tab"><code class="docutils literal notranslate"><span class="pre">cw.moved_tab()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#HaiGF.apis.cw.clear_splitters"><code class="docutils literal notranslate"><span class="pre">cw.clear_splitters()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#HaiGF.apis.cw.set_focus"><code class="docutils literal notranslate"><span class="pre">cw.set_focus()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#hwidgets">HWidgets</a><ul>
@@ -209,9 +210,14 @@ The splitter split tab widgets, which contains multiple tab and pages.</p>
 <p>Inherit relationship (parent to child)：CentralWidget -&gt; Splitter -&gt; QTabWidget -&gt; Tab and Page</p>
 <p>Alias：<cite>cw</cite>, <cite>mw.cw</cite></p>
 <dl class="py method">
-<dt class="sig sig-object py" id="HaiGF.apis.cw.addTabWidget">
-<span class="sig-prename descclassname"><span class="pre">cw.</span></span><span class="sig-name descname"><span class="pre">addTabWidget</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tab_widget</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">HTabWidget</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HaiGF.apis.cw.addTabWidget" title="Permalink to this definition"></a></dt>
-<dd><p>添加TabWidget到_tab_widgets列表，自动分配分屏器</p>
+<dt class="sig sig-object py" id="HaiGF.apis.cw.add_tab_widget">
+<span class="sig-prename descclassname"><span class="pre">cw.</span></span><span class="sig-name descname"><span class="pre">add_tab_widget</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tab_widget</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">HTabWidget</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HaiGF.apis.cw.add_tab_widget" title="Permalink to this definition"></a></dt>
+<dd><p>Add one tab widget to central widget and asign it to a splitter autumaticly.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>tab_widget</strong> – HTabWidget</p>
+</dd>
+</dl>
 <p>Example:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">HaiGF</span> <span class="kn">import</span> <span class="n">HTabWidget</span>
 <span class="kn">from</span> <span class="nn">HaiGF</span> <span class="kn">import</span> <span class="n">HPage</span>
@@ -220,21 +226,21 @@ The splitter split tab widgets, which contains multiple tab and pages.</p>
 <span class="n">page</span> <span class="o">=</span> <span class="n">HPage</span><span class="p">(</span><span class="n">parent</span><span class="o">=</span><span class="n">cw</span><span class="p">,</span>
             <span class="n">title</span><span class="o">=</span><span class="s1">&#39;page_title&#39;</span><span class="p">,</span>
             <span class="n">icon</span><span class="o">=</span><span class="s1">&#39;icon_name&#39;</span><span class="p">)</span>  <span class="c1"># create a page</span>
-<span class="n">tab_widget</span><span class="o">.</span><span class="n">addPage</span><span class="p">(</span><span class="n">page</span><span class="p">)</span>  <span class="c1"># add a page into tab widget</span>
-<span class="n">cw</span><span class="o">.</span><span class="n">addTabWidget</span><span class="p">(</span><span class="n">tab_widget</span><span class="p">)</span>  <span class="c1"># add a tab widget into central widget</span>
+<span class="n">tab_widget</span><span class="o">.</span><span class="n">add_page</span><span class="p">(</span><span class="n">page</span><span class="p">)</span>  <span class="c1"># add a page into tab widget</span>
+<span class="n">cw</span><span class="o">.</span><span class="n">add_tab_widget</span><span class="p">(</span><span class="n">tab_widget</span><span class="p">)</span>  <span class="c1"># add a tab widget into central widget</span>
 </pre></div>
 </div>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="HaiGF.apis.cw.addPage">
-<span class="sig-prename descclassname"><span class="pre">cw.</span></span><span class="sig-name descname"><span class="pre">addPage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">page</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">HPage</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tabw_idx</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HaiGF.apis.cw.addPage" title="Permalink to this definition"></a></dt>
-<dd><p>添加Page到当前TabWidget.</p>
+<dt class="sig sig-object py" id="HaiGF.apis.cw.add_page">
+<span class="sig-prename descclassname"><span class="pre">cw.</span></span><span class="sig-name descname"><span class="pre">add_page</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">page</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">HPage</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tabw_idx</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HaiGF.apis.cw.add_page" title="Permalink to this definition"></a></dt>
+<dd><p>Add one page to tab widget.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>page</strong> – HPage</p></li>
-<li><p><strong>tabw_idx</strong> – int, TabWidget的index，指定添加到哪个tabw, 默认为None，表示添加到当前TabWidget</p></li>
+<li><p><strong>tabw_idx</strong> – int, specify which tab widget to add page, default is None, means add to current tab widget.</p></li>
 </ul>
 </dd>
 </dl>
@@ -244,7 +250,7 @@ The splitter split tab widgets, which contains multiple tab and pages.</p>
 <span class="n">page</span> <span class="o">=</span> <span class="n">HPage</span><span class="p">(</span><span class="n">parent</span><span class="o">=</span><span class="n">cw</span><span class="p">,</span>
             <span class="n">title</span><span class="o">=</span><span class="s1">&#39;page_title&#39;</span><span class="p">,</span>
             <span class="n">icon</span><span class="o">=</span><span class="s1">&#39;icon_name&#39;</span><span class="p">)</span>  <span class="c1"># create a page</span>
-<span class="n">cw</span><span class="o">.</span><span class="n">addPage</span><span class="p">(</span><span class="n">page</span><span class="p">)</span>  <span class="c1"># add a page into current tab widget on central widget</span>
+<span class="n">cw</span><span class="o">.</span><span class="n">add_page</span><span class="p">(</span><span class="n">page</span><span class="p">)</span>  <span class="c1"># add a page into current tab widget on central widget</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -330,6 +336,12 @@ The splitter split tab widgets, which contains multiple tab and pages.</p>
 <dt class="sig sig-object py" id="HaiGF.apis.cw.clear_splitters">
 <span class="sig-prename descclassname"><span class="pre">cw.</span></span><span class="sig-name descname"><span class="pre">clear_splitters</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HaiGF.apis.cw.clear_splitters" title="Permalink to this definition"></a></dt>
 <dd><p>清除所有分屏器</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HaiGF.apis.cw.set_focus">
+<span class="sig-prename descclassname"><span class="pre">cw.</span></span><span class="sig-name descname"><span class="pre">set_focus</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">page</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">HPage</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HaiGF.apis.cw.set_focus" title="Permalink to this definition"></a></dt>
+<dd><p>Set one page as the focus page.</p>
 </dd></dl>
 
 </section>

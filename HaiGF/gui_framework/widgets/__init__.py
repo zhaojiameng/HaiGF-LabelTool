@@ -7,6 +7,7 @@ from .common.hai_plugin import HPlugin
 
 from .central_widgets.hai_tab_bar import HTabBar
 from .central_widgets.tab_widget import HTabWidget
+from .central_widgets.start_page.examples_page import HExamplesPage
 
 from .core_func_bar.tool_bar import get_toolbar, CoreFuncBar
 from .central_widgets.central_widget import get_central_widget, CentralWidget

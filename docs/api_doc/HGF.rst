@@ -75,3 +75,14 @@ Usage
 .. .. automethod:: HaiGF.HGF.FONT_FAMILY()
 
 
+.. automethod:: HaiGF.HGF.ICONS()
+
+    Usage:
+
+    .. code-block:: python
+
+        icon = HGF.ICONS("anno")
+        HPage.set_icon(icon)
+        # note: The "anno" is the name of the icon file in the gui_framework/icons folder
+
+

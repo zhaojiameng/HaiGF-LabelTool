@@ -129,21 +129,42 @@ class HTreeView(QTreeView):
         """
         双击事件
         """
-        mw = self.p.p
         # 如果双击文件，则打开文件
         index = self.indexAt(event.pos())
         if index.isValid():
             file_path = self.model().filePath(index)
             # print('file_path', file_path)
             if os.path.isfile(file_path):
+                self.file_duble_clicked(file_path)
                 
-                plg  = mw.plugins['PyEditorPlugin']
-                plg.open_file(file_path)
+                
 
             elif os.path.isdir(file_path):  # 如果是文件夹
-                logger.info(f'folder double clicked: {file_path}')
+                logger.info(f'Folder double clicked: {file_path}')
                 pass
                 # self.p.load_file_or_dir(dir=file_path)
 
     def on_context_menu(self):
         print('on_context_menu')
+
+
+    def file_duble_clicked(self, file_path):
+        """
+        Deal with file double clicked event.
+        """
+        mw = self.p.p
+
+        if file_path.endswith('.py'):
+            plg  = mw.plugins['PyEditorPlugin']
+            plg.open_file(file_path)
+            raise NotImplementedError('TODO open .py file')
+        elif self.is_image_file(file_path):  # if is image file
+            plg = mw.plugins['AnnoPlugin']
+            plg.open_image_file(file_path)
+
+        pass
+
+    
+    def is_image_file(self, file_path):
+        """判断是否是图片文件"""
+        return file_path.endswith(('.jpg', '.jpeg', '.png', '.bmp', '.gif'))

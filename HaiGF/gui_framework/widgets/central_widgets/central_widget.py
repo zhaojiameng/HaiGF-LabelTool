@@ -181,6 +181,13 @@ class CentralWidget(QWidget):
 
         return splitter
 
+    def add_tab_widget(self, tab_widget: HTabWidget, *args):
+        """
+        Add one tab widget to central widget and asign it to a splitter autumaticly.\n
+        :param tab_widget: HTabWidget
+        """
+        self.addTabWidget(tab_widget, *args)
+
     def addTabWidget(self, tab_widget: HTabWidget, *args):
         """添加TabWidget到_tab_widgets列表，自动分配分屏器"""
         self._tab_widgets.append(tab_widget)
@@ -188,6 +195,15 @@ class CentralWidget(QWidget):
         splitter = self.asign_spliter(tab_widget, *args)
         splitter.addWidget(tab_widget)  # 添加TabWidget到分屏器
         self.setSplitter(splitter)
+
+    def add_page(self, page: HPage, tabw_idx: int=None, *args):
+        """
+        Add one page to tab widget.\n
+        :param page: HPage
+        :param tabw_idx: int, specify which tab widget to add page, default is None, means add to current tab widget.
+        """
+        self.addPage(page, tabw_idx, *args)
+       
 
     def addPage(self, page: HPage, tabw_idx: int=None, *args):
         """
@@ -449,6 +465,20 @@ class CentralWidget(QWidget):
         for spl in self.splitters:
             self.layout.removeWidget(spl)
         self._splitters = []
+
+
+    def set_focus(self, page: HPage):
+        """
+        Set one page as the focus page.
+        """
+        self._focus_page = page
+
+        for tabw in self._tab_widgets:
+            for i in range(tabw.count()):
+                tab = tabw.widget(i)
+                if tab == page:
+                    tabw.setCurrentWidget(tab)
+                    return
 
 
 

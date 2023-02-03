@@ -48,7 +48,7 @@ from HaiGF import HPlugin
 
 class CustomerPlugin(HPlugin):
     def __init__(self, parent=None):
-        super(CustomerPlugin, self).__init__(parent)
+        super().__init__(parent)
         """
         继承后，自动获得如下对象：
         self.mw:  HMainWindow  # 主窗口

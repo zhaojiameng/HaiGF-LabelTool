@@ -42,6 +42,7 @@ class HGF(object):
         else:
             raise ValueError(f'Unsupported system: {system}')
 
+
     @property
     def FONT_FAMILY(self):
         """默认字体类型"""

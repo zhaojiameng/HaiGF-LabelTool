@@ -51,7 +51,7 @@ Central Widget
 
 .. .. property:: cw.tab_widgets
 
-.. automethod:: HaiGF.apis.cw.addTabWidget
+.. automethod:: HaiGF.apis.cw.add_tab_widget
 
     Example:
 
@@ -64,10 +64,10 @@ Central Widget
         page = HPage(parent=cw, 
                     title='page_title', 
                     icon='icon_name')  # create a page
-        tab_widget.addPage(page)  # add a page into tab widget
-        cw.addTabWidget(tab_widget)  # add a tab widget into central widget
+        tab_widget.add_page(page)  # add a page into tab widget
+        cw.add_tab_widget(tab_widget)  # add a tab widget into central widget
 
-.. automethod:: HaiGF.apis.cw.addPage
+.. automethod:: HaiGF.apis.cw.add_page
 
     Example:
 
@@ -78,7 +78,7 @@ Central Widget
         page = HPage(parent=cw, 
                     title='page_title', 
                     icon='icon_name')  # create a page
-        cw.addPage(page)  # add a page into current tab widget on central widget
+        cw.add_page(page)  # add a page into current tab widget on central widget
 
 .. automethod:: HaiGF.apis.cw.current_tab_widget
 
@@ -108,6 +108,7 @@ Central Widget
 
 .. automethod:: HaiGF.apis.cw.clear_splitters
 
+.. automethod:: HaiGF.apis.cw.set_focus
 
 HWidgets
 ---------

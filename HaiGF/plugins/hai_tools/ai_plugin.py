@@ -73,7 +73,7 @@ class AIPlugin(HPlugin):
 
     def get_action(self):
         """返回一个action，用于在主窗口的菜单栏中显示"""
-        ai_action = HAction(
+        action = HAction(
             text=self.tr('AI Tools'),  # 文本
             parent=self.mw,  # 父对象，一般为HMainWindow
             slot=self.on_ai_action_clicked, # 槽函数
@@ -84,7 +84,7 @@ class AIPlugin(HPlugin):
             enabled=True,  # 是否可用
             checked=False,  # 是否选中
             )
-        return ai_action
+        return action
 
     def on_ai_action_clicked(self):
         """
