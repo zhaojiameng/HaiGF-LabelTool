@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Widgets &mdash; HaiGF 1.0.0 documentation</title>
+  <title>HAction &mdash; HaiGF 1.0.0 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/copybutton.css" type="text/css" />
@@ -23,8 +23,8 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="HAction" href="HAction.html" />
-    <link rel="prev" title="Main UI" href="main_ui.html" /> 
+    <link rel="next" title="HPlugin" href="HPlugin.html" />
+    <link rel="prev" title="Widgets" href="widgets.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -50,8 +50,11 @@
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="main_ui.html">Main UI</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Widgets</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="HAction.html">HAction</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="widgets.html">Widgets</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">HAction</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#HaiGF.HAction"><code class="docutils literal notranslate"><span class="pre">HAction</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="HPlugin.html">HPlugin</a></li>
 <li class="toctree-l2"><a class="reference internal" href="HPage.html">HPage</a></li>
 <li class="toctree-l2"><a class="reference internal" href="HMainSideBarWidget.html">HMainSideBarWidget</a></li>
@@ -79,9 +82,10 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home"></a></li>
-      <li class="breadcrumb-item active">Widgets</li>
+          <li class="breadcrumb-item"><a href="widgets.html">Widgets</a></li>
+      <li class="breadcrumb-item active">HAction</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="_sources/widgets.rst.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/HAction.rst.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -89,25 +93,37 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="widgets">
-<h1>Widgets<a class="headerlink" href="#widgets" title="Permalink to this heading"></a></h1>
-<p>Those are all HaiGF widgets.</p>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="HAction.html">HAction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="HPlugin.html">HPlugin</a></li>
-<li class="toctree-l1"><a class="reference internal" href="HPage.html">HPage</a></li>
-<li class="toctree-l1"><a class="reference internal" href="HMainSideBarWidget.html">HMainSideBarWidget</a></li>
+  <section id="haction">
+<h1>HAction<a class="headerlink" href="#haction" title="Permalink to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="HaiGF.HAction">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">HaiGF.</span></span><span class="sig-name descname"><span class="pre">HAction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">slot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shortcut</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">icon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tip</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">checkable</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">enabled</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">checked</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HaiGF.HAction" title="Permalink to this definition"></a></dt>
+<dd><p>This is a wrapper for QAction.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>text</strong> – Text to be displayed in menu items. It will be shown if icon is None.</p></li>
+<li><p><strong>parent</strong> – Parent widget, usually <cite>mw</cite>.</p></li>
+<li><p><strong>slot</strong> (<em>optional</em>) – Slot function to be called when the action is triggered.</p></li>
+<li><p><strong>hortcut</strong> (<em>soptional</em>) – Shortcut key to trigger the action.</p></li>
+<li><p><strong>icon</strong> (<em>optional</em>) – Icon to be displayed in menu items, only icon will be shown if setted.</p></li>
+<li><p><strong>tip</strong> (<em>optional</em>) – Tooltip to be displayed when mouse hover on the action.</p></li>
+<li><p><strong>checkable</strong> (<em>optional</em>) – Whether the action is checkable, <cite>False</cite> by default.</p></li>
+<li><p><strong>enabled</strong> (<em>optional</em>) – Whether the action is enabled, <cite>True</cite> by default.</p></li>
+<li><p><strong>checked</strong> (<em>optional</em>) – Whether the action is checked, <cite>False</cite> by default.</p></li>
 </ul>
-</div>
+</dd>
+</dl>
+</dd></dl>
+
 </section>
 
 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="main_ui.html" class="btn btn-neutral float-left" title="Main UI" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="HAction.html" class="btn btn-neutral float-right" title="HAction" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="widgets.html" class="btn btn-neutral float-left" title="Widgets" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="HPlugin.html" class="btn btn-neutral float-right" title="HPlugin" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

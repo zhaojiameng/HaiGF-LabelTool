@@ -44,13 +44,13 @@ HAI GUI是可扩展、轻量化的用于开发基于机器学习算法的应用�
 
 HGF提供了插件父类`HPlugin`，继承该类后，自动获得主窗口及其五个主要部件的引用, 便于窗口交互。
 ```python
-from HaiGF import HPlugin
+from HaiGF import HPlugin, HAction, HMainSideBarWidget, HPage
 
 class CustomerPlugin(HPlugin):
     def __init__(self, parent=None):
         super().__init__(parent)
         """
-        继承后，自动获得如下对象：
+        Your can access to the following objects after inherit HPlugin:
         self.mw:  HMainWindow  # 主窗口
         self.cfb: HMainWidow.core_func_bar  # 核心功能栏
         self.msb: HMainWindow.main_side_bar  # 主侧边栏
@@ -62,15 +62,26 @@ class CustomerPlugin(HPlugin):
     
     def install(self):
         """
-        需要重写该函数，实现插件安装时的操作，例如：在核心功能栏添加action，在主侧栏添加控件等。
+        Please rewrite this function to install your plugin.
+        For example:
+            self.action = HAction("CUSTOMER ACTION", self.mw)
+            self.cfb.add_action(self.action)
+            self.widget = HMainSideBarWidget(self.mw)
+            self.msb.add_widget(self.widget, self.action)
+
+            self.page = HPage(self.mw)
+            self.cw.add_page(self.page)
         """
         pass
 
-    def custom_func(self):
+    def customer_func(self):
         """
-        自定义函数，可通过插件类名访问，例如：mw.CustomerPlugin.custom_func()
+        You can define your own functions here, and access them externally by mw.plugins['<PLUGIN NAME>'].customer_func.
+        For example (in other file):
+            mw.plugins['CustomerPlugin'].customer_func()
         """
-        pass
+        print("Hello, World")
+
 ```
 插件与主界面的交互详见文档。
 

@@ -18,6 +18,16 @@ here = Path(__file__).parent
 class HAction(QAction):
     """
     This is a wrapper for QAction.
+
+    :param text: Text to be displayed in menu items. It will be shown if icon is None.
+    :param parent: Parent widget, usually `mw`.
+    :param optional slot: Slot function to be called when the action is triggered.
+    :param soptional hortcut: Shortcut key to trigger the action.
+    :param optional icon: Icon to be displayed in menu items, only icon will be shown if setted.
+    :param optional tip: Tooltip to be displayed when mouse hover on the action.
+    :param optional checkable: Whether the action is checkable, `False` by default.
+    :param optional enabled: Whether the action is enabled, `True` by default.
+    :param optional checked: Whether the action is checked, `False` by default.
     """
     def __init__(self, text, parent, 
                 slot=None, 
@@ -27,9 +37,6 @@ class HAction(QAction):
                 checkable=False,
                 enabled=True,
                 checked=False,):
-        """
-        :param text: Text to be displayed in menu items
-        """
         super().__init__(text, parent)
 
         if icon is not None:

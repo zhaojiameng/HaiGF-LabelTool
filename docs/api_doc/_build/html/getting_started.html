@@ -65,8 +65,7 @@
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="main_ui.html">Main UI</a></li>
-<li class="toctree-l1"><a class="reference internal" href="HPlugin.html">HPlugin</a></li>
-<li class="toctree-l1"><a class="reference internal" href="HPage.html">HPage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="widgets.html">Widgets</a></li>
 <li class="toctree-l1"><a class="reference internal" href="HGF.html">HGF</a></li>
 <li class="toctree-l1"><a class="reference internal" href="workflow.html">Workflow</a></li>
 </ul>
@@ -147,13 +146,13 @@
 <section id="create-custom-plugin">
 <h2>2.1 Create custom plugin<a class="headerlink" href="#create-custom-plugin" title="Permalink to this heading"></a></h2>
 <p>HGF提供了插件父类<code class="docutils literal notranslate"><span class="pre">HPlugin</span></code>，继承该类后，自动获得主窗口及其五个主要部件的引用, 便于窗口交互。</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">HaiGF</span> <span class="kn">import</span> <span class="n">HPlugin</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">HaiGF</span> <span class="kn">import</span> <span class="n">HPlugin</span><span class="p">,</span> <span class="n">HAction</span><span class="p">,</span> <span class="n">HMainSideBarWidget</span><span class="p">,</span> <span class="n">HPage</span>
 
 <span class="k">class</span> <span class="nc">CustomerPlugin</span><span class="p">(</span><span class="n">HPlugin</span><span class="p">):</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        继承后，自动获得如下对象：</span>
+<span class="sd">        Your can access to the following objects after inherit HPlugin:</span>
 <span class="sd">        self.mw:  HMainWindow  # 主窗口</span>
 <span class="sd">        self.cfb: HMainWidow.core_func_bar  # 核心功能栏</span>
 <span class="sd">        self.msb: HMainWindow.main_side_bar  # 主侧边栏</span>
@@ -165,15 +164,25 @@
     
     <span class="k">def</span> <span class="nf">install</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        需要重写该函数，实现插件安装时的操作，例如：在核心功能栏添加action，在主侧栏添加控件等。</span>
+<span class="sd">        Please rewrite this function to install your plugin.</span>
+<span class="sd">        For example:</span>
+<span class="sd">            self.action = HAction(&quot;CUSTOMER ACTION&quot;, self.mw)</span>
+<span class="sd">            self.cfb.add_action(self.action)</span>
+<span class="sd">            self.widget = HMainSideBarWidget(self.mw)</span>
+<span class="sd">            self.msb.add_widget(self.widget, self.action)</span>
+
+<span class="sd">            self.page = HPage(self.mw)</span>
+<span class="sd">            self.cw.add_page(self.page)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">pass</span>
 
-    <span class="k">def</span> <span class="nf">custom_func</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">customer_func</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        自定义函数，可通过插件类名访问，例如：mw.CustomerPlugin.custom_func()</span>
+<span class="sd">        You can define your own functions here, and access them externally by mw.plugins[&#39;&lt;PLUGIN NAME&gt;&#39;].customer_func.</span>
+<span class="sd">        For example (in other file):</span>
+<span class="sd">            mw.plugins[&#39;CustomerPlugin&#39;].customer_func()</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">pass</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Hello, World&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>插件与主界面的交互详见文档。</p>

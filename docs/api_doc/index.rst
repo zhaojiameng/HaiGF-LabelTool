@@ -38,8 +38,7 @@ Feautures
    :caption: API
    
    main_ui
-   HPlugin
-   HPage
+   widgets
    HGF
    workflow
 

@@ -110,10 +110,3 @@ Central Widget
 
 .. automethod:: HaiGF.apis.cw.set_focus
 
-HWidgets
----------
-.. toctree::
-    :maxdepth: 1
-    :caption: Contents:
-    
-    hwidgets

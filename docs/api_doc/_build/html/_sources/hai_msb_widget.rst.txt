@@ -1,5 +1,5 @@
 HMainSideBarWidget
--------------------
+===================
 
 .. automodule:: HaiGF.apis.HMainSideBarWidget
 
