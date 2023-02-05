@@ -88,6 +88,18 @@ class CentralWidget(QWidget):
         """返回所有的TabWidget"""
         return self._tab_widgets
 
+    @property
+    def pages(self, all=False) -> list:
+        """返回所有的Page"""
+        if all:
+            pages = []
+            for tabw in self.tab_widgets:
+                pages.extend(tabw.pages)
+            return pages
+        else:
+            return self.current_tab_widget().pages
+
+
     def current_tab_widget(self, pos=None) -> HTabWidget:
         """
         Return the current tab widget which contains the activate page.

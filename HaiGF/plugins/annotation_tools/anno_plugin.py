@@ -33,9 +33,10 @@ class AnnoPlugin(HPlugin):
         self.page = self.create_page()
         # self.page = HExamplesPage(self.cw, title='ex3')
 
-        self.cw.add_page(self.page)
+        # self.cw.add_page(self.page)
+        self.page.hide()
 
-        self.open_image_file()
+        # self.open_image_file()
         
         
     def create_action(self):
@@ -78,6 +79,10 @@ class AnnoPlugin(HPlugin):
         # print(file_path)
         self.page.set_title(file_path)
         self.page.load_img(file_path)
+
+        if not self.page in self.cw.pages:
+            self.cw.add_page(self.page)
+            # self.cw.set_focus(self.page)
         self.cw.set_focus(self.page)
 
         

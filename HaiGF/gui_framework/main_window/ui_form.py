@@ -22,7 +22,7 @@ from PySide2.QtWidgets import (QApplication, QMainWindow, QMenuBar, QPushButton,
 from ..widgets import get_toolbar, get_central_widget, get_main_side_bar, get_panel_widget
 from .. import utils
 from ...version import __appname__
-from ..widgets import ExplorerWidget, AIWidget, HStatusBar
+from ..widgets import ExplorerWidget, AIWidget, HStatusBar, HMenuBar
 from HaiGF.apis import HGF
 
 class Ui_MainWindow(object):
@@ -42,8 +42,6 @@ class Ui_MainWindow(object):
         mw.restoreState(state)
         # 设置标题栏css
 
-        
-
     def setupUi(self, mw):
         self.setupProperties(mw=mw)  # 设置主窗口属性
         self.setupMenuBar(mw=mw)  # 设置菜单栏
@@ -59,18 +57,21 @@ class Ui_MainWindow(object):
 
     def setupMenuBar(self, mw):
         """设置菜单栏"""
-        menubar = QMenuBar(mw)
+        menubar = HMenuBar(mw)
         menubar.setObjectName(u"menubar")
-        menubar.setGeometry(QRect(0, 0, 800, 22))
+        # menubar.setGeometry(QRect(0, 0, 800, 22))
+
         mw.meaubar = menubar
-        mw.setMenuBar(menubar)
+        # mw.setMenuBar(menubar)
+        mw.setMenuWidget(menubar)
+        # mw.setTitleBarWidget(menubar)
 
     def setupCoreFuncBar(self, mw):
         """设置核心功能栏"""
         core_func_bar = get_toolbar("core_func_bar", parent=mw, actions=None)
         actions=[
                 mw.actions.explorer_action, 
-                mw.actions.anno_action, 
+                # mw.actions.anno_action, 
                 # mw.actions.ai_action,
                 'Spacer',  # 占位
                 mw.actions.user_action,
@@ -122,6 +123,7 @@ class Ui_MainWindow(object):
         mw.panel_widget = get_panel_widget(mw)
         mw.panel_widget.setObjectName("Panel")
         mw.addDockWidget(Qt.BottomDockWidgetArea, mw.panel_widget)
+        # mw.pw.hide()  # 隐藏底部选项卡
 
     def setupStatusBar(self, mw):
         # self.statusbar = QStatusBar(mw)

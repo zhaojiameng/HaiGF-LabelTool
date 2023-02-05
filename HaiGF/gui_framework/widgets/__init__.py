@@ -23,5 +23,7 @@ from .panel.panel_widget import get_panel_widget, PanelWidget
 
 from .status_bar.hai_status_bar import HStatusBar
 
+from .menu_bar.hai_menu_bar import HMenuBar
+
 
 

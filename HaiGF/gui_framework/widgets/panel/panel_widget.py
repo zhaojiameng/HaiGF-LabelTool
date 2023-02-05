@@ -89,17 +89,31 @@ class DockTitleBar(QWidget):
 
         # 添加一个stretch，使得tab_bar靠左
         layout = QHBoxLayout()
-        layout.setContentsMargins(0, 0, 0, 0)
-        layout.setSpacing(0)
+        layout.setContentsMargins(10, 0, 10, 0)
+        layout.setSpacing(10)
 
         layout.addWidget(tab_bar)
         # layout.addStretch()
         layout.addWidget(spacer)
+
+        # add a close
+        self.add_close_button(layout)
+
         self.setLayout(layout)
         # 标题栏的背景颜色
         self.setStyleSheet(
             f'background-color: {HGF.COLORS.WhiteSmoke};')
                 # color: {HGF.COLORS.Blue};')  # 字体颜色
+
+    def add_close_button(self, layout):
+        close_button = QPushButton(self)
+        # close_button.setText('X')
+        close_button.setIcon(HGF.ICONS.get('close-small'))
+        close_button.setFixedSize(16, 16)
+        close_button.setStyleSheet('background-color: rgb(255, 255, 255);')
+        close_button.setFlat(True)  # 无边框
+        close_button.clicked.connect(self.p.close)
+        layout.addWidget(close_button)
 
     
 class DockTabBar(QTabBar):
@@ -142,6 +156,7 @@ class DockTabBar(QTabBar):
             tab_rect = self.tabRect(i)
             if i == self.c_idx:
                 p.setPen(QColor(HGF.COLORS.Black))
+                # 设置字体大小
                 p.drawText(tab_rect, Qt.AlignCenter, tab_text)
                 p.setPen(QColor(HGF.COLORS.RoyalBlue))
                 x1, y1, x2, y2 = tab_rect.getCoords()

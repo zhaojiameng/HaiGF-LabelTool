@@ -89,7 +89,7 @@ class HGF(object):
         """Tab字体"""
         return Font(
             family=self.FONT_FAMILY, 
-            size=int(self.FONT_SIZE*0.9),
+            size=int(self.FONT_SIZE*0.8),
             bold=False,
             )
     
@@ -172,3 +172,12 @@ class HGF(object):
         return f'font-family: {self.FONT_FAMILY}; font-size: {int(self.TEXT_FONT_SIZE*1.2)}px; \
                 font-weight: False; color: {self.COLORS.White}; background-color: {self.CFB_BACKGOUND_COLOR}; '
 
+    @property
+    def LOGO_SIZE(self):
+        """Logo大小"""
+        return self.CFB_ACTION_SIZE * 0.8
+
+    @property
+    def TITLE_BAR_CSS(self):
+        """标题栏高度"""
+        return f'color: {self.COLORS.Black}; background-color: {self.COLORS.Gainsboro};'

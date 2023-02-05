@@ -47,6 +47,7 @@ class HTabWidget(QTabWidget):
         self.setTabsClosable(True)
         self.usesScrollButtons()
         self.setMovable(True)
+        self.setVisible(True)
 
         self._pages = []
 

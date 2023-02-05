@@ -40,6 +40,9 @@ def run(name='framework'):
     from .plugins.annotation_tools import AnnoPlugin
     mw.install_plugin(AnnoPlugin)
 
+    from .plugins.pyqtgraph import PyqtGraphPlugin
+    mw.install_plugin(PyqtGraphPlugin)
+
     mw.show()
     mw.raise_()
     sys.exit(app.exec_())

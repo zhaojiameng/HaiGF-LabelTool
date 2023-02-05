@@ -764,16 +764,22 @@ class Canvas(QtWidgets.QWidget):
         return super(Canvas, self).minimumSizeHint()
 
     def wheelEvent(self, ev):
+        # print('wheel event')
         if QT5:
             mods = ev.modifiers()
             delta = ev.angleDelta()
             if QtCore.Qt.ControlModifier == int(mods):
                 # with Ctrl/Command key
+                # scroll along x-axis
+                self.scrollRequest.emit(delta.y(), QtCore.Qt.Horizontal)
+            elif QtCore.Qt.AltModifier == int(mods):
+                # with Alt key
                 # zoom
-                self.zoomRequest.emit(delta.y(), ev.pos())
+                # print(delta)
+                # self.zoomRequest.emit(delta.y(), ev.pos())
+                self.zoomRequest.emit(delta.x(), ev.pos())
             else:
                 # scroll
-                self.scrollRequest.emit(delta.x(), QtCore.Qt.Horizontal)
                 self.scrollRequest.emit(delta.y(), QtCore.Qt.Vertical)
         else:
             if ev.orientation() == QtCore.Qt.Vertical:

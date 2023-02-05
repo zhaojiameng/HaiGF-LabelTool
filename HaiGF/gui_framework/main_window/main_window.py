@@ -37,12 +37,17 @@ class HMainWindow(QMainWindow):
         self.settings = QtCore.QSettings(__appname__, __appname__)
 
         
-        
         self.mw_ui = Ui_MainWindow()
         self.mw_ui.setupUi(self)
         self.setWindowTitle(f'{__appname__} v{__version__}')
         self.setWindowIcon(HGF.ICONS('anno'))
-        # self.setWindowFlags(QtCore.Qt.WindowCloseButtonHint | QtCore.Qt.WindowMinimizeButtonHint)
+        self.setWindowFlags(QtCore.Qt.WindowCloseButtonHint | QtCore.Qt.WindowMinimizeButtonHint)
+        
+        # 设置无标题栏
+        self.setWindowFlags(QtCore.Qt.FramelessWindowHint)
+        # 设置窗口圆角矩形
+        # self.setWindowFlags(QtCore.Qt.FramelessWindowHint | QtCore.Qt.WindowStaysOnTopHint)
+        
         # self.mw_ui.retranslateUi(self)
         # self.setStyleSheet("QMainWindow{background-color: rgb(255, 255, 255);}")
         # self.setStyleSheet("QMainWindow{background-color: rgb(0, 255, 255);}")

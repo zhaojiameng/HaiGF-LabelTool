@@ -137,8 +137,6 @@ class HTreeView(QTreeView):
             if os.path.isfile(file_path):
                 self.file_duble_clicked(file_path)
                 
-                
-
             elif os.path.isdir(file_path):  # 如果是文件夹
                 logger.info(f'Folder double clicked: {file_path}')
                 pass

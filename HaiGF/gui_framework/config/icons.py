@@ -19,6 +19,9 @@ class Icons(object):
             self.__setattr__(icon_name, icon)
             return icon
 
+    def get(self, icon_name: str) -> QIcon:
+        return self(icon_name)
+
 
     def new_icon(self, icon: str):
         icons_dir = f'{here.parent}/icons'

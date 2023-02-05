@@ -27,6 +27,7 @@ class Colors(object):
     SlateGray = "#708090"  # 112, 128, 144
     DarkSlateGray = "#2F4F4F"  # 47, 79, 79
     LightBlack = "#404040"  # 64, 64, 64
+    DarkBlack = "#303030"  # 48, 48, 48
     Black = "#000000"  # 0, 0, 0
 
     Blue = "#0000FF"  # 纯蓝，0, 0, 255
