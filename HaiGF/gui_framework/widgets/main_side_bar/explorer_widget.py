@@ -124,6 +124,8 @@ class HTreeView(QTreeView):
         # self.setHeaderHidden(True)
         # self.setContextMenuPolicy(Qt.CustomContextMenu)
         self.customContextMenuRequested.connect(self.on_context_menu)
+        # self.headerItem().setText(0, "1")
+        # self.header().setVisible(False)
 
     def mouseDoubleClickEvent(self, event):
         """

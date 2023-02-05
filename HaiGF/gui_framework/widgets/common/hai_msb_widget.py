@@ -15,7 +15,7 @@ class HMainSideBarWidget(QWidget):
     def __init__(self, parent, *args, **kwargs):
         super().__init__(parent, *args, **kwargs)
 
-        self._title = kwargs.pop('title', 'Title')
+        self._title = kwargs.pop('title', self.tr('MSB Widget Title'))
         self._title_actions = kwargs.pop('title_actions', [])
 
         self.setStyleSheet(HGF.MAIN_SIDE_BAR_CSS)

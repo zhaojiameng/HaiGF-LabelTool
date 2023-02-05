@@ -16,7 +16,7 @@ class HPage(QWidget):
 
         # 设置Tab bar
         self._icon = icon
-        self._title = self.tr(title)
+        self._title = title if title else self.tr('HPage Title')
 
         self.mask_color = f'rgba(100, 149, 237, 0.5)'
         self._mask_region = None  # 遮罩区域
