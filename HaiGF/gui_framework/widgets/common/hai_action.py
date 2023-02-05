@@ -16,6 +16,9 @@ here = Path(__file__).parent
 
 
 class HAction(QAction):
+    """
+    This is a wrapper for QAction.
+    """
     def __init__(self, text, parent, 
                 slot=None, 
                 shortcut=None,
@@ -24,6 +27,9 @@ class HAction(QAction):
                 checkable=False,
                 enabled=True,
                 checked=False,):
+        """
+        :param text: Text to be displayed in menu items
+        """
         super().__init__(text, parent)
 
         if icon is not None:
