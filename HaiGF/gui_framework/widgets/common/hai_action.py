@@ -7,6 +7,7 @@ import numpy as np
 from PySide2.QtGui import *
 from PySide2.QtWidgets import QAction
 from PySide2.QtSvg import QSvgRenderer
+from PySide2.QtCore import Qt, QSize
 
 from ...utils import newIcon
 from HaiGF.utils import general
@@ -36,13 +37,15 @@ class HAction(QAction):
                 tip=None,
                 checkable=False,
                 enabled=True,
-                checked=False,):
+                checked=False,
+                **kwargs):
         super().__init__(text, parent)
 
         if icon is not None:
             icon_text = "" if text is None else text.replace(" ", "\n")
             self.setIconText(icon_text)
-            self.setIcon(newIcon(icon))
+            icon = newIcon(icon)  # QIcon
+            self.setIcon(icon)
         
         if shortcut:
             if isinstance(shortcut, (list, tuple)):

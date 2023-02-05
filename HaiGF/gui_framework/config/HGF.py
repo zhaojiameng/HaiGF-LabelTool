@@ -142,14 +142,14 @@ class HGF(object):
             font-weight: False; color: {self.COLORS.Black}; '
 
     @property
-    def MAIN_SIDE_BAR_CSS(self):
-        return f'font-family: {self.FONT_FAMILY}; font-size: {int(self.TEXT_FONT_SIZE)}px; \
-                font-weight: False; color: {self.COLORS.Black}; '
+    def LOGO_SIZE(self):
+        """Logo大小"""
+        return self.CFB_ACTION_SIZE * 0.6
 
     @property
-    def STATUS_BAR_CSS(self):
-        return f'font-family: {self.FONT_FAMILY}; font-size: {int(self.TEXT_FONT_SIZE)}px; \
-                font-weight: False; color: {self.COLORS.White}; background-color: #FF9966; '
+    def TITLE_BAR_CSS(self):
+        """标题栏高度"""
+        return f'color: {self.COLORS.Black}; background-color: {self.COLORS.Gainsboro};'
     
     @property
     def CFB_BACKGOUND_COLOR(self):
@@ -173,11 +173,16 @@ class HGF(object):
                 font-weight: False; color: {self.COLORS.White}; background-color: {self.CFB_BACKGOUND_COLOR}; '
 
     @property
-    def LOGO_SIZE(self):
-        """Logo大小"""
-        return self.CFB_ACTION_SIZE * 0.8
+    def MAIN_SIDE_BAR_CSS(self):
+        return f'font-family: {self.FONT_FAMILY}; font-size: {int(self.TEXT_FONT_SIZE)}px; \
+                font-weight: False; color: {self.COLORS.Black}; '
 
     @property
-    def TITLE_BAR_CSS(self):
-        """标题栏高度"""
-        return f'color: {self.COLORS.Black}; background-color: {self.COLORS.Gainsboro};'
+    def PAGE_CSS(self):
+        return f'font-family: {self.FONT_FAMILY}; font-size: {int(self.TEXT_FONT_SIZE)}px; \
+                font-weight: False; color: {self.COLORS.Black}; '
+
+    @property
+    def STATUS_BAR_CSS(self):
+        return f'font-family: {self.FONT_FAMILY}; font-size: {int(self.TEXT_FONT_SIZE)}px; \
+                font-weight: False; color: {self.COLORS.White}; background-color: #FF9966; '

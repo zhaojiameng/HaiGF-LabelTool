@@ -21,6 +21,7 @@ class HTabBar(QTabBar):  # HAI TabBar
         self.c_idx = 0  # 当前tab的index
         # 设置self左对齐
         self.setFont(HGF.TAB_FONT)
+        self.shadow_tabbar.setFont(HGF.TAB_FONT)
 
         self.tabCloseRequested.connect(self.on_tabCloseRequested)
 

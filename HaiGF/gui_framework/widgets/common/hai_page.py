@@ -2,6 +2,7 @@ from PySide2.QtWidgets import *
 from PySide2.QtGui import *
 import numpy as np
 from HaiGF.utils import general
+from HaiGF.apis import HGF
 import damei as dm
 logger = dm.get_logger('hai_page')
 
@@ -13,6 +14,7 @@ class HPage(QWidget):
     """
     def __init__(self, parent=None, icon=None, title=None, **kwargs):
         super().__init__(parent, **kwargs)
+        self.p = parent
 
         # 设置Tab bar
         self._icon = icon
@@ -21,6 +23,8 @@ class HPage(QWidget):
         self.mask_color = f'rgba(100, 149, 237, 0.5)'
         self._mask_region = None  # 遮罩区域
         self.maskw = QWidget(self)  # 遮罩控件
+
+        self.setStyleSheet(HGF.PAGE_CSS)
         
     def mask_region(self, mask_region):
         """遮罩left up right bottom corner"""
@@ -86,4 +90,26 @@ class HPage(QWidget):
         设置页面标题的文字
         """
         self.title = title
+
+    def set_widget(self, widget: QWidget):
+        """
+        Set the widget of the page.
+        """
+        self.layout = QVBoxLayout(self)
+        self.layout.setContentsMargins(0, 0, 0, 0)
+        self.layout.setSpacing(0)
+        self.layout.addWidget(widget)
+        self.setLayout(self.layout)
+
+    def hide(self):
+        # print(f'hide page: {self.title}')
+        # self._p = self.parent()
+        # self.setParent(None)
+        super().hide()
+        
+    def show(self):
+        # if self._p:
+            # self._p.setCurrentWidget(self)
+            # self.setParent(self._p)
+        super().show()
 
