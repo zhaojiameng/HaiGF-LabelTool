@@ -98,7 +98,7 @@ class MainSideBar(QtWidgets.QDockWidget):
         self.setMinimumSize(QtCore.QSize(50, 0))
         self.setFeatures(QDockWidget.DockWidgetMovable)
         # 设置边框
-        self.setStyleSheet('border: 1px solid #d9d9d9;')
+        # self.setStyleSheet('border: 1px solid #d9d9d9;')
 
     def load_widget_by_action(self, action, *args, **kwargs):
         """根据action加载widget"""

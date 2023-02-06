@@ -1,5 +1,10 @@
+
+from PySide2.QtWidgets import QWidget, QLabel, QVBoxLayout
 from HaiGF import HPlugin, HAction, HMainSideBarWidget, HPage
 
+from .widgets.msb_widget import PyqyGraphMSBWidget
+from .widgets.page import PyqtGraphPage
+from .widgets.stitch_monster import StitchMonster
 
 
 class PyqtGraphPlugin(HPlugin):
@@ -31,12 +36,32 @@ class PyqtGraphPlugin(HPlugin):
         self.action= self.create_action()
         self.cfb.add_action(self.action)
 
-        self.widget = HMainSideBarWidget(self.mw)
-        self.msb.add_widget(self.widget, self.action)
+        # self.msb_widget = HMainSideBarWidget(self.mw)
+        self.msb_widget = PyqyGraphMSBWidget(self.mw)
+        self.msb.add_widget(self.msb_widget, self.action)
 
-        self.page = HPage(self.mw)
-        self.cw.add_page(self.page)
+        # self.page = HPage(self.mw)
+        self.page = PyqtGraphPage(self.mw)
+        # self.cw.add_page(self.page)
+        self.page.hide()
+
+        self.stitch_monster = StitchMonster(self)  # 把msb_wdiget和page进行缝合的缝合怪
+
+        # self.page_params_tree = HPage(self.mw)
+        # from ..pyqtgraph.pyqtgraph.examples.parametertree import win
+        # self.page_params_tree.set_widget(win)
+        # self.cw.add_page(self.page_params_tree)
         pass
+
+    def focus_page(self, page=None):
+        """当点击action时，显示的页面"""
+        page = page or self.page
+        # print("focus_page")
+        # print(self.cw.pages)
+        if self.page not in self.cw.pages:
+            self.cw.add_page(self.page)
+        page.show()
+        self.cw.set_focus(page)
 
     def customer_func(self):
         """
@@ -54,7 +79,7 @@ class PyqtGraphPlugin(HPlugin):
             parent=self.mw,  # 父对象，一般为HMainWindow
             slot=None, # 槽函数
             shortcut=short_cut,  # 快捷键
-            icon="histogram",  # 图标路径：gui_framework/icons，自动搜索.svg和.png
+            icon="curve-adjustment-white",  # 图标路径：gui_framework/icons，自动搜索.svg和.png
             tip=f'Pygt Graph Examples {short_cut}',  # 提示
             checkable=True,  # 是否可选中
             enabled=True,  # 是否可用
@@ -62,3 +87,15 @@ class PyqtGraphPlugin(HPlugin):
             )
         return action
 
+class ParamsTreeWidget(QWidget):
+
+    def __init__(self, parent=None, *args, **kwargs):
+        super().__init__(parent, *args, **kwargs)
+        self.p = parent
+        self.init_ui()
+
+    def init_ui(self):
+        lb = QLabel("Params Tree")
+        self.layout = QVBoxLayout()
+        self.layout.addWidget(lb)
+        self.setLayout(self.layout)
