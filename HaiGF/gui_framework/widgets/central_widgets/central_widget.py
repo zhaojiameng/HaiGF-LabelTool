@@ -81,16 +81,25 @@ class CentralWidget(QWidget):
 
     @property
     def splitters(self):
+        """
+        return all splitters in central widget.
+        """
         return self._splitters
 
     @property
     def tab_widgets(self) -> list:
-        """返回所有的TabWidget"""
+        """
+        return all tab widgets in central widget.
+        """
         return self._tab_widgets
 
     @property
     def pages(self, all=False) -> list:
-        """返回所有的Page"""
+        """
+        retrun pages in central widget.
+        
+        :param all: if True, return all pages, else return pages in current tab widget.
+        """
         if all:
             pages = []
             for tabw in self.tab_widgets:

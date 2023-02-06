@@ -1,5 +1,5 @@
 HPlugin
-========
+--------
 
 .. autofunction:: HaiGF.HPlugin
 

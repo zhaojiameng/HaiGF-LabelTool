@@ -22,7 +22,9 @@
         <script src="_static/copybutton.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" /> 
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="HMainSideBarWidget" href="HMainSideBarWidget.html" />
+    <link rel="prev" title="HPlugin" href="HPlugin.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -46,9 +48,22 @@
 <li class="toctree-l1"><a class="reference internal" href="getting_started.html#how-to-develop-plugin">2. How to develop plugin</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
-<ul>
+<ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="main_ui.html">Main UI</a></li>
-<li class="toctree-l1"><a class="reference internal" href="widgets.html">Widgets</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="widgets.html">Widgets</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="HAction.html">HAction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="HPlugin.html">HPlugin</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">HPage</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#HaiGF.apis.HPage"><code class="docutils literal notranslate"><span class="pre">HPage</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#HaiGF.apis.HPage.set_icon"><code class="docutils literal notranslate"><span class="pre">HPage.set_icon()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#HaiGF.apis.HPage.set_title"><code class="docutils literal notranslate"><span class="pre">HPage.set_title()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="HMainSideBarWidget.html">HMainSideBarWidget</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="HGF.html">HGF</a></li>
 <li class="toctree-l1"><a class="reference internal" href="workflow.html">Workflow</a></li>
 </ul>
@@ -71,6 +86,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="widgets.html">Widgets</a></li>
       <li class="breadcrumb-item active">HPage</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/HPage.rst.txt" rel="nofollow"> View page source</a>
@@ -81,11 +97,24 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="module-HaiGF.apis.HPage">
-<span id="hpage"></span><h1>HPage<a class="headerlink" href="#module-HaiGF.apis.HPage" title="Permalink to this heading"></a></h1>
-<p>HaiGF的基本页面类，继承于QWidget，可添加到中央控件中。</p>
-<p>一个页面包含一个标题栏和一个空的控件。</p>
-<p>标题栏包含标题图标、标题文本、关闭按钮等。</p>
+  <section id="hpage">
+<h1>HPage<a class="headerlink" href="#hpage" title="Permalink to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="HaiGF.apis.HPage">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">HaiGF.apis.</span></span><span class="sig-name descname"><span class="pre">HPage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">icon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HaiGF.apis.HPage" title="Permalink to this definition"></a></dt>
+<dd><p>This is the base class of HaiGF’s page, inherited from QWidget, can be added to the central widget.
+One page contains a title bar and an empty widget.
+The title bar contains title icon, title text, close button, etc.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>parent</strong> (<em>optinal</em>) – Parent widget, usually <cite>mw</cite>.</p></li>
+<li><p><strong>icon</strong> (<em>optional</em>) – Icon to be displayed in title bar.</p></li>
+<li><p><strong>title</strong> (<em>optional</em>) – Title to be displayed in title bar.</p></li>
+<li><p><strong>kwargs</strong> (<em>optional</em>) – Other keyword arguments to be passed to QWidget.</p></li>
+</ul>
+</dd>
+</dl>
 <p>Example:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">HaiGF</span> <span class="kn">import</span> <span class="n">HPage</span>
 
@@ -102,6 +131,8 @@
         <span class="k">pass</span>
 </pre></div>
 </div>
+</dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="HaiGF.apis.HPage.set_icon">
 <span class="sig-prename descclassname"><span class="pre">HPage.</span></span><span class="sig-name descname"><span class="pre">set_icon</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">icon</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QIcon</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HaiGF.apis.HPage.set_icon" title="Permalink to this definition"></a></dt>
@@ -119,7 +150,10 @@
 
            </div>
           </div>
-          <footer>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="HPlugin.html" class="btn btn-neutral float-left" title="HPlugin" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="HMainSideBarWidget.html" class="btn btn-neutral float-right" title="HMainSideBarWidget" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
 
   <hr/>
 

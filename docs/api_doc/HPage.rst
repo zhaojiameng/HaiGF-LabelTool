@@ -1,26 +1,25 @@
 HPage
-======
+------
 
+.. autoclass:: HaiGF.apis.HPage
 
-.. automodule:: HaiGF.apis.HPage
+    Example:
 
-Example:
+    .. code-block:: python
 
-.. code-block:: python
+        from HaiGF import HPage
+        
+        class CustomerPage(HPage):
+            def __init__(self, parent=None, **kwargs):
+                super().__init__(parent, **kwargs)
+                self.set_title(self.tr('Customer Page'))
+                self.set_icon(<QIcon>)
 
-    from HaiGF import HPage
-    
-    class CustomerPage(HPage):
-        def __init__(self, parent=None, **kwargs):
-            super().__init__(parent, **kwargs)
-            self.set_title(self.tr('Customer Page'))
-            self.set_icon(<QIcon>)
+                self.setup_ui()
 
-            self.setup_ui()
-
-        def setup_ui(self):
-            # setup customer ui here (QWidget).
-            pass
+            def setup_ui(self):
+                # setup customer ui here (QWidget).
+                pass
     
 
 .. automethod:: HaiGF.apis.HPage.set_icon

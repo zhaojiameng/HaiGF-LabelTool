@@ -7,14 +7,18 @@ logger = dm.get_logger('hai_page')
 
 class HPage(QWidget):
     """
-    HaiGF的基本页面类，继承于QWidget，可添加到中央控件中。\n
-    一个页面包含一个标题栏和一个空的控件。\n
-    标题栏包含标题图标、标题文本、关闭按钮等。
+    This is the base class of HaiGF's page, inherited from QWidget, can be added to the central widget.
+    One page contains a title bar and an empty widget.
+    The title bar contains title icon, title text, close button, etc.
+
+    :param optinal parent: Parent widget, usually `mw`.
+    :param optional icon: Icon to be displayed in title bar.
+    :param optional title: Title to be displayed in title bar.
+    :param optional kwargs: Other keyword arguments to be passed to QWidget.
     """
     def __init__(self, parent=None, icon=None, title=None, **kwargs):
         super().__init__(parent, **kwargs)
 
-        # 设置Tab bar
         self._icon = icon
         self._title = title if title else self.tr('HPage Title')
 

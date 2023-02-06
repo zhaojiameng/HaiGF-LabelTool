@@ -1,5 +1,5 @@
 HAction
-========
+--------
 
 .. .. automodule:: HaiGF.HAction
 

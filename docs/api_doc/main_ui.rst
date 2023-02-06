@@ -49,7 +49,11 @@ Central Widget
 
 .. automodule:: HaiGF.apis.cw
 
-.. .. property:: cw.tab_widgets
+.. autoproperty:: HaiGF.apis.cw.pages
+
+.. autoproperty:: HaiGF.apis.cw.tab_widgets
+
+.. autoproperty:: HaiGF.apis.cw.splitters
 
 .. automethod:: HaiGF.apis.cw.add_tab_widget
 

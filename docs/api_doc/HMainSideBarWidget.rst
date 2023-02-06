@@ -1,5 +1,5 @@
 HMainSideBarWidget
-===================
+------------------
 
 .. autoclass:: HaiGF.apis.HMainSideBarWidget
 
