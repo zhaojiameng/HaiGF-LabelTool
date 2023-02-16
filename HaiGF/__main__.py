@@ -31,8 +31,8 @@ def run(name='framework'):
 
     mw = HMainWindow()
 
-    from .plugins.hai_tools import AIPlugin
-    mw.install_plugin(AIPlugin)
+    # from .plugins.hai_tools import AIPlugin
+    # mw.install_plugin(AIPlugin)
 
     from .plugins.load_img import LoadImagePlugin
     mw.install_plugin(LoadImagePlugin)
@@ -42,6 +42,9 @@ def run(name='framework'):
 
     from .plugins.pyqtgraph import PyqtGraphPlugin
     mw.install_plugin(PyqtGraphPlugin)
+
+    from .plugins.label_train import AntrainPlugin
+    mw.install_plugin(AntrainPlugin)
 
     mw.show()
     mw.raise_()

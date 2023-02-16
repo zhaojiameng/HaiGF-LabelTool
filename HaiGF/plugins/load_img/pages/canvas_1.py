@@ -12,7 +12,7 @@ class Canvas_1(HPage):
         self.img.setObjectName("img")
         self.openImg = QtWidgets.QPushButton(self)
         self.openImg.setObjectName("openImg")
-        self.openImg.clicked.connect(self.load_img(filePath='000000.jpg'))
+        self.openImg.clicked.connect(self.load_img(filePath='.resource.000000.jpg'))
         self.horizontalLayout.addWidget(self.img)
         self.horizontalLayout.addWidget(self.openImg)
 

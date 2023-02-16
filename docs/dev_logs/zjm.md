@@ -63,7 +63,10 @@ def __init__(self, parent=None, icon=None, title=None, **kwargs):
 
 2.解决运行时，报unknown的警告。
 
+##2.5-2.12日志
+label_train插件开发
 
-
-
-
+1.主侧栏双击图片，加载到annotate_train页面
+2.鼠标悬浮在图片上时，显示位置，pix和值
+3.ROI的绘制，， 三维数据求均值到一维后，画出曲线， ROI可移动，同步更新曲线
+4.等值线的绘画，图片右侧是阈值。随阈值更改，更新等值线。

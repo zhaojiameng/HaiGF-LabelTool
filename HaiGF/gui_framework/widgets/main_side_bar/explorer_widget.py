@@ -161,6 +161,8 @@ class HTreeView(QTreeView):
         elif self.is_image_file(file_path):  # if is image file
             plg = mw.plugins['AnnoPlugin']
             plg.open_image_file(file_path)
+            lat = mw.plugins['AntrainPlugin']
+            lat.open_image_file(file_path)
 
         pass
 
