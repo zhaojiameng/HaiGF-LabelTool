@@ -88,11 +88,11 @@ class ImageAnalysisPage(HPage):
         #菜单对象
         self.layout_menu = QMenu(self)
 
-        self.actionA = QAction(u'保存数据',self)#创建菜单选项对象
-        self.actionA.setShortcut('Ctrl+S')#设置动作A的快捷键
+        self.actionA = QAction(u'撤销操作',self)#创建菜单选项对象
+        # self.actionA.setShortcut('Ctrl+S')#设置动作A的快捷键
         self.layout_menu.addAction(self.actionA)#把动作A选项对象添加到菜单self.win_menu上
 
-        self.actionB = QAction(u'删除数据',self)
+        self.actionB = QAction(u'保存标注',self)
         self.layout_menu.addAction(self.actionB)
 
         self.actionA.triggered.connect(self.save_annotation) #将动作A触发时连接到槽函数 button
@@ -101,17 +101,42 @@ class ImageAnalysisPage(HPage):
         self.layout_menu.popup(QCursor.pos())#声明当鼠标在win控件上右击时，在鼠标位置显示右键菜单   ,exec_,popup两个都可以，
 
     def save_annotation(self):
-            """save single annotation"""
-            print('okok-------')
+        self.img.setImage(self.image)
 
    
     def save_all_annotation(self):
         """save all annotion on a image"""
-        txt=self.txt
+        binary = self.create_canny()
+        k = np.ones((3, 3), dtype=np.uint8)
+        binary = cv2.morphologyEx(binary, cv2.MORPH_DILATE, k)
+
+        result = []
+        # 轮廓发现
+        contours, hierarchy = cv2.findContours(binary, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+        height = binary.shape[0]
+        weight = binary.shape[1]
+        for c in range(len(contours)):
+            rect = cv2.boundingRect(contours[c])  # 轮廓的外接矩形
+            x, y, w, h = cv2.boundingRect(contours[c])
+            tem = [0, (x+w/2)/weight, (y+h/2)/height, w/weight, h/height]
+            result.append(tem)
+            cv2.rectangle(binary, rect, (0, 255, 0), 3)  # 没有旋转的外接矩形，绿色
+            cv2.drawContours(binary, contours, c, (0, 0, 255), 2, 8)
+
         filepath, type = QFileDialog.getSaveFileName(self, "文件保存", "/" ,'txt(*.txt)')
         file=open(filepath,'w')
         print(filepath)
-        file.write(txt)
+        t = ''
+    
+        for i in result:
+            for e in range(len(result[0])):
+                t = t+str(i[e])+' '
+            file.write(t.strip(' '))
+            file.write('\n')
+            t = ''
+        # txt=self.txt
+        
+        # file.write(txt)
 
 
     def create_img(self, img_path=None):
@@ -132,6 +157,7 @@ class ImageAnalysisPage(HPage):
         """axis=2 show zhe correct data ,why"""
         self.iso.setData(pg.gaussianFilter(self.image.mean(axis=2), (2, 2)))
         self.img.setImage(self.image)
+        # self.canny()
         self.updatePlot()
 
     def create_ROI(self):
@@ -192,14 +218,12 @@ class ImageAnalysisPage(HPage):
         x, y = ppos.x(), ppos.y()
         self.p1.setTitle("pos: (%0.1f, %0.1f)  pixel: (%d, %d)  value: %s" % (x, y, i, j, val))
 
+    #对图片进行canny边缘检测，将结果以红色的线条显示在原图上
+    def canny(self, threshold1=80, threshold2=160):
+        image = self.create_canny(threshold1=threshold1, threshold2=threshold2)
+        self.img.setImage(image)
 
-    #计算两数之和
-    def add(self,a,b):
-        return a+b
+    def create_canny(self, threshold1=80, threshold2=160):
+        return cv2.Canny(self.image, threshold1=threshold1, threshold2=threshold2)
+
     
-
-    #中国最好的三所大学
-    def best_three_university(self):
-        return '清华大学','北京大学','复旦大学'
-
-        

@@ -80,4 +80,10 @@ class AntrainPlugin(HPlugin):
             self.cw.add_page(self.page)
         self.cw.set_focus(self.page)
 
+    def canny_detect(self, threshold1, threshold2):
+        if not self.page in self.cw.pages:
+            print('no page')
+        else:
+            self.page.canny(threshold1, threshold2)
+
 
