@@ -19,13 +19,57 @@ class AntrainMSBWidget(HMainSideBarWidget):
         self.ui = Ui_Form()
         self.ui.setupUi(self)
 
-        self.ui.runButton.clicked.connect(self.on_pushButton_clicked)
+        self.ui.runButton.clicked.connect(self.on_cannyPutton_clicked)
+        self.ui.runButton1.clicked.connect(self.on_cancel_cannyButton_clicked)
+        self.ui.annoButton.clicked.connect(self.on_annoButton_clicked)
+        self.ui.roiComboBox.currentTextChanged.connect(self.updateRoiType)
+        self.ui.roiButton.clicked.connect(self.on_roiButton_clicked)
+        self.ui.roiButton1.clicked.connect(self.on_cancel_roiButton_clicked)
 
-    def on_pushButton_clicked(self):
+        self.ui.isoButton.clicked.connect(self.on_isoButton_clicked)
+        self.ui.isoButton1.clicked.connect(self.on_cancel_isoButton_clicked)
+
+    def on_cannyPutton_clicked(self):
         mw = self.p
-
         plg = mw.plugins['AntrainPlugin']
         plg.canny_detect(self.ui.threshold1SpinBox.value(), self.ui.threshold2SpinBox.value())
+
+    def on_cancel_cannyButton_clicked(self):
+        mw = self.p
+        plg = mw.plugins['AntrainPlugin']
+        plg.cancel_canny()
+
+    def on_annoButton_clicked(self):
+        mw = self.p
+        plg = mw.plugins['AntrainPlugin']
+        plg.create_anno()
+
+    def updateRoiType(self):
+        mw = self.p
+        plg = mw.plugins['AntrainPlugin']
+        plg.updateRoiType(self.ui.roiComboBox.currentText())
+
+    def on_roiButton_clicked(self):
+        mw = self.p
+        plg = mw.plugins['AntrainPlugin']
+        plg.create_ROI()
+
+    def on_cancel_roiButton_clicked(self):
+        mw = self.p
+        plg = mw.plugins['AntrainPlugin']
+        plg.cancel_ROI()
+
+    def on_isoButton_clicked(self):
+        mw = self.p
+        plg = mw.plugins['AntrainPlugin']
+        plg.analysis_iso()
+
+    def on_cancel_isoButton_clicked(self):
+        mw = self.p
+        plg = mw.plugins['AntrainPlugin']
+        plg.cancel_iso()
+
+    
 
         
 

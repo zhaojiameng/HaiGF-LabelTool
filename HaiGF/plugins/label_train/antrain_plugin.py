@@ -86,4 +86,45 @@ class AntrainPlugin(HPlugin):
         else:
             self.page.canny(threshold1, threshold2)
 
+    def cancel_canny(self):
+        if not self.page in self.cw.pages:
+            print('no page')
+        else:
+            self.page.cancel_canny()
 
+    def create_anno(self):
+        if not self.page in self.cw.pages:
+            print('no page')
+        else:
+            self.page.create_anno()
+
+    def updateRoiType(self, type):
+        if not self.page in self.cw.pages:
+            print('no page')
+        else:
+            self.page.updateRoiType(type)
+
+    def cancel_ROI(self):
+        if not self.page in self.cw.pages:
+            print('no page')
+        else:
+            self.page.cancel_ROI()
+
+    def create_ROI(self):
+        if not self.page in self.cw.pages:
+            print('no page')
+        else:
+            self.page.analysis_ROI()
+
+
+    def analysis_iso(self):
+        if not self.page in self.cw.pages:
+            print('no page')
+        else:
+            self.page.analysis_iso()
+
+    def cancel_iso(self):
+        if not self.page in self.cw.pages:
+            print('no page')
+        else:
+            self.page.cancel_iso()
