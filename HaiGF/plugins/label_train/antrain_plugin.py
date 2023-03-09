@@ -92,11 +92,11 @@ class AntrainPlugin(HPlugin):
         else:
             self.page.cancel_canny()
 
-    def create_anno(self):
+    def create_anno(self, shape):
         if not self.page in self.cw.pages:
             print('no page')
         else:
-            self.page.create_anno()
+            self.page.create_anno(shape)
 
     def updateRoiType(self, type):
         if not self.page in self.cw.pages:

@@ -82,3 +82,29 @@ canny也不能分割出气泡和背景
 1.撤销边缘检测的功能更改为：运行旁的“撤销”按钮触发
 2.线、圆形、椭圆、矩形、多边形ROI的实现，用于标注
 3.ROI分析，等值分析抽离成功能，放入主侧栏
+
+## 2.28
+1.roi区域做为标注形状，放入shape数组，重构roi绘制逻辑
+
+## 3.1
+1.句柄连线是贝塞尔曲线的ROI
+问题1：直线仍绘制
+问题2：左键点击新增句柄的功能在直线上
+问题3：贝塞尔曲线的控制
+
+## 问题
+Traceback (most recent call last):
+  File "d:\hai-gui-framework\HaiGF\plugins\label_train\widgets\msb_widget.py", line 62, in on_cancel_roiButton_clicked
+    plg.cancel_ROI()
+  File "d:\hai-gui-framework\HaiGF\plugins\label_train\antrain_plugin.py", line 108, in cancel_ROI
+    if not self.page in self.cw.pages:
+  File "d:\hai-gui-framework\HaiGF\gui_framework\widgets\central_widgets\central_widget.py", line 109, in pages
+    return self.current_tab_widget().pages
+  File "d:\hai-gui-framework\HaiGF\gui_framework\widgets\central_widgets\central_widget.py", line 125, in current_tab_widget
+    assert pos is not None, '多个TabWidget时，需要传入pos参数'
+AssertionError: 多个TabWidget时，需要传入pos参数
+
+关闭tab时,调用的函数名，是否可重写。
+关闭tab时，分屏线还在，存在的tab不能全部填充
+
+矩形框的坐标位置应与图片保持一致。

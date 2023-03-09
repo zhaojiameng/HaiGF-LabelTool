@@ -8,6 +8,7 @@ class AntrainMSBWidget(HMainSideBarWidget):
     def __init__(self, parent, *args, **kwargs):
         super().__init__(parent, *args, **kwargs)
         self.p = parent
+        self.annoShape = 'Line ROI'
 
 
         self.set_title(self.tr('Annotation and Train Tools'))
@@ -42,12 +43,13 @@ class AntrainMSBWidget(HMainSideBarWidget):
     def on_annoButton_clicked(self):
         mw = self.p
         plg = mw.plugins['AntrainPlugin']
-        plg.create_anno()
+        plg.create_anno(self.annoShape)
 
     def updateRoiType(self):
-        mw = self.p
-        plg = mw.plugins['AntrainPlugin']
-        plg.updateRoiType(self.ui.roiComboBox.currentText())
+        self.annoShape = self.ui.roiComboBox.currentText()
+        # mw = self.p
+        # plg = mw.plugins['AntrainPlugin']
+        # plg.updateRoiType(self.ui.roiComboBox.currentText())
 
     def on_roiButton_clicked(self):
         mw = self.p

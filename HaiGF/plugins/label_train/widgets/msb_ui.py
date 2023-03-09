@@ -1,6 +1,3 @@
-
-
-
 from pyqtgraph.Qt import QtCore, QtGui, QtWidgets
 from PySide2.QtWidgets import *
 
@@ -136,7 +133,7 @@ class Ui_Form(object):
         self.roiComboBox.setItemText(2, _translate("Form", "Ellipse ROI"))
         self.roiComboBox.setItemText(3, _translate("Form", "Circle ROI"))
         self.roiComboBox.setItemText(4, _translate("Form", "PolyLine ROI"))
-        self.roiComboBox.setItemText(5, _translate("Form", "Polygon ROI"))
+        self.roiComboBox.setItemText(5, _translate("Form", "BezierLine ROI"))
         self.roiLabel.setText(_translate("Form", "ROI分析"))
         self.roiButton.setText(_translate("Form", "应用"))
         self.roiButton1.setText(_translate("Form", "撤销"))
