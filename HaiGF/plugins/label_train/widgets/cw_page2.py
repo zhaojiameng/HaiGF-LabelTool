@@ -16,6 +16,7 @@ import copy
 import xml.etree.ElementTree as ET
 import json
 import damei as dm
+import numpy as np
 
 logger = dm.get_logger('cw_page')
 here = Path(__file__).parent.parent
@@ -71,12 +72,16 @@ class ImageMagnificationPage(HPage):
     
         # Item for displaying image data
         self.img = pg.ImageItem(border='w')
+        self.img.mousePressEvent = self.mousePressEvent
+        self.img.mouseMoveEvent = self.mouseMoveEvent
+        self.img.mouseReleaseEvent = self.mouseReleaseEvent
         self.p1.addItem(self.img)
         self.setMouseTracking(True)
-        self.p1.scene().mousePressEvent = self.mousePressEvent
-        self.p1.scene().mouseMoveEvent = self.mouseMoveEvent
-        self.p1.scene().mouseReleaseEvent = self.mouseReleaseEvent
+        # self.p1.scene().mousePressEvent = self.no_scale
+        # self.p1.scene().mouseMoveEvent = self.mouseMoveEvent
+        # self.p1.scene().mouseReleaseEvent = self.mouseReleaseEvent
         self.win.show()
+
     def show_image(self, image):
         self.image = image
         self.img.setImage(image)
@@ -88,56 +93,68 @@ class ImageMagnificationPage(HPage):
         self.p1.addItem(self.roi)
         self.roi.setZValue(10)  # make sure ROI is drawn above image
 
-    # def paintEvent(self, event):
-    #     super().paintEvent(event)
-    #     if hasattr(self, 'start_point') and hasattr(self, 'end_point'):
-    #         painter = QPainter(self)
-    #         painter.setPen(QPen(QColor(255, 0, 0), 1))
-    #         line_path = QtGui.QPainterPath()
-    #         line_path.addRect(self.start_point.x(), self.start_point.y(), self.end_point.x() - self.start_point.x(), self.end_point.y() - self.start_point.y())
-    #         painter.drawPath(line_path)
+
+    def get_Rect(self, p1, p2):
+        x1, y1 = p1.x(), p1.y()
+        x2, y2 = p2.x(), p2.y()
+        if x1 < x2:
+            x = x1
+            width = x2 - x1
+        else:
+            x = x2
+            width = x1 - x2
+        if y1 < y2:
+            y = y1
+            height = y2 - y1
+        else:
+            y = y2
+            height = y1 - y2
+        return QRectF(x, y, width, height)
+    
+    def fix_coordinate(self, pos):
+        x, y = pos.x(), pos.y()
+        if x < 0:
+            x = 0
+        if x > self.image.shape[1]:
+            x = self.image.shape[1]
+        if y < 0:
+            y = 0
+        if y > self.image.shape[0]:
+            y = self.image.shape[0]
+        return QPoint(x, y)
+       
 
     #event.pos 是什么？
     def mousePressEvent(self, event):
         if event.button() == Qt.LeftButton:
             if not self.drawing:
                 self.drawing = True
-                # Get global position of mouse cursor
-                pos = QCursor.pos()
-                print(pos)
-                pos = QPoint(pos.x() - 717, pos.y() - 88)
-                print('-------------')
-                print(pos)
-                self.start_point = pos
-                self.rect_item = RectangleItem(QRectF(pos.x(), pos.y(), 0, 0))
-                self.rect_item.setPen(QPen(QColor(0, 255, 0), 1))
-                self.p1.scene().addItem(self.rect_item)
+                self.start_point = self.img.mapToParent(self.fix_coordinate(event.pos()))
+                self.rect_item = RectangleItem(self.get_Rect(self.start_point, self.start_point))
+                self.rect_item.setPen(QPen(QColor(0, 255, 0), 0.1))
+                self.p1.addItem(self.rect_item)
                 self.rect_item.setZValue(10)
+                
         
     def mouseMoveEvent(self, event):
         if self.drawing:
-            pos = QCursor.pos()
-            # pos = self.p1.mapToScene(event.pos())
-            pos = QPoint(pos.x() - 717, pos.y() - 88)
-
-            self.rect_item.setRect(self.start_point.x(), self.start_point.y(), pos.x() - self.start_point.x(), pos.y() - self.start_point.y())
-            self.end_point = pos
+            self.end_point = self.img.mapToParent(self.fix_coordinate(event.pos()))
+            self.rect_item.setRect(self.get_Rect(self.start_point, self.end_point))
+           
                   
     def mouseReleaseEvent(self, event):
         if event.button() == Qt.LeftButton:
             if self.drawing:
-                self.end_point = QCursor.pos()
-                self.end_point = QPoint(self.end_point.x() - 717, self.end_point.y() - 88)
-                # self.end_point = self.p1.mapToScene(event.pos())
+                self.end_point = self.img.mapToParent(self.fix_coordinate(event.pos()))
                 print(self.start_point, self.end_point)
-                self.rect_item.setRect(self.start_point.x(), self.start_point.y(), self.end_point.x() - self.start_point.x(), self.end_point.y() - self.start_point.y())
+                self.rect_item.setRect(self.get_Rect(self.start_point, self.end_point))
                 self.drawing = False
                 self.label_dialog.label_edit.clear()
                 if self.label_dialog.exec_():
                     label = self.label_dialog.label_edit.text()
                     #未输入标签时删除这个矩形
                     if label == '':
-                        self.p1.scene().removeItem(self.rect_item)
+                        self.p1.removeItem(self.rect_item)
                     else:
                         self.rect_item.set_label(label)
                         self.rect_items.append(self.rect_item)
