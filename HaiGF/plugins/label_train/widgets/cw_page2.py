@@ -32,7 +32,7 @@ class LabelDialog(QDialog):
         self.layout.addWidget(self.button_box)
         self.button_box.accepted.connect(self.accept)
         self.button_box.rejected.connect(self.reject)
-  
+
 class RectangleItem(QGraphicsRectItem):
     def __init__(self, rect, parent=None):
         super().__init__(rect, parent)
@@ -92,7 +92,6 @@ class ImageMagnificationPage(HPage):
         self.img.setImage(image)
         self.img.setRect(QRectF(0, 0, image.shape[1], image.shape[0]))
        
-
     def get_Rect(self, p1, p2):
         x1, y1 = p1.x(), p1.y()
         x2, y2 = p2.x(), p2.y()
@@ -151,13 +150,16 @@ class ImageMagnificationPage(HPage):
                     label = self.label_dialog.label_edit.text()
                     #未输入标签时删除这个矩形
                     if label != '':
+                        print(label)
                         x, y, w, h = self.rect_item.rect().x(), self.rect_item.rect().y(), self.rect_item.rect().width(), self.rect_item.rect().height()
                         real_rect = RectangleItem(QRectF(x + self.img_manification[2], y + self.img_manification[3], w, h))
                         real_rect.set_label(label)
                         self.rect_items.append(real_rect)
                     else:
                         self.p1.removeItem(self.rect_item)
-                    self.rect_item = None
+                else:
+                    self.p1.removeItem(self.rect_item)
+                self.rect_item = None
 
     def create_rightmenu(self):
         """create rightmenu on layout"""
