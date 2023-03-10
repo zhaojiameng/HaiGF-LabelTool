@@ -36,7 +36,7 @@ class LabelDialog(QDialog):
 class RectangleItem(QGraphicsRectItem):
     def __init__(self, rect, parent=None):
         super().__init__(rect, parent)
-        self.label = ''
+        self.label = '' 
 
     def set_label(self, label):
         self.label = label
@@ -52,6 +52,8 @@ class ImageMagnificationPage(HPage):
         self.set_icon(HGF.ICONS('label_train'))
         self.setContextMenuPolicy(Qt.CustomContextMenu)
         self.customContextMenuRequested.connect(self.create_rightmenu)
+
+        self.img_manification = []
        
         self.rect_items = []
         self.rect_item = None
@@ -82,17 +84,14 @@ class ImageMagnificationPage(HPage):
         # self.p1.scene().mouseReleaseEvent = self.mouseReleaseEvent
         self.win.show()
 
-    def show_image(self, image):
+    def show_image(self, image, img_manification):
+        self.p1.clear()
+        self.p1.addItem(self.img)
         self.image = image
+        self.img_manification = img_manification
         self.img.setImage(image)
         self.img.setRect(QRectF(0, 0, image.shape[1], image.shape[0]))
        
-    def create_ROI(self):
-        """create a ROI"""
-        self.roi = RectangleItem([20, 40], [20, 50], movable=True,removable=True)
-        self.p1.addItem(self.roi)
-        self.roi.setZValue(10)  # make sure ROI is drawn above image
-
 
     def get_Rect(self, p1, p2):
         x1, y1 = p1.x(), p1.y()
@@ -123,7 +122,6 @@ class ImageMagnificationPage(HPage):
             y = self.image.shape[0]
         return QPoint(x, y)
        
-
     #event.pos 是什么？
     def mousePressEvent(self, event):
         if event.button() == Qt.LeftButton:
@@ -146,20 +144,20 @@ class ImageMagnificationPage(HPage):
         if event.button() == Qt.LeftButton:
             if self.drawing:
                 self.end_point = self.img.mapToParent(self.fix_coordinate(event.pos()))
-                print(self.start_point, self.end_point)
                 self.rect_item.setRect(self.get_Rect(self.start_point, self.end_point))
                 self.drawing = False
-                self.label_dialog.label_edit.clear()
+                # self.label_dialog.label_edit.clear()
                 if self.label_dialog.exec_():
                     label = self.label_dialog.label_edit.text()
                     #未输入标签时删除这个矩形
-                    if label == '':
-                        self.p1.removeItem(self.rect_item)
+                    if label != '':
+                        x, y, w, h = self.rect_item.rect().x(), self.rect_item.rect().y(), self.rect_item.rect().width(), self.rect_item.rect().height()
+                        real_rect = RectangleItem(QRectF(x + self.img_manification[2], y + self.img_manification[3], w, h))
+                        real_rect.set_label(label)
+                        self.rect_items.append(real_rect)
                     else:
-                        self.rect_item.set_label(label)
-                        self.rect_items.append(self.rect_item)
+                        self.p1.removeItem(self.rect_item)
                     self.rect_item = None
-                print(len(self.rect_items))
 
     def create_rightmenu(self):
         """create rightmenu on layout"""
@@ -179,11 +177,16 @@ class ImageMagnificationPage(HPage):
     
     def save_xml(self):
         """需要从局部标注转换到全局标注"""
+        filepath, type = QFileDialog.getSaveFileName(self, "文件保存", "/" ,'xml(*.xml)')
+        if filepath: # check if the user selected a file
+            path, filename = os.path.split(filepath) # split the file path and file name
+        else:
+            return
         # 创建XML文档
-        width, height = self.image.shape[1], self.image.shape[0]
+        width, height = self.img_manification[0], self.img_manification[1]
         root = ET.Element("annotation")
-        ET.SubElement(root, "folder").text = "VOC2007"
-        ET.SubElement(root, "filename").text = "image.jpg"
+        ET.SubElement(root, "folder").text = str(path)
+        ET.SubElement(root, "filename").text = str(filename)
         size = ET.SubElement(root, "size")
         ET.SubElement(size, "width").text = str(width)
         ET.SubElement(size, "height").text = str(height)
@@ -194,12 +197,12 @@ class ImageMagnificationPage(HPage):
             ET.SubElement(object, "name").text = rect_item.label
             bndbox = ET.SubElement(object, "bndbox")
             ET.SubElement(bndbox, "xmin").text = str(x)
-            ET.SubElement(bndbox, "ymin").text = str(y)
+            ET.SubElement(bndbox, "ymin").text = str(y - h)
             ET.SubElement(bndbox, "xmax").text = str(x + w)
-            ET.SubElement(bndbox, "ymax").text = str(y + h)
+            ET.SubElement(bndbox, "ymax").text = str(y)
         xml_str = ET.tostring(root, encoding="unicode")
         # 保存XML文档，保存位置待定
-        with open("image.xml", "w") as f:
+        with open(filepath, "w") as f:
             f.write(xml_str)
 
     def save_json(self):
@@ -216,54 +219,7 @@ class ImageMagnificationPage(HPage):
         with open("image.json", "w") as f:
             f.write(json_str)
       
-class ImageViewer(QGraphicsView):
-    def __init__(self, parent=None):
-        super().__init__(parent)
-        self.scene = QGraphicsScene(self)
-        self.setScene(self.scene)
-        self.setRenderHint(QPainter.Antialiasing)
-        self.setDragMode(QGraphicsView.ScrollHandDrag)
-        self.setTransformationAnchor(QGraphicsView.AnchorUnderMouse)
-        self.setResizeAnchor(QGraphicsView.AnchorUnderMouse)
-        self.setFrameShape(QGraphicsView.NoFrame)
-        self.setBackgroundBrush(QBrush(QColor(30, 30, 30)))
-        self.image_item = None
-        self.rect_items = []
-        self.drawing = False
-        self.label_dialog = LabelDialog(self)
 
-    def set_image(self, pixmap):
-        self.image_item = self.scene.addPixmap(pixmap)
-        self.fitInView(self.image_item, Qt.KeepAspectRatio)
-
-    def mousePressEvent(self, event):
-        if event.button() == Qt.LeftButton:
-            if not self.drawing:
-                self.drawing = True
-                self.start_point = event.pos()
-                self.rect_item = RectangleItem(QRectF(self.start_point, QSizeF(0, 0)))
-                self.rect_item.setPen(QPen(QColor(255, 0, 0), 2))
-                self.scene.addItem(self.rect_item)
-        super().mousePressEvent(event)
-
-    def mouseMoveEvent(self, event):
-        if self.drawing:
-            end_point = event.pos()
-            rect = QRectF(self.start_point, end_point).normalized()
-            self.rect_item.setRect(rect)
-        super().mouseMoveEvent(event)
-
-    def mouseReleaseEvent(self, event):
-        if event.button() == Qt.LeftButton:
-            if self.drawing:
-                self.drawing = False
-                self.label_dialog.label_edit.clear()
-                if self.label_dialog.exec_():
-                    label = self.label_dialog.label_edit.text()
-                    self.rect_item.set_label(label)
-                    self.rect_items.append(self.rect_item)
-                    self.rect_item = None
-        super().mouseReleaseEvent(event)
 
 
 

@@ -6,17 +6,6 @@ from PySide2.QtGui import QPainterPath
 from PySide2.QtCore import QPointF
 
 
-class MyROI(pg.ROI):
-    sigRegionDoubleClick = QtCore.Signal(object)
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.handleDoubleClick = self._handleDoubleClick
-
-    def _handleDoubleClick(self, handle):
-        self.sigRegionDoubleClick.emit(handle)
-
-
 class MyLineROI(pg.LineROI):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

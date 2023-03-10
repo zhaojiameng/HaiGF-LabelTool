@@ -16,7 +16,7 @@ import pyqtgraph as pg
 from pyqtgraph.Qt import QtGui
 from HaiGF import HPage, HGF
 from HaiGF.gui_framework.widgets.central_widgets.tab_widget import HTabWidget
-from HaiGF.plugins.label_train.my_ROI import MyPolyLineROI, MyRectROI, MyCircleROI, MyEllipseROI, MyLineROI, BezierLineROI, MyROI
+from HaiGF.plugins.label_train.my_ROI import MyPolyLineROI, MyRectROI, MyCircleROI, MyEllipseROI, MyLineROI, BezierLineROI
 from HaiGF.plugins.label_train.scripts.aa import ImageProcessor
 from HaiGF.plugins.label_train.widgets.cw_page2 import ImageMagnificationPage
 from HaiGF.utils import general
@@ -146,7 +146,7 @@ class ImageAnalysisPage(HPage):
 
         filepath, type = QFileDialog.getSaveFileName(self, "文件保存", "/" ,'txt(*.txt)')
         file=open(filepath,'w')
-        print(filepath)
+        print(filepath, type)
         t = ''
     
         for i in result:
@@ -214,14 +214,14 @@ class ImageAnalysisPage(HPage):
 
     def create_ROI(self):
         """create a ROI"""
-        self.roi = MyROI([200, 400], [100, 50])
+        self.roi = pg.ROI([200, 400], [100, 50])
         self.roi.addScaleHandle([0.5, 1], [0.5, 0.5])
         self.roi.addScaleHandle([0, 0.5], [0.5, 0.5])
         self.p1.addItem(self.roi)
         self.roi.setZValue(10)  # make sure ROI is drawn above image
         # self.roi.sigRegionChanged.connect(self.updatePlot)
         self.roi.sigRegionChanged.connect(self.update_manification)
-        self.roi.sigRegionDoubleClick.connect(self.local_magnification)
+        
 
     def local_magnification(self):
         """make a local magnification of the ROI area in a new tab"""
@@ -239,8 +239,9 @@ class ImageAnalysisPage(HPage):
         """update the image in the new tab"""
         if not hasattr(self, 'page2'):
             return
+        img_manification = [self.image.shape[1], self.image.shape[0], self.roi.pos().x(), self.roi.pos().y()]
         selected = self.roi.getArrayRegion(self.image, self.img)
-        self.page2.show_image(selected)
+        self.page2.show_image(selected, img_manification)
 
     def create_page2(self):
         """create a new page for local magnification"""
