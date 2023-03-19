@@ -144,6 +144,27 @@ class HTreeView(QTreeView):
                 pass
                 # self.p.load_file_or_dir(dir=file_path)
 
+    
+    def cope_pre_button(self):
+        """
+        返回上一张图片的路径
+        """
+        self.current_index -= 1
+        if self.current_index < 0:
+            print('已经是第一张了')
+        file_path = self.file_list[self.current_index]
+        self.file_duble_clicked(file_path)
+        
+    def cope_pro_button(self):
+        """
+        返回下一张图片的路径
+        """
+        self.current_index += 1
+        if self.current_index >= len(self.file_list):
+            print('已经是最后一张了')
+        file_path = self.file_list[self.current_index]
+        self.file_duble_clicked(file_path)
+
     def on_context_menu(self):
         print('on_context_menu')
 
@@ -159,6 +180,8 @@ class HTreeView(QTreeView):
             plg.open_file(file_path)
             raise NotImplementedError('TODO open .py file')
         elif self.is_image_file(file_path):  # if is image file
+            #返回文件的index
+            self.current_index = self.indexAt(self.pos())
             plg = mw.plugins['AnnoPlugin']
             plg.open_image_file(file_path)
             lat = mw.plugins['AntrainPlugin']

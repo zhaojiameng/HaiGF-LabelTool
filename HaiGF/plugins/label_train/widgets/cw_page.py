@@ -16,7 +16,7 @@ import pyqtgraph as pg
 from pyqtgraph.Qt import QtGui
 from HaiGF import HPage, HGF
 from HaiGF.gui_framework.widgets.central_widgets.tab_widget import HTabWidget
-from HaiGF.plugins.label_train.my_ROI import MyPolyLineROI, MyRectROI, MyCircleROI, MyEllipseROI, MyLineROI, BezierLineROI
+from HaiGF.plugins.label_train.my_ROI import MyPolyLineROI, MyRectROI, MyCircleROI, MyEllipseROI, MyLineROI, BezierLineROI, BezierROI
 from HaiGF.plugins.label_train.scripts.aa import ImageProcessor
 from HaiGF.plugins.label_train.widgets.cw_page2 import ImageMagnificationPage
 from HaiGF.utils import general
@@ -325,7 +325,9 @@ class ImageAnalysisPage(HPage):
         elif roiType == "PolyLine ROI":
             roiAny = MyPolyLineROI([[200,200],[300,200],[350,400],[400,400]], closed=True)
         elif roiType == "BezierLine ROI":
-            roiAny = BezierLineROI([[200,200],[300,300],[350,400]], closed=True)
+            # roiAny = BezierLineROI([[200,200],[300,300],[350,400]], closed=True)
+            roiAny = BezierROI([200,200],[300,300])
+
         return roiAny
 
     def create_anno(self, shape):

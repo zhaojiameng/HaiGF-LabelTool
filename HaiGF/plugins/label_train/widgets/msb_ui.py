@@ -49,6 +49,9 @@ class Ui_Form(object):
         self.spacer3 = QWidget()
         self.spacer3.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
 
+        self.spacer4 = QWidget()
+        self.spacer4.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+
 
         self.roiLabel = QtWidgets.QLabel(self.layoutWidget)
         self.roiLabel.setObjectName('ROI分析')
@@ -77,6 +80,11 @@ class Ui_Form(object):
         self.isoButton.setObjectName('分析')
         self.isoButton1 = QtWidgets.QPushButton(self.layoutWidget)
         self.isoButton1.setObjectName('撤销')
+
+        self.pre_button = QtWidgets.QPushButton(self.layoutWidget)
+        self.pre_button.setObjectName('上一张')
+        self.pro_button = QtWidgets.QPushButton(self.layoutWidget)
+        self.pro_button.setObjectName('下一张')
        
 
         self.spacer = QWidget()
@@ -106,6 +114,11 @@ class Ui_Form(object):
         self.gridLayout.addWidget(self.isoLabel, 11, 0, 1, 2)
         self.gridLayout.addWidget(self.isoButton, 12, 0, 1, 1)
         self.gridLayout.addWidget(self.isoButton1, 12, 1, 1, 1)
+
+        self.gridLayout.addWidget(self.spacer4, 13, 0, 1, 2)
+
+        self.gridLayout.addWidget(self.pre_button, 14, 0, 1, 1)
+        self.gridLayout.addWidget(self.pro_button, 14, 1, 1, 1)
 
 
 
@@ -142,6 +155,8 @@ class Ui_Form(object):
         self.isoLabel.setText(_translate("Form", "等值分析"))
         self.isoButton.setText(_translate("Form", "应用"))
         self.isoButton1.setText(_translate("Form", "撤销"))
+        self.pre_button.setText(_translate("Form", "上一张"))
+        self.pro_button.setText(_translate("Form", "下一张"))
 
 
 

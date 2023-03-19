@@ -30,6 +30,9 @@ class AntrainMSBWidget(HMainSideBarWidget):
         self.ui.isoButton.clicked.connect(self.on_isoButton_clicked)
         self.ui.isoButton1.clicked.connect(self.on_cancel_isoButton_clicked)
 
+        self.ui.pre_button.clicked.connect(self.on_preButton_clicked)
+        self.ui.pro_button.clicked.connect(self.on_proButton_clicked)
+
     def on_cannyPutton_clicked(self):
         mw = self.p
         plg = mw.plugins['AntrainPlugin']
@@ -70,6 +73,12 @@ class AntrainMSBWidget(HMainSideBarWidget):
         mw = self.p
         plg = mw.plugins['AntrainPlugin']
         plg.cancel_iso()
+
+    def on_preButton_clicked(self):
+        pass
+
+    def on_proButton_clicked(self):
+        pass
 
     
 
