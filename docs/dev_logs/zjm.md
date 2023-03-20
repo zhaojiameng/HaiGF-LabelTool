@@ -111,3 +111,5 @@ AssertionError: 多个TabWidget时，需要传入pos参数
 何时进行保存，改换局部的时候，已有的矩形，如何处理            解决
 
 编辑标签，点击cancel,置为‘'的问题  解决
+
+贝塞尔曲线：  重写QgraphicsPloygonItem

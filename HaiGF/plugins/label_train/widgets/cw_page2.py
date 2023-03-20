@@ -4,12 +4,12 @@ It is a  mafnification page.
 """
 import os
 from pathlib import Path
+import pyqtgraph as pg
 import cv2
 from PySide2 import QtWidgets
 from PySide2.QtCore import Qt, QRectF, QSizeF, QPoint
 from PySide2.QtGui import QPixmap, QPainter, QPen, QColor, QBrush, QFont, QCursor
-from PySide2.QtWidgets import QGraphicsRectItem, QGraphicsScene, QGraphicsView, QMenu, QAction, QLineEdit, QDialog, QDialogButtonBox, QVBoxLayout, QFileDialog, QInputDialog, QMessageBox
-import pyqtgraph as pg
+from PySide2.QtWidgets import QGraphicsRectItem, QMenu, QAction, QLineEdit, QDialog, QDialogButtonBox, QVBoxLayout, QFileDialog
 from pyqtgraph.Qt import QtGui
 from HaiGF import HPage, HGF
 import copy

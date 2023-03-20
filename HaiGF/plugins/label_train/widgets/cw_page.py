@@ -11,12 +11,12 @@ import numpy as np
 from PySide2 import QtWidgets, QtCore
 from PySide2.QtWidgets import QMenu, QAction, QFileDialog
 from PySide2.QtGui import QCursor,QPixmap, QImage
-from PySide2.QtCore import Qt, QRectF
+from PySide2.QtCore import Qt, QRectF, QPoint
 import pyqtgraph as pg
 from pyqtgraph.Qt import QtGui
 from HaiGF import HPage, HGF
 from HaiGF.gui_framework.widgets.central_widgets.tab_widget import HTabWidget
-from HaiGF.plugins.label_train.my_ROI import MyPolyLineROI, MyRectROI, MyCircleROI, MyEllipseROI, MyLineROI, BezierLineROI, BezierROI
+from HaiGF.plugins.label_train.my_ROI import MyPolyLineROI, MyRectROI, MyCircleROI, MyEllipseROI, MyLineROI, BezierLineROI, CurvePlogan
 from HaiGF.plugins.label_train.scripts.aa import ImageProcessor
 from HaiGF.plugins.label_train.widgets.cw_page2 import ImageMagnificationPage
 from HaiGF.utils import general
@@ -326,7 +326,12 @@ class ImageAnalysisPage(HPage):
             roiAny = MyPolyLineROI([[200,200],[300,200],[350,400],[400,400]], closed=True)
         elif roiType == "BezierLine ROI":
             # roiAny = BezierLineROI([[200,200],[300,300],[350,400]], closed=True)
-            roiAny = BezierROI([200,200],[300,300])
+            # roiAny = BezierROI(points=[[200,200],[300,200],[350,400]])
+            point1 = QPoint(200, 200)
+            point2 = QPoint(400, 80)
+            point3 = QPoint(600, 400)
+            point4 = QPoint(800, 100)
+            roiAny = CurvePlogan(points=[point1, point2, point3, point4])
 
         return roiAny
 
