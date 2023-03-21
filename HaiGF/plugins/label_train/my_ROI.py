@@ -25,6 +25,7 @@ class CurvePlogan(QGraphicsPolygonItem):
         self.current_hover = False # 当前是否鼠标悬停在形状内部
         self.current_vertex = None # 当前选中的顶点
         self.current_control_point = None # 当前选中的控制点
+        self.ItemIsMovable = True
         for point in  points:
             self.addPoint(point)
         
@@ -37,13 +38,13 @@ class CurvePlogan(QGraphicsPolygonItem):
         self.control_points.append(p1)
         self.control_points.append(p2)
 
-    def hoverEnterEvent(self, event: 'QGraphicsSceneHoverEvent') -> None:
-        self.current_hover = True
-        self.update()
+    # def hoverEnterEvent(self, event: 'QGraphicsSceneHoverEvent') -> None:
+    #     self.current_hover = True
+    #     self.update()
 
-    def hoverLeaveEvent(self, event: 'QGraphicsSceneHoverEvent') -> None:
-        self.current_hover = False
-        self.update()
+    # def hoverLeaveEvent(self, event: 'QGraphicsSceneHoverEvent') -> None:
+    #     self.current_hover = False
+    #     self.update()
        
     
 
@@ -93,22 +94,61 @@ class CurvePlogan(QGraphicsPolygonItem):
     
     def mousePressEvent(self, event: 'QGraphicsSceneMouseEvent') -> None:
         pos = event.pos()
-        for i in range(len(self.points)):
-            if QLineF(self.points[i], pos).length() < 10:
-                self.current_vertex = i
-                self.current_control_point = None
-                return
-            if QLineF(self.control_points[2 * i], pos).length() < 10:
-                self.current_vertex = None
-                self.current_control_point = 2 * i
-                return
-            if QLineF(self.control_points[2 * i + 1], pos).length() < 10:
-                self.current_vertex = None
-                self.current_control_point = 2 * i + 1
-                return
+        #判断鼠标是否在顶点或控制点上,或者在顶点和顶点之间的连线上，或者在形状内部
+        if self.shape().contains(pos):
+            self.current_vertex = None
+            self.current_control_point = None
+            #判断鼠标是否在顶点上
+            for i in range(len(self.points)):
+                if QLineF(self.points[i], pos).length() < 10:
+                    self.current_vertex = i
+                    self.current_control_point = None
+                    return
+            #判断鼠标是否在控制点上
+            for i in range(len(self.control_points)):
+                if QLineF(self.control_points[i], pos).length() < 10:
+                    self.current_vertex = None
+                    self.current_control_point = i
+                    return
+            #判断鼠标是否在顶点和顶点之间的连线上
+            # for i in range(len(self.points)):
+            #     if i == len(self.points) - 1:
+            #         if QLineF(self.points[i], self.points[0]).intersect(QLineF(pos, pos + QPointF(100, 100)), None) == QLineF.BoundedIntersection:
+            #             self.current_vertex = i
+            #             self.current_control_point = None
+            #             return
+            #     else:
+            #         if QLineF(self.points[i], self.points[i + 1]).intersect(QLineF(pos, pos + QPointF(100, 100)), None) == QLineF.BoundedIntersection:
+            #             self.current_vertex = i
+            #             self.current_control_point = None
+            #             return
+            #鼠标在形状内部
+            self.current_vertex = None
+            self.current_control_point = None
+            self.current_hover = True
+            self.update()
+            return
+        else:
+            super().mousePressEvent(event)
+        # for i in range(len(self.points)):
+        #     if QLineF(self.points[i], pos).length() < 10:
+        #         self.current_vertex = i
+        #         self.current_control_point = None
+        #         return
+        #     if QLineF(self.control_points[2 * i], pos).length() < 10:
+        #         self.current_vertex = None
+        #         self.current_control_point = 2 * i
+        #         return
+        #     if QLineF(self.control_points[2 * i + 1], pos).length() < 10:
+        #         self.current_vertex = None
+        #         self.current_control_point = 2 * i + 1
+        #         return
 
     def mouseMoveEvent(self, event: 'QGraphicsSceneMouseEvent') -> None:
-        if self.current_vertex is not None:
+        #鼠标在形状内部,移动形状
+        if self.current_hover:
+            self.moveBy(event.pos().x() - event.lastPos().x(), event.pos().y() - event.lastPos().y())
+        elif self.current_vertex is not None:
             #计算顶点移动后的偏移量
             self.offset = event.pos() - self.points[self.current_vertex]
             self.points[self.current_vertex] = event.pos()
@@ -123,6 +163,8 @@ class CurvePlogan(QGraphicsPolygonItem):
     def mouseReleaseEvent(self, event: 'QGraphicsSceneMouseEvent') -> None:
         self.current_vertex = None
         self.current_control_point = None
+        self.current_hover = False
+        super().mouseReleaseEvent(event)
 
     #插入顶点
     def insertPoint(self, pos):
@@ -148,66 +190,6 @@ class CurvePlogan(QGraphicsPolygonItem):
         
         self.control_points[2 * self.current_vertex] += self.offset
         self.control_points[2 * self.current_vertex + 1] += self.offset
-
-    
-        
-    # def mousePressEvent(self, event):
-    #     pos = event.pos()
-    #     if self.contains(pos):
-    #         self.offset = self.pos() - pos
-    #     else:
-    #         for i in range(len(self.points)):
-    #             if self.points[i].contains(pos):
-    #                 self.selected_point = i
-    #                 self.offset = self.points[i] - pos
-    #                 break
-    #             elif self.control_points[2 * i].contains(pos):
-    #                 self.selected_point = i
-    #                 self.selected_control_point = 0
-    #                 self.offset = self.control_points[2 * i] - pos
-    #                 break
-    #             elif self.control_points[2 * i + 1].contains(pos):
-    #                 self.selected_point = i
-    #                 self.selected_control_point = 1
-    #                 self.offset = self.control_points[2 * i + 1] - pos
-    #                 break
-
-    # def mouseMoveEvent(self, event):
-    #     pos = event.pos()
-    #     if hasattr(self, 'offset'):
-    #         self.setPos(pos + self.offset)
-    #         self.updatePoints()
-    #     elif hasattr(self, 'selected_point'):
-    #         if self.selected_control_point == 0:
-    #             self.control_points[2 * self.selected_point] = pos + self.offset
-    #         elif self.selected_control_point == 1:
-    #             self.control_points[2 * self.selected_point + 1] = pos + self.offset
-    #         self.points[self.selected_point] = pos + self.offset
-    #         self.update()
-
-    # def mouseReleaseEvent(self, event):
-    #     if hasattr(self, 'selected_point'):
-    #         self.updateControlPoints()
-    #         delattr(self, 'selected_point')
-    #         if hasattr(self, 'selected_control_point'):
-    #             delattr(self, 'selected_control_point')
-
-    # def updatePoints(self):
-    #     dx = self.pos().x()
-    #     dy = self.pos().y()
-    #     for i in range(len(self.points)):
-    #         self.points[i].setX(self.control_points[2 * i].x() + dx)
-    #         self.points[i].setY(self.control_points[2 * i].y() + dy)
-
-    # def updateControlPoints(self):
-    #     i = self.selected_point
-    #     dx = self.points[i].x() - self.control_points[2 * i].x()
-    #     dy = self.points[i].y() - self.control_points[2 * i].y()
-    #     self.control_points[2 * i + 1] = QPointF(self.points[i].x() + dx, self.points[i].y() + dy)
-    #     self.control_points[(2 * i - 1) % len(self.control_points)] = QPointF(
-    #         self.points[i].x() - dx,
-    #         self.points[i].y() - dy)
-
 
     
 class MyLineROI(pg.LineROI):
