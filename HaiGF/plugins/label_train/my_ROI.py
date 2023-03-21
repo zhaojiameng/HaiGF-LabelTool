@@ -3,9 +3,9 @@ import pyqtgraph as pg
 from pyqtgraph.Qt import QtCore
 from PySide2 import QtWidgets
 from PySide2 import QtGui, QtCore
-from PySide2.QtWidgets import QWidget, QGraphicsPolygonItem
+from PySide2.QtWidgets import QWidget, QGraphicsPolygonItem, QStyle
 from PySide2.QtGui import QPainterPath
-from PySide2.QtCore import QPointF
+from PySide2.QtCore import QPointF, QLineF
 from pyqtgraph.graphicsItems import GraphicsObject
 from pyqtgraph import functions as fn
 from pyqtgraph import Point
@@ -17,26 +17,69 @@ class CurvePlogan(QGraphicsPolygonItem):
         super().__init__(parent)
         self.points = []
         self.control_points = []
-        self.setPen(QtGui.QPen(QtCore.Qt.red, 2))
+        self.scale = 8.0
+        self.point_size = 3
+        self.original_pen = QtGui.QPen(QtCore.Qt.green, 2)
+        self.current_pen = QtGui.QPen(QtCore.Qt.red, 2)
+        self.setAcceptHoverEvents(True) # 允许鼠标悬停事件
+        self.current_hover = False # 当前是否鼠标悬停在形状内部
+        self.current_vertex = None # 当前选中的顶点
+        self.current_control_point = None # 当前选中的控制点
         for point in  points:
             self.addPoint(point)
         
-
+    
 
     def addPoint(self, point):
         self.points.append(point)
-        p1 = QPointF(point.x() - point.x() / 2, point.y() - point.y() / 2)
-        p2 = QPointF(point.x() + point.x() / 2, point.y() + point.y() / 2)
+        p1 = QPointF(point.x() - point.x() / self.scale, point.y() - point.y() / self.scale)
+        p2 = QPointF(point.x() + point.x() / self.scale, point.y() + point.y() / self.scale)
         self.control_points.append(p1)
         self.control_points.append(p2)
+
+    def hoverEnterEvent(self, event: 'QGraphicsSceneHoverEvent') -> None:
+        self.current_hover = True
+        self.update()
+
+    def hoverLeaveEvent(self, event: 'QGraphicsSceneHoverEvent') -> None:
+        self.current_hover = False
+        self.update()
        
+    
 
     def paint(self, painter, option, widget):
-        painter.setPen(self.pen())
+        painter.setPen(self.original_pen)
         #抗锯齿
         painter.setRenderHint(QtGui.QPainter.Antialiasing)
-        painter.drawPath(self.shape())
-        
+        path = self.shape()
+
+        # 判断鼠标是否在形状内部，设置画笔颜色
+        if self.current_hover:
+            painter.setPen(self.current_pen)
+        else:
+            painter.setPen(self.original_pen)
+
+        painter.drawPath(path)
+        # painter.drawPath(self.shape())
+
+        #绘制控制点和顶点
+        painter.setPen(QtGui.QPen(QtCore.Qt.blue, 2))
+        pathV = QPainterPath()
+        for i in range(len(self.points)):
+            pathV.addEllipse(self.points[i], 2, 2)
+            pathV.addEllipse(self.control_points[2 * i], self.point_size, self.point_size)
+            pathV.addEllipse(self.control_points[2 * i + 1], self.point_size, self.point_size)
+        painter.drawPath(pathV)
+
+        #绘制控制线,白色虚线
+        painter.setPen(QtGui.QPen(QtCore.Qt.white, 1, QtCore.Qt.DashLine))
+        pathL = QPainterPath()
+        for i in range(len(self.points)):
+            pathL.moveTo(self.points[i])
+            pathL.lineTo(self.control_points[2 * i])
+            pathL.moveTo(self.points[i])
+            pathL.lineTo(self.control_points[2 * i + 1])
+        painter.drawPath(pathL)
 
     def shape(self):
         path = QPainterPath()
@@ -47,6 +90,124 @@ class CurvePlogan(QGraphicsPolygonItem):
             path.cubicTo(self.control_points[2 * i - 1], self.control_points[2 * i], self.points[i])
         path.cubicTo(self.control_points[-1], self.control_points[0], self.points[0])
         return path
+    
+    def mousePressEvent(self, event: 'QGraphicsSceneMouseEvent') -> None:
+        pos = event.pos()
+        for i in range(len(self.points)):
+            if QLineF(self.points[i], pos).length() < 10:
+                self.current_vertex = i
+                self.current_control_point = None
+                return
+            if QLineF(self.control_points[2 * i], pos).length() < 10:
+                self.current_vertex = None
+                self.current_control_point = 2 * i
+                return
+            if QLineF(self.control_points[2 * i + 1], pos).length() < 10:
+                self.current_vertex = None
+                self.current_control_point = 2 * i + 1
+                return
+
+    def mouseMoveEvent(self, event: 'QGraphicsSceneMouseEvent') -> None:
+        if self.current_vertex is not None:
+            #计算顶点移动后的偏移量
+            self.offset = event.pos() - self.points[self.current_vertex]
+            self.points[self.current_vertex] = event.pos()
+            self.updateControlPoints()
+            self.update()
+        elif self.current_control_point is not None:
+            self.control_points[self.current_control_point] = event.pos()
+            self.update()
+        else:
+            super().mouseMoveEvent(event)
+
+    def mouseReleaseEvent(self, event: 'QGraphicsSceneMouseEvent') -> None:
+        self.current_vertex = None
+        self.current_control_point = None
+
+    #插入顶点
+    def insertPoint(self, pos):
+        #计算插入点的索引
+        index = self.getInsertIndex(pos)
+        #计算插入点的控制点
+        p1 = QPointF(pos.x() - pos.x() / self.scale, pos.y() - pos.y() / self.scale)
+        p2 = QPointF(pos.x() + pos.x() / self.scale, pos.y() + pos.y() / self.scale)
+        #插入顶点和控制点
+        self.points.insert(index, pos)
+        self.control_points.insert(2 * index, p1)
+        self.control_points.insert(2 * index + 1, p2)
+        self.update()
+
+    # def mouseClickEvent(self, event: 'QGraphicsSceneMouseEvent') -> None:
+    #     #当鼠标点击时，若鼠标在形状线条上，则添加顶点
+    #     if self.contains(event.pos()):
+    #         self.insertPoint(event.pos())
+    #         self.update()
+        
+
+    def updateControlPoints(self):
+        
+        self.control_points[2 * self.current_vertex] += self.offset
+        self.control_points[2 * self.current_vertex + 1] += self.offset
+
+    
+        
+    # def mousePressEvent(self, event):
+    #     pos = event.pos()
+    #     if self.contains(pos):
+    #         self.offset = self.pos() - pos
+    #     else:
+    #         for i in range(len(self.points)):
+    #             if self.points[i].contains(pos):
+    #                 self.selected_point = i
+    #                 self.offset = self.points[i] - pos
+    #                 break
+    #             elif self.control_points[2 * i].contains(pos):
+    #                 self.selected_point = i
+    #                 self.selected_control_point = 0
+    #                 self.offset = self.control_points[2 * i] - pos
+    #                 break
+    #             elif self.control_points[2 * i + 1].contains(pos):
+    #                 self.selected_point = i
+    #                 self.selected_control_point = 1
+    #                 self.offset = self.control_points[2 * i + 1] - pos
+    #                 break
+
+    # def mouseMoveEvent(self, event):
+    #     pos = event.pos()
+    #     if hasattr(self, 'offset'):
+    #         self.setPos(pos + self.offset)
+    #         self.updatePoints()
+    #     elif hasattr(self, 'selected_point'):
+    #         if self.selected_control_point == 0:
+    #             self.control_points[2 * self.selected_point] = pos + self.offset
+    #         elif self.selected_control_point == 1:
+    #             self.control_points[2 * self.selected_point + 1] = pos + self.offset
+    #         self.points[self.selected_point] = pos + self.offset
+    #         self.update()
+
+    # def mouseReleaseEvent(self, event):
+    #     if hasattr(self, 'selected_point'):
+    #         self.updateControlPoints()
+    #         delattr(self, 'selected_point')
+    #         if hasattr(self, 'selected_control_point'):
+    #             delattr(self, 'selected_control_point')
+
+    # def updatePoints(self):
+    #     dx = self.pos().x()
+    #     dy = self.pos().y()
+    #     for i in range(len(self.points)):
+    #         self.points[i].setX(self.control_points[2 * i].x() + dx)
+    #         self.points[i].setY(self.control_points[2 * i].y() + dy)
+
+    # def updateControlPoints(self):
+    #     i = self.selected_point
+    #     dx = self.points[i].x() - self.control_points[2 * i].x()
+    #     dy = self.points[i].y() - self.control_points[2 * i].y()
+    #     self.control_points[2 * i + 1] = QPointF(self.points[i].x() + dx, self.points[i].y() + dy)
+    #     self.control_points[(2 * i - 1) % len(self.control_points)] = QPointF(
+    #         self.points[i].x() - dx,
+    #         self.points[i].y() - dy)
+
 
     
 class MyLineROI(pg.LineROI):

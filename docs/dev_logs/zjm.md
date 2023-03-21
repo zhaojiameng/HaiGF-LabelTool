@@ -113,3 +113,7 @@ AssertionError: 多个TabWidget时，需要传入pos参数
 编辑标签，点击cancel,置为‘'的问题  解决
 
 贝塞尔曲线：  重写QgraphicsPloygonItem
+
+问题：
+移动的问题：拖拽移动
+死点：某些区域无法显示curve,这些区域的点不能响应
