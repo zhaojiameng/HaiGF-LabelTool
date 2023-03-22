@@ -338,8 +338,9 @@ class ImageAnalysisPage(HPage):
     def create_anno(self, shape):
         """create a annotation ROI"""
         roiAny = self.updateRoiType(shape)
+        self.shapes.append(roiAny)
         self.p1.addItem(roiAny)
-        roiAny.setZValue(10)  # make sure ROI is drawn above image
+        roiAny.setZValue(900)  # make sure ROI is drawn above image
 
     def mouseDoubleClickEvent(self, event):
         """double click to transfer ROI to a new tab for local magnification"""
@@ -356,6 +357,13 @@ class ImageAnalysisPage(HPage):
         """press ctrl to show the processed image"""
         if(event.key() == Qt.Key_Control):
             self.img.setImage(self.data)
+        elif event.key() == Qt.Key_A:
+            self.adjust_bezier()
+
+    def adjust_bezier(self):
+        for shape in self.shapes:
+            if isinstance(shape, CurvePlogan):
+                shape.adjustShape()
 
     def scripts(self):
         processor = ImageProcessor()
