@@ -16,7 +16,7 @@ import pyqtgraph as pg
 from pyqtgraph.Qt import QtGui
 from HaiGF import HPage, HGF
 from HaiGF.gui_framework.widgets.central_widgets.tab_widget import HTabWidget
-from HaiGF.plugins.label_train.my_ROI import MyPolyLineROI, MyRectROI, MyCircleROI, MyEllipseROI, MyLineROI, BezierLineROI, CurvePlogan
+from HaiGF.plugins.label_train.my_ROI import MyPolyLineROI, MyRectROI, MyCircleROI, MyEllipseROI, MyLineROI, CurvePlogan
 from HaiGF.plugins.label_train.scripts.aa import ImageProcessor
 from HaiGF.plugins.label_train.widgets.cw_page2 import ImageMagnificationPage
 from HaiGF.utils import general
