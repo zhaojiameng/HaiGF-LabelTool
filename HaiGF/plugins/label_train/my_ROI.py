@@ -17,6 +17,7 @@ class CurvePlogan(QGraphicsPolygonItem):
         super().__init__(parent)
         self.points = []
         self.control_points = []
+        self.paths = []
         self.scale = 12.0
         self.point_size = 3
         self.original_pen = QtGui.QPen(QtCore.Qt.green, 2)
@@ -36,12 +37,6 @@ class CurvePlogan(QGraphicsPolygonItem):
         self.control_points.append(p1)
         self.control_points.append(p2)
 
-    def keyPressEvent(self, event: QKeyEvent) -> None:
-        if event.key() == QtCore.Qt.Key_A:
-            self.adjustShape()
-        super().keyPressEvent(event)
-
-    
     def adjustShape(self):
         self.adjusted = not self.adjusted
         self.update()
@@ -65,11 +60,15 @@ class CurvePlogan(QGraphicsPolygonItem):
             pathL.lineTo(self.control_points[2 * i + 1])
         painter.drawPath(pathL)
 
-
     def paint(self, painter, option, widget):
-        painter.setPen(self.original_pen)
         #抗锯齿
         painter.setRenderHint(QtGui.QPainter.Antialiasing)
+
+        #调整形状时，绘制控制点
+        if self.adjusted:
+            self.paintHandle(painter)
+
+        painter.setPen(self.original_pen)
         path = self.shape()
 
         # 判断鼠标是否在形状内部，设置画笔颜色
@@ -79,22 +78,29 @@ class CurvePlogan(QGraphicsPolygonItem):
             painter.setPen(self.original_pen)
 
         painter.drawPath(path)
-        # painter.drawPath(self.shape())
-
-        #调整形状时，绘制控制点
-        if self.adjusted:
-            self.paintHandle(painter)
-
+       
+    def is_point_on_curve(self, point: QPointF, index: int, width=3.0):
+        path = QPainterPath()
+        path.moveTo(self.points[index])
+        path.cubicTo(self.control_points[2 * index + 1], self.control_points[(2 * index + 2) % len(self.control_points)], self.points[(index + 1) % len(self.points)])
+        stroker = QtGui.QPainterPathStroker()
+        stroker.setWidth(width)
+        strokepath = stroker.createStroke(path) 
+        if strokepath.contains(point):
+            return True
+        return False
         
-
     def shape(self):
         path = QPainterPath()
+        self.paths = []
         if len(self.points) == 0:
             return path
         path.moveTo(self.points[0])
         for i in range(1, len(self.points)):
             path.cubicTo(self.control_points[2 * i - 1], self.control_points[2 * i], self.points[i])
+            self.paths.append(path)
         path.cubicTo(self.control_points[-1], self.control_points[0], self.points[0])
+        self.paths.append(path)
         return path
     
     def mousePressEvent(self, event: QGraphicsSceneMouseEvent) -> None:
@@ -104,29 +110,24 @@ class CurvePlogan(QGraphicsPolygonItem):
         for i in range(len(self.points)):
             if QLineF(self.points[i], pos).length() < 10:
                 self.current_vertex = i
-                self.current_control_point = None
                 return
         #判断鼠标是否在控制点上
         for i in range(len(self.control_points)):
             if QLineF(self.control_points[i], pos).length() < 10:
-                self.current_vertex = None
                 self.current_control_point = i
                 return
+        # #判断鼠标是否在形状的边线上
+        for i in range(len(self.points)):
+            if self.is_point_on_curve(pos, i):
+                self.insertPoint(i + 1, pos)
+                return
+            
         if self.shape().contains(pos):
-            self.current_vertex = None
-            self.current_control_point = None
-            #判断鼠标是否在形状的边线上
-            
-
-            
-
-            
             self.current_hover = True
             self.update()
             return      
         super().mousePressEvent(event)
         
-
     def mouseMoveEvent(self, event: QGraphicsSceneMouseEvent) -> None:
         #鼠标在形状内部,移动形状
         if self.current_hover:
@@ -151,31 +152,25 @@ class CurvePlogan(QGraphicsPolygonItem):
         super().mouseReleaseEvent(event)
 
     #插入顶点
-    def insertPoint(self, pos):
-        #计算插入点的索引
-        index = self.getInsertIndex(pos)
+    def insertPoint(self, index, pos):
         #计算插入点的控制点
         p1 = QPointF(pos.x() - pos.x() / self.scale, pos.y() - pos.y() / self.scale)
         p2 = QPointF(pos.x() + pos.x() / self.scale, pos.y() + pos.y() / self.scale)
         #插入顶点和控制点
-        self.points.insert(index, pos)
-        self.control_points.insert(2 * index, p1)
-        self.control_points.insert(2 * index + 1, p2)
+        if index == len(self.points):
+            self.points.append(pos)
+            self.control_points.append(p1)
+            self.control_points.append(p2)
+        else:
+            self.points.insert(index, pos)
+            self.control_points.insert(2 * index, p1)
+            self.control_points.insert(2 * index + 1, p2)
         self.update()
 
-    # def mouseClickEvent(self, event: 'QGraphicsSceneMouseEvent') -> None:
-    #     #当鼠标点击时，若鼠标在形状线条上，则添加顶点
-    #     if self.contains(event.pos()):
-    #         self.insertPoint(event.pos())
-    #         self.update()
-        
-
-    def updateControlPoints(self):
-        
+    def updateControlPoints(self): 
         self.control_points[2 * self.current_vertex] += self.offset
         self.control_points[2 * self.current_vertex + 1] += self.offset
 
-    
 class MyLineROI(pg.LineROI):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -189,21 +184,18 @@ class MyRectROI(pg.RectROI):
         self.setPen(pg.mkPen('y'))
         self.removable = True
         
-
 class MyEllipseROI(pg.EllipseROI):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.setPen(pg.mkPen('y'))
         self.removable = True
         
-
 class MyCircleROI(pg.CircleROI):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.setPen(pg.mkPen('y'))
         self.removable = True
         
-
 class MyPolyLineROI(pg.PolyLineROI):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -229,8 +221,6 @@ class MyPolyLineROI(pg.PolyLineROI):
                 pos = self.mapToParent(ev.pos())
                 self.addFreeHandle(pos)
 
-
-
 class BezierLineROI(pg.PolyLineROI):
    def __init__(self, positions, closed=False, pos=None, **args):
         super().__init__(positions, closed, pos, **args)
@@ -249,8 +239,6 @@ class BezierLineROI(pg.PolyLineROI):
             h['item'].setDeletable(True)
             h['item'].setAcceptedMouseButtons(h['item'].acceptedMouseButtons() | QtCore.Qt.MouseButton.LeftButton) 
 
-
-    
 class MyLineSegmentROI(ROI):
     r"""
     ROI subclass with two freely-moving handles defining a line.
@@ -338,8 +326,7 @@ class MyLineSegmentROI(ROI):
         rgn = fn.affineSlice(data, shape=(int(d.length()),), vectors=[Point(d.norm())], origin=o, axes=axes, order=order, returnCoords=returnMappedCoords, **kwds)
 
         return rgn
-        
-
+    
 class _MyPolyLineSegment(MyLineSegmentROI):
     # Used internally by PolyLineROI
     def __init__(self, *args, **kwds):

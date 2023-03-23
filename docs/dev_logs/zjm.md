@@ -115,6 +115,7 @@ AssertionError: 多个TabWidget时，需要传入pos参数
 贝塞尔曲线：  重写QgraphicsPloygonItem
 
 a键绘制控制点、顶点，改变形状                               解决
+点击曲线新增点                                             解决
 
 问题：
 移动的问题：拖拽移动 解决 （不平滑，有残影）

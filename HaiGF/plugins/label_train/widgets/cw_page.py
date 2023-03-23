@@ -330,8 +330,8 @@ class ImageAnalysisPage(HPage):
             point1 = QPoint(200, 200)
             point2 = QPoint(400, 80)
             point3 = QPoint(600, 400)
-            point4 = QPoint(800, 100)
-            roiAny = CurvePlogan(points=[point1, point2, point3, point4])
+            
+            roiAny = CurvePlogan(points=[point1, point2, point3])
 
         return roiAny
 
