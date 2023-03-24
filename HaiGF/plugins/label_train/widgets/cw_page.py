@@ -46,6 +46,7 @@ class ImageAnalysisPage(HPage):
         self.layout.addWidget(self.win)
         self.p1 = self.win.addPlot(title="")
         self.p1.setMenuEnabled(False)
+        
 
         # Item for displaying image data
         self.img = pg.ImageItem()
@@ -56,6 +57,10 @@ class ImageAnalysisPage(HPage):
         self.txt = 'hello world'
         self.roi2 = None
         self.shapes = []
+
+        self.item = -1
+        self.create_menu1()
+        self.create_menu2()
         
     def analysis_ROI(self):
         if hasattr(self, 'p2'):
@@ -99,22 +104,49 @@ class ImageAnalysisPage(HPage):
         self.win.removeItem(self.hist)
         del self.hist
 
-    def create_rightmenu(self):
-        """create rightmenu on layout"""
+    def mousePressEvent(self, event):
+        """mouse press event"""
+        self.item = -1
+        if event.button() == Qt.RightButton and len(self.shapes) > 0:
+            for i in range(0, len(self.shapes)):
+                print(i)
+                print(self.shapes[i].shape().contains(event.pos()))
+                if self.shapes[i].shape().contains(event.pos()):
+                    self.item = i
+                    return
+                
+    def create_menu1(self):
+        self.menu1 = QMenu(self)
+        remove_anno = QAction(u'删除框',self.menu1)
+        remove_anno.triggered.connect(self.delete_roiAnno)
+        self.menu1.addAction(remove_anno)
+
+    def create_menu2(self):
         #菜单对象
         self.layout_menu = QMenu(self)
+        actionA = QAction(u'保存标注 & roi',self.layout_menu)#创建菜单选项对象
+        self.layout_menu.addAction(actionA)#把动作A选项对象添加到菜单self.win_menu上
+        actionB = QAction(u'保存标注 & canny',self.layout_menu)
+        self.layout_menu.addAction(actionB)
+        actionA.triggered.connect(self.save_all_roiAnno) #将动作A触发时连接到槽函数 button
+        actionB.triggered.connect(self.save_all_annotation)
+        self.layout_menu.actionA = actionA
+        self.layout_menu.actionB = actionB
 
-        self.actionA = QAction(u'保存标注 & roi',self)#创建菜单选项对象
-        # self.actionA.setShortcut('Ctrl+S')#设置动作A的快捷键
-        self.layout_menu.addAction(self.actionA)#把动作A选项对象添加到菜单self.win_menu上
+    def create_rightmenu(self):
+        """create rightmenu on layout"""
+        #得到鼠标右键点击的位置的项目类型
+        print(self.item)
+        if self.item == -1:
+            self.layout_menu.popup(QCursor.pos())
+        else: 
+            self.menu1.popup(QCursor.pos())#声明当鼠标在win控件上右击时，在鼠标位置显示右键菜单   ,exec_,popup两个都可以，
 
-        self.actionB = QAction(u'保存标注 & canny',self)
-        self.layout_menu.addAction(self.actionB)
-
-        self.actionA.triggered.connect(self.save_all_roiAnno) #将动作A触发时连接到槽函数 button
-        self.actionB.triggered.connect(self.save_all_annotation)
-
-        self.layout_menu.popup(QCursor.pos())#声明当鼠标在win控件上右击时，在鼠标位置显示右键菜单   ,exec_,popup两个都可以，
+    def delete_roiAnno(self):
+        """delete roi and annotation"""
+        item = self.shapes[self.item]
+        self.p1.removeItem(item)
+        self.shapes.remove(item)
 
     def cancel_canny(self):
         """cancel canny"""

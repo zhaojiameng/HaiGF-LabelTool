@@ -92,6 +92,12 @@ canny也不能分割出气泡和背景
 问题2：左键点击新增句柄的功能在直线上
 问题3：贝塞尔曲线的控制
 
+* 局部放大功能,标注功能
+1.双击时，将局部区域展示到新的tab
+2.在新的tab页，鼠标点击拖动绘制标签框
+3.右键选择保存
+4.在原页拖动局部区域，新tab页的区域数据跟随变化
+
 ## 问题
 Traceback (most recent call last):
   File "d:\hai-gui-framework\HaiGF\plugins\label_train\widgets\msb_widget.py", line 62, in on_cancel_roiButton_clicked
@@ -112,10 +118,13 @@ AssertionError: 多个TabWidget时，需要传入pos参数
 
 编辑标签，点击cancel,置为‘'的问题                          解决
 
-贝塞尔曲线：  重写QgraphicsPloygonItem
+* control键开启图像处理
+完成
 
-a键绘制控制点、顶点，改变形状                               解决
-点击曲线新增点                                             解决
+* 贝塞尔曲线，不规则多边形功能
+1.重写QgraphicsPloygonItem
+2.a键开启编辑模式，绘制控制点、顶点，改变形状               解决
+3.点击曲线边，新增点                                        解决
 
 问题：
 移动的问题：拖拽移动 解决 （不平滑，有残影）
@@ -123,3 +132,9 @@ a键绘制控制点、顶点，改变形状                               解决
 初始在极点附近，随形状拖拽变化
 
 残影和死点是控制点及连线的问题
+
+* 形状删除功能
+1.当有形状时，右键开启不同的菜单
+2.判断右键是否在形状上，开启删除菜单
+
+问题：2的问题，判断处理很慢，roi形状判断不出来

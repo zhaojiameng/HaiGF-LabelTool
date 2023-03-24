@@ -19,8 +19,8 @@ class CurvePlogan(QGraphicsPolygonItem):
         self.control_points = []
         self.scale = 12.0
         self.point_size = 3
-        self.original_pen = QtGui.QPen(QtCore.Qt.green, 2)
-        self.current_pen = QtGui.QPen(QtCore.Qt.red, 2)
+        self.original_pen = pg.mkPen('y')
+        self.current_pen = pg.mkPen('g')
         self.setAcceptHoverEvents(True) # 允许鼠标悬停事件
         self.current_hover = False # 当前是否鼠标悬停在形状内部
         self.current_vertex = None # 当前选中的顶点
@@ -102,6 +102,11 @@ class CurvePlogan(QGraphicsPolygonItem):
     #移除CurvePlogan
     def remove(self):
         self.scene().removeItem(self)
+
+    def mouseClickEvent(self, event):
+        if event.button() == QtCore.Qt.RightButton:
+            self.remove()
+            return
 
 
     def mousePressEvent(self, event: QGraphicsSceneMouseEvent) -> None:
@@ -185,32 +190,32 @@ class MyLineROI(pg.LineROI):
         super().__init__(*args, **kwargs)
         self.setPen(pg.mkPen('y'))
         #设置可移除
-        self.removable = True
+        # self.removable = True
 
 class MyRectROI(pg.RectROI):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.setPen(pg.mkPen('y'))
-        self.removable = True
+        # self.removable = True
         
 class MyEllipseROI(pg.EllipseROI):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.setPen(pg.mkPen('y'))
-        self.removable = True
+        # self.removable = True
         
 class MyCircleROI(pg.CircleROI):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.setPen(pg.mkPen('y'))
-        self.removable = True
+        # self.removable = True
         
 class MyPolyLineROI(pg.PolyLineROI):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.setAcceptHoverEvents(True)
         self.setPen(pg.mkPen('y'))
-        self.removable = True
+        # self.removable = True
        
         self.sigHoverEvent.connect(self.hoverEvent)
 
