@@ -107,7 +107,7 @@ class ImageAnalysisPage(HPage):
     def mousePressEvent(self, event):
         """mouse press event"""
         self.item = -1
-        if event.button() == Qt.RightButton and len(self.shapes) > 0:
+        if event.button() == Qt.RightButton:
             for i in range(0, len(self.shapes)):
                 print(i)
                 print(self.shapes[i].shape().contains(event.pos()))
@@ -136,7 +136,6 @@ class ImageAnalysisPage(HPage):
     def create_rightmenu(self):
         """create rightmenu on layout"""
         #得到鼠标右键点击的位置的项目类型
-        print(self.item)
         if self.item == -1:
             self.layout_menu.popup(QCursor.pos())
         else: 
@@ -246,6 +245,8 @@ class ImageAnalysisPage(HPage):
 
     def create_ROI(self):
         """create a ROI"""
+        if hasattr(self, 'roi'):
+            return
         self.roi = pg.ROI([200, 400], [100, 50])
         self.roi.addScaleHandle([0.5, 1], [0.5, 0.5])
         self.roi.addScaleHandle([0, 0.5], [0.5, 0.5])
@@ -360,8 +361,8 @@ class ImageAnalysisPage(HPage):
             # roiAny = BezierLineROI([[200,200],[300,300],[350,400]], closed=True)
             # roiAny = BezierROI(points=[[200,200],[300,200],[350,400]])
             point1 = QPoint(200, 200)
-            point2 = QPoint(400, 80)
-            point3 = QPoint(600, 400)
+            point2 = QPoint(300, 80)
+            point3 = QPoint(500, 300)
             
             roiAny = CurvePlogan(points=[point1, point2, point3])
 
@@ -372,8 +373,8 @@ class ImageAnalysisPage(HPage):
         roiAny = self.updateRoiType(shape)
         self.shapes.append(roiAny)
         self.p1.addItem(roiAny)
-        roiAny.setZValue(900)  # make sure ROI is drawn above image
-
+        roiAny.setZValue(self.p1.scene().items()[::-1][0].zValue() + 1)  # make sure ROI is drawn above image
+ 
     def mouseDoubleClickEvent(self, event):
         """double click to transfer ROI to a new tab for local magnification"""
         if event.button() == Qt.LeftButton:

@@ -79,9 +79,6 @@ class ImageMagnificationPage(HPage):
         self.img.mouseReleaseEvent = self.mouseReleaseEvent
         self.p1.addItem(self.img)
         self.setMouseTracking(True)
-        # self.p1.scene().mousePressEvent = self.no_scale
-        # self.p1.scene().mouseMoveEvent = self.mouseMoveEvent
-        # self.p1.scene().mouseReleaseEvent = self.mouseReleaseEvent
         self.win.show()
 
     def show_image(self, image, img_manification):
@@ -209,16 +206,29 @@ class ImageMagnificationPage(HPage):
 
     def save_json(self):
         """需要从局部标注转换到全局标注"""
-        width, height = self.image.shape[1], self.image.shape[0]
+        filepath, type = QFileDialog.getSaveFileName(self, "文件保存", "/" ,'xml(*.xml)')
+        if filepath: # check if the user selected a file
+            path, filename = os.path.split(filepath) # split the file path and file name
+        else:
+            return
+        width, height = self.img_manification[0], self.img_manification[1]
         # 创建JSON文档
         json_dict = {
-            "filename": "image.jpg",
+            "folder": path,
+            "filename": filename,
             "size": {"width": width, "height": height, "depth": 3},
-            "object": {"name": "rectangle", "bndbox": {"xmin": 10, "ymin": 10, "xmax": 100, "ymax": 100}}
+            "object": []
         }
+        for rect_item in self.rect_items:
+            x, y, w, h = rect_item.rect().x(), rect_item.rect().y(), rect_item.rect().width(), rect_item.rect().height()
+            object = {
+                "name": rect_item.label,
+                "bndbox": {"xmin": x, "ymin": y - h, "xmax": x + w, "ymax": y}
+            }
+            json_dict["object"].append(object)
         json_str = json.dumps(json_dict)
         # 保存JSON文档，保存位置待定
-        with open("image.json", "w") as f:
+        with open(filepath, "w") as f:
             f.write(json_str)
       
 

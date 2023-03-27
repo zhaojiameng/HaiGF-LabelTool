@@ -103,14 +103,23 @@ class CurvePlogan(QGraphicsPolygonItem):
     def remove(self):
         self.scene().removeItem(self)
 
-    def mouseClickEvent(self, event):
-        if event.button() == QtCore.Qt.RightButton:
-            self.remove()
-            return
+    # def mouseClickEvent(self, event):
+    #     if event.button() == QtCore.Qt.RightButton:
+    #         self.remove()
+    #         return
 
 
     def mousePressEvent(self, event: QGraphicsSceneMouseEvent) -> None:
         pos = event.pos()
+        if event.button() == QtCore.Qt.RightButton:
+            #判断鼠标是否在顶点上
+            for i in range(len(self.points)):
+                if QLineF(self.points[i], pos).length() < 10:
+                    self.removePoint(i)
+                    return
+            super().mousePressEvent(event)
+            return
+        
         #判断鼠标是否在顶点或控制点上,或者在顶点和顶点之间的连线上，或者在形状内部
         #判断鼠标是否在顶点上
         for i in range(len(self.points)):
@@ -132,7 +141,7 @@ class CurvePlogan(QGraphicsPolygonItem):
             self.current_hover = True
             self.update()
             return      
-        super().mousePressEvent(event)
+        # super().mousePressEvent(event)
         
     def mouseMoveEvent(self, event: QGraphicsSceneMouseEvent) -> None:
         #鼠标在形状内部,移动形状
@@ -175,7 +184,7 @@ class CurvePlogan(QGraphicsPolygonItem):
 
     #删除顶点
     def removePoint(self, index):
-        assert len(self.points) > 0
+        assert len(self.points) > 1
         self.points.pop(index)
         self.control_points.pop(2 * index)
         self.control_points.pop(2 * index)

@@ -63,7 +63,7 @@ def __init__(self, parent=None, icon=None, title=None, **kwargs):
 
 2.解决运行时，报unknown的警告。
 
-##2.5-2.12日志
+## 2.5-2.12日志
 label_train插件开发
 
 1.主侧栏双击图片，加载到annotate_train页面
@@ -98,7 +98,7 @@ canny也不能分割出气泡和背景
 3.右键选择保存
 4.在原页拖动局部区域，新tab页的区域数据跟随变化
 
-## 问题
+问题
 Traceback (most recent call last):
   File "d:\hai-gui-framework\HaiGF\plugins\label_train\widgets\msb_widget.py", line 62, in on_cancel_roiButton_clicked
     plg.cancel_ROI()
@@ -108,7 +108,7 @@ Traceback (most recent call last):
     return self.current_tab_widget().pages
   File "d:\hai-gui-framework\HaiGF\gui_framework\widgets\central_widgets\central_widget.py", line 125, in current_tab_widget
     assert pos is not None, '多个TabWidget时，需要传入pos参数'
-AssertionError: 多个TabWidget时，需要传入pos参数
+AssertionError: 多个TabWidget时，需要传入pos参数             解决
 
 关闭tab时,调用的函数名，是否可重写。
 关闭tab时，分屏线还在，存在的tab不能全部填充
@@ -124,7 +124,8 @@ AssertionError: 多个TabWidget时，需要传入pos参数
 * 贝塞尔曲线，不规则多边形功能
 1.重写QgraphicsPloygonItem
 2.a键开启编辑模式，绘制控制点、顶点，改变形状               解决
-3.点击曲线边，新增点                                        解决
+3.点击曲线边，新增点                                      解决
+4.右击顶点，移除顶点，至少保留一个顶点                      解决
 
 问题：
 移动的问题：拖拽移动 解决 （不平滑，有残影）
