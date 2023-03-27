@@ -80,7 +80,7 @@ class AnnoPlugin(HPlugin):
         self.page.set_title(file_path)
         self.page.load_img(file_path)
 
-        if not self.page in self.cw.pages:
+        if not self.page in self.cw.tab_widgets[0].pages:
             self.cw.add_page(self.page)
             # self.cw.set_focus(self.page)
         self.cw.set_focus(self.page)

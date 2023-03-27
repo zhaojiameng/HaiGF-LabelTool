@@ -242,6 +242,7 @@ class ImageAnalysisPage(HPage):
         self.image = np.array(data)
         self.scripts()
         self.img.setImage(self.image)
+        self.update_manification()
 
     def create_ROI(self):
         """create a ROI"""
