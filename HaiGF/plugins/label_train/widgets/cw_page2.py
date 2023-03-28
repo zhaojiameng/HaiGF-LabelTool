@@ -61,6 +61,8 @@ class ImageMagnificationPage(HPage):
         self.label_dialog = LabelDialog(self)
     
         self.image = None
+        self.filePath = None
+        self.folderPath = None
         self.layout = QtWidgets.QVBoxLayout(self)
         self.layout.setContentsMargins(0, 0, 0, 0)
       
@@ -81,7 +83,14 @@ class ImageMagnificationPage(HPage):
         self.setMouseTracking(True)
         self.win.show()
 
-    def show_image(self, image, img_manification):
+    def show_image(self, image, img_manification, img_path):
+        if self.filePath is None:
+            self.filePath = img_path
+        elif self.filePath != img_path:
+            self.save_xml()
+            self.filePath = img_path
+            self.rect_items = []
+
         self.p1.clear()
         self.p1.addItem(self.img)
         self.image = image
@@ -176,7 +185,13 @@ class ImageMagnificationPage(HPage):
     
     def save_xml(self):
         """需要从局部标注转换到全局标注"""
-        filepath, type = QFileDialog.getSaveFileName(self, "文件保存", "/" ,'xml(*.xml)')
+        assert len(self.rect_items) > 0, "No rect items"
+        #如果folderPath为空，说明是第一次保存，需要弹出对话框选择保存路径,
+        if self.folderPath is None:
+            self.folderPath = QFileDialog.getExistingDirectory(self, "文件保存", "/")
+
+        #filepath为folderPath和filename的拼接,后缀名为xml
+        filepath = os.path.join(self.folderPath, os.path.splitext(os.path.basename(self.filePath))[0] + '.xml')
         if filepath: # check if the user selected a file
             path, filename = os.path.split(filepath) # split the file path and file name
         else:
@@ -202,6 +217,7 @@ class ImageMagnificationPage(HPage):
         xml_str = ET.tostring(root, encoding="unicode")
         # 保存XML文档，保存位置待定
         with open(filepath, "w") as f:
+            print(filepath)
             f.write(xml_str)
 
     def save_json(self):

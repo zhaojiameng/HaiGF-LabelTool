@@ -239,6 +239,7 @@ class ImageAnalysisPage(HPage):
                 
             assert os.path.exists(img_path), f'img path not exists: {img_path}'
             data = Image.open(img_path)
+        self.img_path = img_path
         self.image = np.array(data)
         self.scripts()
         self.img.setImage(self.image)
@@ -269,13 +270,16 @@ class ImageAnalysisPage(HPage):
         newTab.addPage(self.page2)
         self.update_manification()
         
-    def update_manification(self):
+    def update_manification(self, process=False):
         """update the image in the new tab"""
         if not hasattr(self, 'page2'):
             return
         img_manification = [self.image.shape[1], self.image.shape[0], self.roi.pos().x(), self.roi.pos().y()]
-        selected = self.roi.getArrayRegion(self.image, self.img)
-        self.page2.show_image(selected, img_manification)
+        if process:
+            selected = self.roi.getArrayRegion(self.data, self.img)
+        else:
+            selected = self.roi.getArrayRegion(self.image, self.img)
+        self.page2.show_image(selected, img_manification, self.img_path)
 
     def create_page2(self):
         """create a new page for local magnification"""
@@ -391,6 +395,7 @@ class ImageAnalysisPage(HPage):
         """press ctrl to show the processed image"""
         if(event.key() == Qt.Key_Control):
             self.img.setImage(self.data)
+            self.update_manification(True)
         elif event.key() == Qt.Key_A:
             self.adjust_bezier()
 
@@ -408,6 +413,7 @@ class ImageAnalysisPage(HPage):
         """release ctrl to show the original image"""
         if(event.key() == Qt.Key_Control):
             self.img.setImage(self.image)
+            self.update_manification()
         
 
 

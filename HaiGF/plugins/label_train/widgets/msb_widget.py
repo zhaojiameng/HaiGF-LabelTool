@@ -1,6 +1,8 @@
 
 from HaiGF import HMainSideBarWidget, HAction
+from HaiGF.gui_framework.widgets.main_side_bar.explorer_widget import ExplorerWidget
 from ..widgets.msb_ui import Ui_Form
+
 
 
 class AntrainMSBWidget(HMainSideBarWidget):
@@ -75,10 +77,23 @@ class AntrainMSBWidget(HMainSideBarWidget):
         plg.cancel_iso()
 
     def on_preButton_clicked(self):
-        pass
+        #调用gui_framework中main_side_bar下explorer_widget中的on_preButton_clicked
+        mw = self.p
+        key = list(mw.main_side_bar._aw_dict.keys())[0]
+        widget = mw.main_side_bar._aw_dict[key]
+        tree = widget.tree
+        assert tree is not None
+        tree.cope_pre_button()
 
     def on_proButton_clicked(self):
-        pass
+        #调用gui_framework中main_side_bar下explorer_widget中的on_proButton_clicked
+        mw = self.p
+        #取得mw中的main_side_bar中的_aw_dicts中的第一个key
+        key = list(mw.main_side_bar._aw_dict.keys())[0]
+        widget = mw.main_side_bar._aw_dict[key]
+        tree = widget.tree
+        assert tree is not None
+        tree.cope_pro_button()
 
     
 

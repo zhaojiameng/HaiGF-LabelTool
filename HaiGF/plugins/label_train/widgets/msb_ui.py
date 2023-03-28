@@ -147,7 +147,7 @@ class Ui_Form(object):
         self.roiComboBox.setItemText(3, _translate("Form", "Circle ROI"))
         self.roiComboBox.setItemText(4, _translate("Form", "PolyLine ROI"))
         self.roiComboBox.setItemText(5, _translate("Form", "BezierLine ROI"))
-        self.roiLabel.setText(_translate("Form", "ROI分析"))
+        self.roiLabel.setText(_translate("Form", "双击局部放大"))
         self.roiButton.setText(_translate("Form", "应用"))
         self.roiButton1.setText(_translate("Form", "撤销"))
         self.annoLabel.setText(_translate("Form", "标注形状"))

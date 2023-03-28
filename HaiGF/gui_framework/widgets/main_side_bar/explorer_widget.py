@@ -20,6 +20,7 @@ class ExplorerWidget(HMainSideBarWidget):
         super().__init__(parent=parent)
         self.p = parent  # mw
         self.dir = dir
+        self.tree = None
         layout = QVBoxLayout()
         self.setLayout(layout)
         self.setObjectName('ExplorerWidget')
@@ -144,26 +145,19 @@ class HTreeView(QTreeView):
                 pass
                 # self.p.load_file_or_dir(dir=file_path)
 
-    
     def cope_pre_button(self):
-        """
-        返回上一张图片的路径
-        """
-        self.current_index -= 1
-        if self.current_index < 0:
-            print('已经是第一张了')
-        file_path = self.file_list[self.current_index]
-        self.file_duble_clicked(file_path)
-        
+        """ 返回上一张图片的路径 """
+        if self.current_index is not None:
+            self.current_index =  self.current_index.model().index(self.current_index.row() - 1, 0, self.current_index.parent()) 
+            if self.current_index.isValid():
+                self.file_duble_clicked(self.model().filePath(self.current_index))
+
     def cope_pro_button(self):
-        """
-        返回下一张图片的路径
-        """
-        self.current_index += 1
-        if self.current_index >= len(self.file_list):
-            print('已经是最后一张了')
-        file_path = self.file_list[self.current_index]
-        self.file_duble_clicked(file_path)
+        """ 返回下一张图片的路径 """
+        if self.current_index is not None:
+            self.current_index =  self.current_index.model().index(self.current_index.row() + 1, 0, self.current_index.parent())
+            if self.current_index.isValid():
+                self.file_duble_clicked(self.model().filePath(self.current_index))
 
     def on_context_menu(self):
         print('on_context_menu')
@@ -181,7 +175,8 @@ class HTreeView(QTreeView):
             raise NotImplementedError('TODO open .py file')
         elif self.is_image_file(file_path):  # if is image file
             #返回文件的index
-            self.current_index = self.indexAt(self.pos())
+            self.current_index = self.model().index(file_path)
+            #根据路径返回QModelIndex
             plg = mw.plugins['AnnoPlugin']
             plg.open_image_file(file_path)
             lat = mw.plugins['AntrainPlugin']
