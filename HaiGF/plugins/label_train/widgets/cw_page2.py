@@ -183,7 +183,6 @@ class ImageMagnificationPage(HPage):
                     label = self.label_dialog.label_edit.text()
                     #未输入标签时删除这个矩形
                     if label != '':
-                        print(label)
                         x, y, w, h = self.rect_item.rect().x(), self.rect_item.rect().y(), self.rect_item.rect().width(), self.rect_item.rect().height()
                         real_rect = RectangleItem(QRectF(x + self.img_manification[2], y + self.img_manification[3], w, h))
                         real_rect.set_label(label)
@@ -215,7 +214,9 @@ class ImageMagnificationPage(HPage):
     
     def save_xml(self):
         """需要从局部标注转换到全局标注"""
-        assert len(self.rect_items) > 0, "No rect items"
+        if len(self.rect_items) == 0:
+            return
+        
         #如果folderPath为空，说明是第一次保存，需要弹出对话框选择保存路径,
         if self.folderPath is None:
             self.folderPath = QFileDialog.getExistingDirectory(self, "文件保存", "/")

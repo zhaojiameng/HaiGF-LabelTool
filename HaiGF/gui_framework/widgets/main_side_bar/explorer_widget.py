@@ -177,8 +177,8 @@ class HTreeView(QTreeView):
             #返回文件的index
             self.current_index = self.model().index(file_path)
             #根据路径返回QModelIndex
-            plg = mw.plugins['AnnoPlugin']
-            plg.open_image_file(file_path)
+            # plg = mw.plugins['AnnoPlugin']
+            # plg.open_image_file(file_path)
             lat = mw.plugins['AntrainPlugin']
             lat.open_image_file(file_path)
 
