@@ -43,6 +43,27 @@ class RectangleItem(QGraphicsRectItem):
 
     def get_label(self):
         return self.label
+    
+    # def mousePressEvent(self, event):
+    #     super().mousePressEvent(event)
+    #     if event.button() == Qt.LeftButton:
+    #         self.setCursor(QCursor(Qt.ClosedHandCursor))
+    #         self.start_point = event.pos()
+    #         self.update()
+    #     elif event.button() == Qt.RightButton:
+    #         self.label_dialog = LabelDialog(self)
+    #         self.label_dialog.label_edit.setText(self.label)
+    #         if self.label_dialog.exec_():
+    #             self.set_label(self.label_dialog.label_edit.text())
+    #             self.update()
+    
+    # #拖动矩形框
+    # def mouseMoveEvent(self, event):
+    #     super().mouseMoveEvent(event)
+    #     if event.buttons() == Qt.LeftButton:
+    #         pos = event.pos()
+    #         self.setPos(pos)
+    #         self.update()
 
 class ImageMagnificationPage(HPage):
     def __init__(self, parent=None, **kwargs):
@@ -130,28 +151,34 @@ class ImageMagnificationPage(HPage):
     #event.pos 是什么？
     def mousePressEvent(self, event):
         if event.button() == Qt.LeftButton:
-            if not self.drawing:
-                self.drawing = True
+            if  self.drawing:
                 self.start_point = self.img.mapToParent(self.fix_coordinate(event.pos()))
                 self.rect_item = RectangleItem(self.get_Rect(self.start_point, self.start_point))
                 self.rect_item.setPen(QPen(QColor(0, 255, 0), 0.1))
                 self.p1.addItem(self.rect_item)
                 self.rect_item.setZValue(10)
+            # else:
+            #     #判断是否在矩形内,如果在矩形内则可以拖动矩形
+            #     for rect_item in self.rect_items:
+            #         if rect_item.rect().contains(event.pos()):
+            #             self.rect_item = rect_item
+            #             return
                 
-        
     def mouseMoveEvent(self, event):
         if self.drawing:
             self.end_point = self.img.mapToParent(self.fix_coordinate(event.pos()))
             self.rect_item.setRect(self.get_Rect(self.start_point, self.end_point))
-           
+        # else:
+        #     #拖动矩形
+        #     if self.rect_item is not None:
+        #         self.rect_item.setRect(self.rect_item.rect().translated(event.pos() - self.rect_item.rect().center()))
+
                   
     def mouseReleaseEvent(self, event):
         if event.button() == Qt.LeftButton:
             if self.drawing:
                 self.end_point = self.img.mapToParent(self.fix_coordinate(event.pos()))
                 self.rect_item.setRect(self.get_Rect(self.start_point, self.end_point))
-                self.drawing = False
-                # self.label_dialog.label_edit.clear()
                 if self.label_dialog.exec_():
                     label = self.label_dialog.label_edit.text()
                     #未输入标签时删除这个矩形
@@ -166,6 +193,9 @@ class ImageMagnificationPage(HPage):
                 else:
                     self.p1.removeItem(self.rect_item)
                 self.rect_item = None
+        # else:
+        #     #停止拖动矩形
+        #     self.rect_item = None
 
     def create_rightmenu(self):
         """create rightmenu on layout"""
@@ -247,7 +277,18 @@ class ImageMagnificationPage(HPage):
         with open(filepath, "w") as f:
             f.write(json_str)
       
+    def chang_mode(self):
+        self.drawing = not self.drawing
+        #光标变为十字形
+        if self.drawing:
+            self.setCursor(Qt.CrossCursor)
+        else:
+            self.setCursor(Qt.ArrowCursor)
 
+    def keyPressEvent(self, event):
+        """press key E to draw rectangle"""
+        if event.key() == Qt.Key_D:
+            self.chang_mode()
 
 
 

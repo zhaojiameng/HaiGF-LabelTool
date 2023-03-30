@@ -10,6 +10,8 @@ from PySide2.QtWidgets import QGraphicsSceneMouseEvent
 from pyqtgraph import functions as fn
 from pyqtgraph import Point
 from pyqtgraph import ROI
+import numpy as np
+from PySide2.QtCore import Qt
 
 #类curveplogan,继承QGraphicsPolygonItem,实现插入点时同时插入两个控制点，点间的连线变为贝塞尔曲线
 class CurvePlogan(QGraphicsPolygonItem):
@@ -244,3 +246,35 @@ class MyPolyLineROI(pg.PolyLineROI):
                 pos = self.mapToParent(ev.pos())
                 self.addFreeHandle(pos)
 
+
+class MyGraphicsLayoutWidget(pg.GraphicsLayoutWidget):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.p1 = self.addPlot()
+        self.img = pg.ImageItem(np.random.rand(100, 100))
+        self.roi1 = pg.RectROI([20, 20], [30, 30])
+        self.roi2 = pg.CircleROI([50, 50], 20)
+        self.item3 = pg.PolyLineROI([[10, 10], [50, 10], [50, 50], [10, 50]], closed=True)
+        self.p1.addItem(self.img)
+        self.p1.addItem(self.roi1)
+        self.p1.addItem(self.roi2)
+        self.p1.addItem(self.item3)
+
+    def mousePressEvent(self, ev):
+        if ev.button() == Qt.RightButton:
+            pos = ev.pos()
+            item = self.itemAt(pos)
+            if isinstance(item, pg.ImageItem):
+                print("Clicked on ImageItem")
+            elif isinstance(item, pg.RectROI):
+                print("Clicked on RectROI")
+            elif isinstance(item, pg.CircleROI):
+                print("Clicked on CircleROI")
+            elif isinstance(item, pg.PolyLineROI):
+                print("Clicked on PolyLineROI")
+
+if __name__ == '__main__':
+    app = pg.mkQApp()
+    win = MyGraphicsLayoutWidget()
+    win.show()
+    app.exec_()

@@ -47,14 +47,15 @@ class ImageAnalysisPage(HPage):
         self.p1 = self.win.addPlot(title="")
         self.p1.setMenuEnabled(False)
         
+        
 
         # Item for displaying image data
         self.img = pg.ImageItem()
         self.img.hoverEvent = self.imageHoverEvent
+    
         self.p1.addItem(self.img)
 
         self.win.show()
-        self.txt = 'hello world'
         self.roi2 = None
         self.shapes = []
 
@@ -108,12 +109,14 @@ class ImageAnalysisPage(HPage):
         """mouse press event"""
         self.item = -1
         if event.button() == Qt.RightButton:
-            for i in range(0, len(self.shapes)):
-                print(i)
-                print(self.shapes[i].shape().contains(event.pos()))
-                if self.shapes[i].shape().contains(event.pos()):
-                    self.item = i
+            #转为QPoint对象
+            point = QPoint(event.pos().x(), event.pos().y())
+            items = self.win.scene().items(point)
+            for shape in self.shapes:
+                if shape in items:
+                    self.item = self.shapes.index(shape)
                     return
+                    
                 
     def create_menu1(self):
         self.menu1 = QMenu(self)
@@ -264,11 +267,22 @@ class ImageAnalysisPage(HPage):
             return
         # 创建一个新的tab控件
         mw = self.p
-        newTab = HTabWidget()
+        print(mw.cw.get_current_splitter_by_tab_widget(mw.cw._tab_widgets[0]).widgets)
+        newTab = HTabWidget(mw.cw)
+        newTab.setObjectName('newTab')
+        newTab.tabCloseRequested.connect(self.close_tab)
         mw.cw.addTabWidget(newTab)
         self.page2 = self.create_page2()
         newTab.addPage(self.page2)
+        print(mw.cw.get_current_splitter_by_tab_widget(newTab).widgets)
+        
         self.update_manification()
+
+    def close_tab(self, index):
+        """close the tab"""
+        mw = self.p
+        mw.cw._tab_widgets.pop(-1)
+        del self.page2
         
     def update_manification(self, process=False):
         """update the image in the new tab"""

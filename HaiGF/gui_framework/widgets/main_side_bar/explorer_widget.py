@@ -148,14 +148,14 @@ class HTreeView(QTreeView):
     def cope_pre_button(self):
         """ 返回上一张图片的路径 """
         if self.current_index is not None:
-            self.current_index =  self.current_index.model().index(self.current_index.row() - 1, 0, self.current_index.parent()) 
+            self.current_index =  self.current_index.model().index(self.current_index.row() - 1, 0, self.current_index.parent()) if self.current_index.row() > 0 else self.current_index
             if self.current_index.isValid():
                 self.file_duble_clicked(self.model().filePath(self.current_index))
 
     def cope_pro_button(self):
         """ 返回下一张图片的路径 """
         if self.current_index is not None:
-            self.current_index =  self.current_index.model().index(self.current_index.row() + 1, 0, self.current_index.parent())
+            self.current_index =  self.current_index.model().index(self.current_index.row() + 1, 0, self.current_index.parent()) if self.current_index.row() < self.current_index.model().rowCount(self.current_index.parent()) - 1 else self.current_index
             if self.current_index.isValid():
                 self.file_duble_clicked(self.model().filePath(self.current_index))
 

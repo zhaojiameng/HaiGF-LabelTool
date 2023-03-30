@@ -111,7 +111,7 @@ Traceback (most recent call last):
     assert pos is not None, '多个TabWidget时，需要传入pos参数'
 AssertionError: 多个TabWidget时，需要传入pos参数             解决
 
-关闭tab时,调用的函数名，是否可重写。
+关闭tab时,逻辑处理，使得再次点击仍出现。                      解决
 关闭tab时，分屏线还在，存在的tab不能全部填充
 
 矩形框是局部图片的矩形框，保存的时候应当是以全图的角度来保存。 解决
@@ -139,4 +139,4 @@ AssertionError: 多个TabWidget时，需要传入pos参数             解决
 1.当有形状时，右键开启不同的菜单
 2.判断右键是否在形状上，开启删除菜单
 
-问题：2的问题，判断处理很慢，roi形状判断不出来
+问题：2的问题，判断处理很慢，roi形状判断不出来             解决
