@@ -112,7 +112,7 @@ Traceback (most recent call last):
 AssertionError: 多个TabWidget时，需要传入pos参数             解决
 
 关闭tab时,逻辑处理，使得再次点击仍出现。                      解决
-关闭tab时，分屏线还在，存在的tab不能全部填充
+关闭tab时，分屏线还在，存在的tab不能全部填充                  解决
 
 矩形框是局部图片的矩形框，保存的时候应当是以全图的角度来保存。 解决
 何时进行保存，改换局部的时候，已有的矩形，如何处理            解决

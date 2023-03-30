@@ -216,6 +216,8 @@ class CentralWidget(QWidget):
         splitter = self.asign_spliter(tab_widget, *args)
         splitter.addWidget(tab_widget)  # 添加TabWidget到分屏器
         self.setSplitter(splitter)
+        #根据tabwidget的个数，设置每个tabwidget的宽度
+
 
     def add_page(self, page: HPage, tabw_idx: int=None, *args):
         """
@@ -501,7 +503,11 @@ class CentralWidget(QWidget):
                     tabw.setCurrentWidget(tab)
                     return
 
-
+    def remove_tabw(self, tabw):
+        """移除一个TabWidget"""
+        self._tab_widgets.remove(tabw)
+        self.layout.removeWidget(tabw)
+        tabw.deleteLater()
 
 
 

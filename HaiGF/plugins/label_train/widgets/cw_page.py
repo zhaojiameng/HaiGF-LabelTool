@@ -267,21 +267,24 @@ class ImageAnalysisPage(HPage):
             return
         # 创建一个新的tab控件
         mw = self.p
-        print(mw.cw.get_current_splitter_by_tab_widget(mw.cw._tab_widgets[0]).widgets)
-        newTab = HTabWidget(mw.cw)
-        newTab.setObjectName('newTab')
-        newTab.tabCloseRequested.connect(self.close_tab)
-        mw.cw.addTabWidget(newTab)
+        self.newTab = HTabWidget(mw.cw)
+        self.newTab.setObjectName('newTab')
+        self.newTab.tabCloseRequested.connect(self.close_tab)
+        mw.cw.addTabWidget(self.newTab)
+        #设置self.newTab的初始宽度为500，后续可调节
+        self.newTab.setMinimumWidth(self.img.width() / 2)
+
+        
         self.page2 = self.create_page2()
-        newTab.addPage(self.page2)
-        print(mw.cw.get_current_splitter_by_tab_widget(newTab).widgets)
+        self.newTab.addPage(self.page2)
         
         self.update_manification()
 
-    def close_tab(self, index):
+    def close_tab(self):
         """close the tab"""
         mw = self.p
-        mw.cw._tab_widgets.pop(-1)
+        mw.cw.remove_tabw(self.newTab)
+        del self.newTab
         del self.page2
         
     def update_manification(self, process=False):
