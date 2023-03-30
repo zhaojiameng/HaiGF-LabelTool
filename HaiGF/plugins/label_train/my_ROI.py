@@ -15,12 +15,13 @@ from PySide2.QtCore import Qt
 
 #类curveplogan,继承QGraphicsPolygonItem,实现插入点时同时插入两个控制点，点间的连线变为贝塞尔曲线
 class CurvePlogan(QGraphicsPolygonItem):
-    def __init__(self, parent=None, points=[]):
+    def __init__(self, parent=None, points=[], img_shape=[]):
         super().__init__(parent)
         self.points = []
         self.control_points = []
+        self.img_shape = img_shape
         self.scale = 12.0
-        self.point_size = 3
+        self.point_size = 2.0
         self.original_pen = pg.mkPen('y')
         self.current_pen = pg.mkPen('g')
         self.setAcceptHoverEvents(True) # 允许鼠标悬停事件
@@ -30,11 +31,28 @@ class CurvePlogan(QGraphicsPolygonItem):
         self.adjusted = False # 是否正在调整形状
         for point in  points:
             self.addPoint(point)
-        
+
+    def boundingRect(self):
+        rect = super().boundingRect()
+        rect.adjust(-self.point_size, -self.point_size, self.point_size, self.point_size)
+        return rect
+
+    def adjust_point(self, point):
+        if point.x() < 0:
+            point.setX(0)
+        if point.y() < 0:
+            point.setY(0)
+        if point.x() > self.img_shape[1]:
+            point.setX(self.img_shape[1])
+        if point.y() > self.img_shape[0]:
+            point.setY(self.img_shape[0])
+        return point
+
     def addPoint(self, point):
+        point = self.adjust_point(point)
         self.points.append(point)
-        p1 = QPointF(point.x() - point.x() / self.scale, point.y() - point.y() / self.scale)
-        p2 = QPointF(point.x() + point.x() / self.scale, point.y() + point.y() / self.scale)
+        p1 = self.adjust_point(QPointF(point.x() - point.x() / self.scale, point.y() - point.y() / self.scale))
+        p2 = self.adjust_point(QPointF(point.x() + point.x() / self.scale, point.y() + point.y() / self.scale))
         self.control_points.append(p1)
         self.control_points.append(p2)
 
@@ -46,7 +64,7 @@ class CurvePlogan(QGraphicsPolygonItem):
         painter.setPen(QtGui.QPen(QtCore.Qt.blue, 2))
         path = QPainterPath()
         for i in range(len(self.points)):
-            path.addEllipse(self.points[i], 2, 2)
+            path.addEllipse(self.points[i], self.point_size, self.point_size)
             path.addEllipse(self.control_points[2 * i], self.point_size, self.point_size)
             path.addEllipse(self.control_points[2 * i + 1], self.point_size, self.point_size)
         painter.drawPath(path)
@@ -68,7 +86,7 @@ class CurvePlogan(QGraphicsPolygonItem):
         #调整形状时，绘制控制点
         if self.adjusted:
             self.paintHandle(painter)
-
+            
         painter.setPen(self.original_pen)
         path = self.shape()
 
@@ -79,7 +97,10 @@ class CurvePlogan(QGraphicsPolygonItem):
             painter.setPen(self.original_pen)
 
         painter.drawPath(path)
-       
+        # #半透明红色虚线绘制boundingRect
+        # painter.setPen(QtGui.QPen(QtCore.Qt.red, 1, QtCore.Qt.DashLine))
+        # painter.drawRect(self.boundingRect())
+
     def is_point_on_curve(self, point: QPointF, index: int, width=3.0):
         path = QPainterPath()
         path.moveTo(self.points[index])
@@ -104,12 +125,6 @@ class CurvePlogan(QGraphicsPolygonItem):
     #移除CurvePlogan
     def remove(self):
         self.scene().removeItem(self)
-
-    # def mouseClickEvent(self, event):
-    #     if event.button() == QtCore.Qt.RightButton:
-    #         self.remove()
-    #         return
-
 
     def mousePressEvent(self, event: QGraphicsSceneMouseEvent) -> None:
         pos = event.pos()
@@ -147,18 +162,22 @@ class CurvePlogan(QGraphicsPolygonItem):
         
     def mouseMoveEvent(self, event: QGraphicsSceneMouseEvent) -> None:
         #鼠标在形状内部,移动形状
+        current_pos = event.pos()
         if self.current_hover:
-            self.moveBy(event.pos().x() - event.lastPos().x(), event.pos().y() - event.lastPos().y())
+            old_pos = event.lastPos()
+            self.moveBy(current_pos.x() - old_pos.x(), current_pos.y() - old_pos.y())
             self.update()
         elif self.current_vertex is not None:
             #计算顶点移动后的偏移量
-            self.offset = event.pos() - self.points[self.current_vertex]
-            self.points[self.current_vertex] = event.pos()
+            self.offset = current_pos - self.points[self.current_vertex]
+            self.points[self.current_vertex] = current_pos
             self.updateControlPoints()
-            self.update()
+            self.updateBoundingRect()
         elif self.current_control_point is not None:
-            self.control_points[self.current_control_point] = event.pos()
-            self.update()
+            #计算控制点移动后的偏移量
+            self.offset = current_pos - self.control_points[self.current_control_point]
+            self.control_points[self.current_control_point] = current_pos
+            self.updateBoundingRect()
         else:
             super().mouseMoveEvent(event)
 
@@ -171,8 +190,9 @@ class CurvePlogan(QGraphicsPolygonItem):
     #插入顶点
     def insertPoint(self, index, pos):
         #计算插入点的控制点
-        p1 = QPointF(pos.x() - pos.x() / self.scale, pos.y() - pos.y() / self.scale)
-        p2 = QPointF(pos.x() + pos.x() / self.scale, pos.y() + pos.y() / self.scale)
+        pos = self.adjust_point(pos)
+        p1 = self.adjust_point(QPointF(pos.x() - pos.x() / self.scale, pos.y() - pos.y() / self.scale))
+        p2 = self.adjust_point(QPointF(pos.x() + pos.x() / self.scale, pos.y() + pos.y() / self.scale))
         #插入顶点和控制点
         if index == len(self.points):
             self.points.append(pos)
@@ -182,7 +202,8 @@ class CurvePlogan(QGraphicsPolygonItem):
             self.points.insert(index, pos)
             self.control_points.insert(2 * index, p1)
             self.control_points.insert(2 * index + 1, p2)
-        self.update()
+        self.updateBoundingRect()
+
 
     #删除顶点
     def removePoint(self, index):
@@ -190,11 +211,18 @@ class CurvePlogan(QGraphicsPolygonItem):
         self.points.pop(index)
         self.control_points.pop(2 * index)
         self.control_points.pop(2 * index)
-        self.update()
+        self.updateBoundingRect()
 
     def updateControlPoints(self): 
         self.control_points[2 * self.current_vertex] += self.offset
         self.control_points[2 * self.current_vertex + 1] += self.offset
+
+    def updateBoundingRect(self):
+        self.prepareGeometryChange()
+        self.setPolygon(self.shape().toFillPolygon())
+        self.update()
+
+    
 
 class MyLineROI(pg.LineROI):
     def __init__(self, *args, **kwargs):

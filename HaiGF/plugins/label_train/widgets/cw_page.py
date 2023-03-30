@@ -383,7 +383,7 @@ class ImageAnalysisPage(HPage):
             point2 = QPoint(300, 80)
             point3 = QPoint(500, 300)
             
-            roiAny = CurvePlogan(points=[point1, point2, point3])
+            roiAny = CurvePlogan(points=[point1, point2, point3], img_shape=self.image.shape)
 
         return roiAny
 
