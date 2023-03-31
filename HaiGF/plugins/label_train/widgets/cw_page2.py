@@ -214,8 +214,8 @@ class ImageMagnificationPage(HPage):
     
     def save_xml(self):
         """需要从局部标注转换到全局标注"""
-        if len(self.rect_items) == 0:
-            return
+        # if len(self.rect_items) == 0:
+        #     return
         
         #如果folderPath为空，说明是第一次保存，需要弹出对话框选择保存路径,
         if self.folderPath is None:
