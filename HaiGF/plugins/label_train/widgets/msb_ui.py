@@ -52,6 +52,9 @@ class Ui_Form(object):
         self.spacer4 = QWidget()
         self.spacer4.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
 
+        self.space5 = QWidget()
+        self.space5.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+
 
         self.roiLabel = QtWidgets.QLabel(self.layoutWidget)
         self.roiLabel.setObjectName('ROI分析')
@@ -85,6 +88,10 @@ class Ui_Form(object):
         self.pre_button.setObjectName('上一张')
         self.pro_button = QtWidgets.QPushButton(self.layoutWidget)
         self.pro_button.setObjectName('下一张')
+
+        self.label_type = QtWidgets.QComboBox(self.layoutWidget)
+        self.label_type.addItem("xml")
+        self.label_type.addItem("json")
        
 
         self.spacer = QWidget()
@@ -120,8 +127,9 @@ class Ui_Form(object):
         self.gridLayout.addWidget(self.pre_button, 14, 0, 1, 1)
         self.gridLayout.addWidget(self.pro_button, 14, 1, 1, 1)
 
+        self.gridLayout.addWidget(self.space5, 15, 0, 1, 2)
 
-
+        self.gridLayout.addWidget(self.label_type, 16, 0, 1, 2)
 
         self.gridLayout_2.addWidget(self.layoutWidget, 1, 0, 1, 1)
         self.gridLayout_2.addWidget(self.spacer)
@@ -157,6 +165,9 @@ class Ui_Form(object):
         self.isoButton1.setText(_translate("Form", "撤销"))
         self.pre_button.setText(_translate("Form", "上一张"))
         self.pro_button.setText(_translate("Form", "下一张"))
+        self.label_type.setItemText(0, _translate("Form", "xml"))
+        self.label_type.setItemText(1, _translate("Form", "json"))
+        
 
 
 

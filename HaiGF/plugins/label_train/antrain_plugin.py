@@ -129,6 +129,13 @@ class AntrainPlugin(HPlugin):
         else:
             self.page.cancel_iso()
 
+    def update_label_type(self, type):
+        if len(self.cw.tab_widgets) == 1:
+            self.page.label_type = type
+            print('no label')
+        else:  
+            self.page.label_type = type
+            self.cw.tab_widgets[1].pages[0].update_label_type(type)
 
    
     

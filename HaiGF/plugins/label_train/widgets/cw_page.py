@@ -62,6 +62,8 @@ class ImageAnalysisPage(HPage):
         self.item = -1
         self.create_menu1()
         self.create_menu2()
+
+        self.label_type = 'xml'
         
     def analysis_ROI(self):
         if hasattr(self, 'p2'):
@@ -296,7 +298,7 @@ class ImageAnalysisPage(HPage):
             selected = self.roi.getArrayRegion(self.data, self.img)
         else:
             selected = self.roi.getArrayRegion(self.image, self.img)
-        self.page2.show_image(selected, img_manification, self.img_path)
+        self.page2.show_image(selected, img_manification, self.img_path, self.label_type)
 
     def create_page2(self):
         """create a new page for local magnification"""

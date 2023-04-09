@@ -35,6 +35,8 @@ class AntrainMSBWidget(HMainSideBarWidget):
         self.ui.pre_button.clicked.connect(self.on_preButton_clicked)
         self.ui.pro_button.clicked.connect(self.on_proButton_clicked)
 
+        self.ui.label_type.currentTextChanged.connect(self.on_label_type_changed)
+
     def on_cannyPutton_clicked(self):
         mw = self.p
         plg = mw.plugins['AntrainPlugin']
@@ -94,6 +96,11 @@ class AntrainMSBWidget(HMainSideBarWidget):
         tree = widget.tree
         assert tree is not None
         tree.cope_pro_button()
+
+    def on_label_type_changed(self):
+        mw = self.p
+        plg = mw.plugins['AntrainPlugin']
+        plg.update_label_type(self.ui.label_type.currentText())
 
     
 

@@ -64,6 +64,7 @@ class ImageMagnificationPage(HPage):
         self.image = None
         self.filePath = None
         self.folderPath = None
+        self.label_type = None
         self.layout = QtWidgets.QVBoxLayout(self)
         self.layout.setContentsMargins(0, 0, 0, 0)
       
@@ -84,11 +85,12 @@ class ImageMagnificationPage(HPage):
         self.setMouseTracking(True)
         self.win.show()
 
-    def show_image(self, image, img_manification, img_path):
+    def show_image(self, image, img_manification, img_path, label_type):
+        self.update_label_type(label_type)
         if self.filePath is None:
             self.filePath = img_path
         elif self.filePath != img_path:
-            self.save_xml()
+            self.save_label()
             self.filePath = img_path
             self.rect_items = []
 
@@ -159,6 +161,8 @@ class ImageMagnificationPage(HPage):
             if self.drawing:
                 self.end_point = self.img.mapToParent(self.fix_coordinate(event.pos()))
                 self.rect_item.setRect(self.get_Rect(self.start_point, self.end_point))
+                self.label_dialog.move(QCursor.pos())
+                self.label_dialog.show()
                 if self.label_dialog.exec_():
                     label = self.label_dialog.label_edit.text()
                     #未输入标签时删除这个矩形
@@ -181,15 +185,9 @@ class ImageMagnificationPage(HPage):
         #菜单对象
         self.layout_menu = QMenu(self)
 
-        self.actionA = QAction(u'保存标注 & xml',self)#创建菜单选项对象
+        self.actionA = QAction(u'保存标注',self)#创建菜单选项对象
         self.layout_menu.addAction(self.actionA)#把动作A选项对象添加到菜单self.win_menu上
-
-        self.actionB = QAction(u'保存标注 & json',self)
-        self.layout_menu.addAction(self.actionB)
-
-        self.actionA.triggered.connect(self.save_xml) #将动作A触发时连接到槽函数 button
-        self.actionB.triggered.connect(self.save_json)
-
+        self.actionA.triggered.connect(self.save_label) #将动作A触发时连接到槽函数 button
         self.layout_menu.popup(QCursor.pos())#声明当鼠标在win控件上右击时，在鼠标位置显示右键菜单   ,exec_,popup两个都可以，
     
     def save_xml(self):
@@ -267,10 +265,19 @@ class ImageMagnificationPage(HPage):
         with open(filepath, "w") as f:
             print(filepath)
             json.dump(root, f)
-            
 
+    def save_label(self):
+        if self.label_type == 'xml':
+            self.save_xml()
+        elif self.label_type == 'json':
+            self.save_json()
+        else:
+            print('error')
+
+    def update_label_type(self, label_type):
+        """update label type"""
+        self.label_type = label_type
         
-      
     def chang_mode(self):
         self.drawing = not self.drawing
         #光标变为十字形
