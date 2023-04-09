@@ -44,26 +44,6 @@ class RectangleItem(QGraphicsRectItem):
     def get_label(self):
         return self.label
     
-    # def mousePressEvent(self, event):
-    #     super().mousePressEvent(event)
-    #     if event.button() == Qt.LeftButton:
-    #         self.setCursor(QCursor(Qt.ClosedHandCursor))
-    #         self.start_point = event.pos()
-    #         self.update()
-    #     elif event.button() == Qt.RightButton:
-    #         self.label_dialog = LabelDialog(self)
-    #         self.label_dialog.label_edit.setText(self.label)
-    #         if self.label_dialog.exec_():
-    #             self.set_label(self.label_dialog.label_edit.text())
-    #             self.update()
-    
-    # #拖动矩形框
-    # def mouseMoveEvent(self, event):
-    #     super().mouseMoveEvent(event)
-    #     if event.buttons() == Qt.LeftButton:
-    #         pos = event.pos()
-    #         self.setPos(pos)
-    #         self.update()
 
 class ImageMagnificationPage(HPage):
     def __init__(self, parent=None, **kwargs):
@@ -214,9 +194,6 @@ class ImageMagnificationPage(HPage):
     
     def save_xml(self):
         """需要从局部标注转换到全局标注"""
-        # if len(self.rect_items) == 0:
-        #     return
-        
         #如果folderPath为空，说明是第一次保存，需要弹出对话框选择保存路径,
         if self.folderPath is None:
             self.folderPath = QFileDialog.getExistingDirectory(self, "文件保存", "/")
@@ -241,10 +218,12 @@ class ImageMagnificationPage(HPage):
             object = ET.SubElement(root, "object")
             ET.SubElement(object, "name").text = rect_item.label
             bndbox = ET.SubElement(object, "bndbox")
-            ET.SubElement(bndbox, "xmin").text = str(x)
-            ET.SubElement(bndbox, "ymin").text = str(y - h)
-            ET.SubElement(bndbox, "xmax").text = str(x + w)
-            ET.SubElement(bndbox, "ymax").text = str(y)
+            #将x,y,w,h转换为整数，再保存
+            ET.SubElement(bndbox, "xmin").text = str(int(x))
+            ET.SubElement(bndbox, "ymin").text = str(int(y -h))
+            ET.SubElement(bndbox, "xmax").text = str(int(x + w))
+            ET.SubElement(bndbox, "ymax").text = str(int(y))
+            
         xml_str = ET.tostring(root, encoding="unicode")
         # 保存XML文档，保存位置待定
         with open(filepath, "w") as f:
@@ -252,31 +231,45 @@ class ImageMagnificationPage(HPage):
             f.write(xml_str)
 
     def save_json(self):
-        """需要从局部标注转换到全局标注"""
-        filepath, type = QFileDialog.getSaveFileName(self, "文件保存", "/" ,'xml(*.xml)')
+        """需要从局部标注转换到全局标注,保存为json"""
+        #如果folderPath为空，说明是第一次保存，需要弹出对话框选择保存路径,
+        if self.folderPath is None:
+            self.folderPath = QFileDialog.getExistingDirectory(self, "文件保存", "/")
+
+        #filepath为folderPath和filename的拼接,后缀名为json
+        filepath = os.path.join(self.folderPath, os.path.splitext(os.path.basename(self.filePath))[0] + '.json')
         if filepath: # check if the user selected a file
             path, filename = os.path.split(filepath) # split the file path and file name
         else:
             return
+        # 创建json文档
         width, height = self.img_manification[0], self.img_manification[1]
-        # 创建JSON文档
-        json_dict = {
-            "folder": path,
-            "filename": filename,
-            "size": {"width": width, "height": height, "depth": 3},
-            "object": []
-        }
+        root = {}
+        root['folder'] = str(path)
+        root['filename'] = str(filename)
+        root['size'] = {}
+        root['size']['width'] = str(width)
+        root['size']['height'] = str(height)
+        root['size']['depth'] = "3"
+        root['object'] = []
         for rect_item in self.rect_items:
             x, y, w, h = rect_item.rect().x(), rect_item.rect().y(), rect_item.rect().width(), rect_item.rect().height()
-            object = {
-                "name": rect_item.label,
-                "bndbox": {"xmin": x, "ymin": y - h, "xmax": x + w, "ymax": y}
-            }
-            json_dict["object"].append(object)
-        json_str = json.dumps(json_dict)
-        # 保存JSON文档，保存位置待定
+            object = {}
+            object['name'] = rect_item.label
+            object['bndbox'] = {}
+            #将x,y,w,h转换为整数，再保存
+            object['bndbox']['xmin'] = str(int(x))
+            object['bndbox']['ymin'] = str(int(y -h))
+            object['bndbox']['xmax'] = str(int(x + w))
+            object['bndbox']['ymax'] = str(int(y))
+            root['object'].append(object)
+        # 保存json文档，保存位置待定
         with open(filepath, "w") as f:
-            f.write(json_str)
+            print(filepath)
+            json.dump(root, f)
+            
+
+        
       
     def chang_mode(self):
         self.drawing = not self.drawing
