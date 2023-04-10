@@ -7,6 +7,13 @@ def convert_xml_to_json(xml_file_path, json_file_path):
     root = tree.getroot()
 
     data = {}
+    #获取folder, filename, size
+    data['folder'] = root.find('folder').text
+    data['filename'] = root.find('filename').text
+    data['size'] = {}
+    data['size']['width'] = int(root.find('size').find('width').text)
+    data['size']['height'] = int(root.find('size').find('height').text)
+    data['size']['depth'] = int(root.find('size').find('depth').text)
     data['annotations'] = []
     for obj in root.findall('object'):
         annotation = {}
@@ -40,7 +47,8 @@ def convert_json_to_xml(json_file_path, xml_file_path):
         data = json.load(f)
 
     root = ET.Element('annotation')
-
+    folder_elem = ET.SubElement(root, 'folder')
+    folder_elem.text = data['folder']
     filename_elem = ET.SubElement(root, 'filename')
     filename_elem.text = data['filename']
 
