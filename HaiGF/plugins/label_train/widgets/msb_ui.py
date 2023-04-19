@@ -89,6 +89,8 @@ class Ui_Form(object):
         self.pro_button = QtWidgets.QPushButton(self.layoutWidget)
         self.pro_button.setObjectName('下一张')
 
+        self.label_label = QtWidgets.QLabel(self.layoutWidget)
+        self.label_label.setObjectName('标签类型')
         self.label_type = QtWidgets.QComboBox(self.layoutWidget)
         self.label_type.addItem("xml")
         self.label_type.addItem("json")
@@ -129,7 +131,8 @@ class Ui_Form(object):
 
         self.gridLayout.addWidget(self.space5, 15, 0, 1, 2)
 
-        self.gridLayout.addWidget(self.label_type, 16, 0, 1, 2)
+        self.gridLayout.addWidget(self.label_label, 16, 0, 1, 1)
+        self.gridLayout.addWidget(self.label_type, 16, 1, 1, 1)
 
         self.gridLayout_2.addWidget(self.layoutWidget, 1, 0, 1, 1)
         self.gridLayout_2.addWidget(self.spacer)
@@ -165,6 +168,7 @@ class Ui_Form(object):
         self.isoButton1.setText(_translate("Form", "撤销"))
         self.pre_button.setText(_translate("Form", "上一张"))
         self.pro_button.setText(_translate("Form", "下一张"))
+        self.label_label.setText(_translate("Form", "标签类型"))
         self.label_type.setItemText(0, _translate("Form", "xml"))
         self.label_type.setItemText(1, _translate("Form", "json"))
         

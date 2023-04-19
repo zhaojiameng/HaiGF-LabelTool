@@ -133,10 +133,14 @@ class ImageAnalysisPage(HPage):
         self.layout_menu.addAction(actionA)#把动作A选项对象添加到菜单self.win_menu上
         actionB = QAction(u'保存标注 & canny',self.layout_menu)
         self.layout_menu.addAction(actionB)
+        actionC = QAction(u'保存蒙版',self.layout_menu)
+        self.layout_menu.addAction(actionC)
         actionA.triggered.connect(self.save_all_roiAnno) #将动作A触发时连接到槽函数 button
         actionB.triggered.connect(self.save_all_annotation)
+        actionC.triggered.connect(self.save_all_mask)
         self.layout_menu.actionA = actionA
         self.layout_menu.actionB = actionB
+        self.layout_menu.actionC = actionC
 
     def create_rightmenu(self):
         """create rightmenu on layout"""
@@ -157,7 +161,7 @@ class ImageAnalysisPage(HPage):
         self.img.setImage(self.image)
 
     def save_all_annotation(self):
-        """save all annotion on a image"""
+        """save all annotion on a image in canny"""
         #判断self.img里的image是否是self.image
         if self.img.image is self.image:
         
@@ -192,6 +196,37 @@ class ImageAnalysisPage(HPage):
             file.write('\n')
             t = ''
 
+    #将ROI区域作为蒙版标注保存
+    def save_all_mask(self):
+        assert len(self.shapes) > 0, 'No ROI region is selected.'
+        # 获取图像的像素值矩阵
+        img = self.image
+
+        # 创建与图像大小相同的背景图像
+        mask = np.zeros_like(img[:, :, 0], dtype=np.uint8)
+        # 遍历所有的ROI区域，将每个ROI区域的顶点坐标保存到列表中
+        pts_list = []
+        for roi in self.shapes:
+            #取得大小和位置，做为蒙版的大小和位置
+            w = int(roi.size().x())
+            h = int(roi.size().y())
+            x = int(roi.pos().x())
+            #y为图片的高度减去roi的y坐标
+            y = int(img.shape[0] - roi.pos().y())
+            print(x, y, w, h)
+            mask[y - h : y, x:x+w] = 255
+            
+
+
+        
+
+        # 将掩码图像转换为二值图像
+        _, mask = cv2.threshold(mask, 10, 255, cv2.THRESH_BINARY)
+
+        # 将掩码图像保存到磁盘
+        cv2.imwrite("D:/bubbleImage/image/mask.png", mask)
+           
+    
     def save_all_roiAnno(self):
         #保存每个roi的信息
         if len(self.shapes) == 0:
@@ -245,8 +280,9 @@ class ImageAnalysisPage(HPage):
             assert os.path.exists(img_path), f'img path not exists: {img_path}'
             data = Image.open(img_path)
         self.img_path = img_path
-        self.image = np.array(data)
-        self.scripts()
+        self.image = np.flipud(data)
+        # self.image = np.array(data)
+        # self.scripts()
         self.img.setImage(self.image)
         self.update_manification()
 

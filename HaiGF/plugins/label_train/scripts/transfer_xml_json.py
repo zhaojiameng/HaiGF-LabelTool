@@ -32,6 +32,32 @@ def convert_xml_to_json(xml_file_path, json_file_path):
     with open(json_file_path, 'w') as f:
         json.dump(data, f)
 
+#将文件夹下的所有xml文件进行处理：每个object的ymin和ymax加上原本ymax - ymin
+def convert_xml_add(xml_file_path):
+    tree = ET.parse(xml_file_path)
+    root = tree.getroot()
+    height = int(root.find('size').find('height').text)
+    for obj in root.findall('object'):
+        bbox = obj.find('bndbox')
+        ymin = int(float(bbox.find('ymin').text))
+        ymax = int(float(bbox.find('ymax').text))
+        bbox.find('ymin').text = str(height -ymax)
+        bbox.find('ymax').text = str(height -ymin)
+    tree.write(xml_file_path)
+
+#将文件夹下的所有json文件进行处理：每个object的ymin和ymax加上原本ymax - ymin
+def convert_json_add(json_file_path):
+    with open(json_file_path, 'r') as f:
+        data = json.load(f)
+    height = data['size']['height']
+    for annotation in data['annotations']:
+        ymin = int(annotation['ymin'])
+        ymax = int(annotation['ymax'])
+        annotation['ymin'] = height - ymax
+        annotation['ymax'] = height - ymin
+    with open(json_file_path, 'w') as f:
+        json.dump(data, f)
+
 def convert_folder_to_json(xml_folder_path, json_folder_path):
     if not os.path.exists(json_folder_path):
         os.makedirs(json_folder_path)
@@ -90,9 +116,18 @@ def convert_folder_to_xml(json_folder_path, xml_folder_path):
             convert_json_to_xml(json_file_path, xml_file_path)
             
 if __name__ == '__main__':
-    xml_folder_path = 'D:/bubbleImage/pre_label'
-    json_folder_path = 'D:/bubbleImage/pre_label_json'
-    convert_folder_to_json(xml_folder_path, json_folder_path)
+    xml_folder_path = 'D:/bubbleImage/xml_label_50'
+    json_folder_path = 'D:/bubbleImage/json_label_50'
+    # convert_folder_to_json(xml_folder_path, json_folder_path)
+    for filename in os.listdir(xml_folder_path):
+        if filename.endswith('.xml'):
+            xml_file_path = os.path.join(xml_folder_path, filename)
+            convert_xml_add(xml_file_path)
+
+    for filename in os.listdir(json_folder_path):
+        if filename.endswith('.json'):
+            json_file_path = os.path.join(json_folder_path, filename)
+            convert_json_add(json_file_path)
 
    
 

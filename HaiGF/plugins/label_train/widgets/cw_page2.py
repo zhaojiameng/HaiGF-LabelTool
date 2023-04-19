@@ -169,6 +169,10 @@ class ImageMagnificationPage(HPage):
                     if label != '':
                         x, y, w, h = self.rect_item.rect().x(), self.rect_item.rect().y(), self.rect_item.rect().width(), self.rect_item.rect().height()
                         real_rect = RectangleItem(QRectF(x + self.img_manification[2], y + self.img_manification[3], w, h))
+                        print(x, y, self.img_manification[2], self.img_manification[3])
+                        print(x + self.img_manification[2], y + self.img_manification[3])
+                        print(real_rect.rect())
+            
                         real_rect.set_label(label)
                         self.rect_items.append(real_rect)
                     else:
@@ -213,12 +217,13 @@ class ImageMagnificationPage(HPage):
         ET.SubElement(size, "depth").text = "3"
         for rect_item in self.rect_items:
             x, y, w, h = rect_item.rect().x(), rect_item.rect().y(), rect_item.rect().width(), rect_item.rect().height()
+            y = height - y
             object = ET.SubElement(root, "object")
             ET.SubElement(object, "name").text = rect_item.label
             bndbox = ET.SubElement(object, "bndbox")
             #将x,y,w,h转换为整数，再保存
             ET.SubElement(bndbox, "xmin").text = str(int(x))
-            ET.SubElement(bndbox, "ymin").text = str(int(y -h))
+            ET.SubElement(bndbox, "ymin").text = str(int(y - h))
             ET.SubElement(bndbox, "xmax").text = str(int(x + w))
             ET.SubElement(bndbox, "ymax").text = str(int(y))
             
@@ -252,12 +257,13 @@ class ImageMagnificationPage(HPage):
         root['object'] = []
         for rect_item in self.rect_items:
             x, y, w, h = rect_item.rect().x(), rect_item.rect().y(), rect_item.rect().width(), rect_item.rect().height()
+            y = height - y
             object = {}
             object['name'] = rect_item.label
             object['bndbox'] = {}
             #将x,y,w,h转换为整数，再保存
             object['bndbox']['xmin'] = str(int(x))
-            object['bndbox']['ymin'] = str(int(y -h))
+            object['bndbox']['ymin'] = str(int(y - h))
             object['bndbox']['xmax'] = str(int(x + w))
             object['bndbox']['ymax'] = str(int(y))
             root['object'].append(object)
