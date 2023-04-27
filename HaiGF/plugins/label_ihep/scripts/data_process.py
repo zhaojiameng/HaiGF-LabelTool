@@ -5,18 +5,18 @@ from json import JSONDecodeError
 model = "hepai/demo_model"
 
 
-def get_data(index, user=None):
-    print("index: ", index)
+def get_data(user=None):
+    
     # 以列表的方式获取10条数据，起始位置为 index，如果 index不设置，则随机
     response = requests.post("http://192.168.68.22:42901/worker_generate_stream",
                         json={
                             "model": model,
                             "task": "read_data",
                             "dataset_name": "hep_qa_datasets",
-                            "index": index,
+                            
                             "number": 10,
                             "read_locked": True,
-                            "read_labeled": True,
+                            "read_labeled": False,
                             "user": user,
                             
                             }

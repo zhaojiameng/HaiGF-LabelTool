@@ -24,7 +24,7 @@ class LabelIhepMSBWidget(HMainSideBarWidget):
 
         self.ui = Ui_Form()
         self.ui.setupUi(self)
-        self.index = 540
+        self.index = 580
         self.data = []
 
         self.ui.fetchButton.clicked.connect(self.on_fetch_button_clicked)
@@ -51,7 +51,7 @@ class LabelIhepMSBWidget(HMainSideBarWidget):
         # plg = mw.plugins['LabelIhepPlugin']
         # plg.fetch_data(self.index)
         # self.index += 1
-        records = get_data(self.index, self.ui.annotateUserEditer.text())
+        records = get_data(self.ui.annotateUserEditer.text())
         self.data += records
         self.index += len(records)
         self.load_datas(records)
