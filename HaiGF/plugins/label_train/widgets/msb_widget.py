@@ -37,6 +37,9 @@ class AntrainMSBWidget(HMainSideBarWidget):
 
         self.ui.label_type.currentTextChanged.connect(self.on_label_type_changed)
 
+        self.ui.seg_group.buttonClicked.connect(self.on_seg_group_clicked)
+        
+
     def on_cannyPutton_clicked(self):
         mw = self.p
         plg = mw.plugins['AntrainPlugin']
@@ -101,6 +104,21 @@ class AntrainMSBWidget(HMainSideBarWidget):
         mw = self.p
         plg = mw.plugins['AntrainPlugin']
         plg.update_label_type(self.ui.label_type.currentText())
+
+    def on_seg_group_clicked(self, button):
+        if button == self.ui.seg_point:
+            self.ui.seg_point.setChecked(True)
+            self.ui.seg_box.setChecked(False)
+            self.ui.seg_anything.setChecked(False)
+        elif button == self.ui.seg_box:
+            self.ui.seg_point.setChecked(False)
+            self.ui.seg_box.setChecked(True)
+            self.ui.seg_anything.setChecked(False)
+        elif button == self.ui.seg_anything:
+            self.ui.seg_point.setChecked(False)
+            self.ui.seg_box.setChecked(False)
+            self.ui.seg_anything.setChecked(True)
+            
 
     
 

@@ -46,6 +46,9 @@ def run(name='framework'):
     from .plugins.label_train import AntrainPlugin
     mw.install_plugin(AntrainPlugin)
 
+    from .plugins.label_ihep import LabelIhepPlugin
+    mw.install_plugin(LabelIhepPlugin)
+
     mw.show()
     mw.raise_()
     sys.exit(app.exec_())
