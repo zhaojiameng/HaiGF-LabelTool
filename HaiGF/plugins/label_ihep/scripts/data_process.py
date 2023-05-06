@@ -13,8 +13,8 @@ def get_data(user=None):
                             "model": model,
                             "task": "read_data",
                             "dataset_name": "hep_qa_datasets",
-                            
-                            "number": 10,
+                           
+                            "number": 50,
                             "read_locked": True,
                             "read_labeled": False,
                             "user": user,
@@ -22,6 +22,7 @@ def get_data(user=None):
                             }
                         )
     data_part = response.json()['message']
+    # print(data_part)
     return data_part
 
 def update_label(index, category, answer_quality, artificial_answer, labeler):
@@ -39,7 +40,7 @@ def update_label(index, category, answer_quality, artificial_answer, labeler):
                             "user": labeler,
                             }
                         )
-    print(response.json())
+    # print(response.json())
     
     return response.json()
 

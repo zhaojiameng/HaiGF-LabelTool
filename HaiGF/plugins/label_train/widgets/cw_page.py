@@ -469,6 +469,9 @@ class ImageAnalysisPage(HPage):
         if(event.key() == Qt.Key_Control):
             self.img.setImage(self.image)
             self.update_manification()
+
+    def upload(self):
+        return True
         
 
 

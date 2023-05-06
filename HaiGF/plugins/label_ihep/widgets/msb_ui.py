@@ -48,8 +48,7 @@ class Ui_Form(object):
 
         self.annotateUserEditer = QtWidgets.QLineEdit(self.layoutWidget)
         self.annotateUserEditer.setPlaceholderText('edit name here')
-
-
+        
         self.spacer = QWidget()
         self.spacer.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         
@@ -84,8 +83,8 @@ class Ui_Form(object):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "Label Ihep Q&A"))
         self.fetchButton.setText(_translate("Form", "获取数据"))
-        self.preButton.setText(_translate("Form", "上一条"))
-        self.nextButton.setText(_translate("Form", "下一条"))
+        self.preButton.setText(_translate("Form", "上一条(ctrl+U)"))
+        self.nextButton.setText(_translate("Form", "下一条(ctrl+D)"))
         self.autoUploadButton.setText(_translate("Form", "自动上传"))
         self.uploadButton.setText(_translate("Form", "上传数据"))
         self.saveButton.setText(_translate("Form", "保存数据"))

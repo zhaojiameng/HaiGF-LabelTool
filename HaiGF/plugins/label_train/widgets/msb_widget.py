@@ -38,6 +38,9 @@ class AntrainMSBWidget(HMainSideBarWidget):
         self.ui.label_type.currentTextChanged.connect(self.on_label_type_changed)
 
         self.ui.seg_group.buttonClicked.connect(self.on_seg_group_clicked)
+        self.ui.uploadButton.clicked.connect(self.on_uploadButton_clicked)
+
+        self.set_input_none()
         
 
     def on_cannyPutton_clicked(self):
@@ -89,6 +92,7 @@ class AntrainMSBWidget(HMainSideBarWidget):
         tree = widget.tree
         assert tree is not None
         tree.cope_pre_button()
+        self.set_input_none()
 
     def on_proButton_clicked(self):
         #调用gui_framework中main_side_bar下explorer_widget中的on_proButton_clicked
@@ -99,13 +103,14 @@ class AntrainMSBWidget(HMainSideBarWidget):
         tree = widget.tree
         assert tree is not None
         tree.cope_pro_button()
+        self.set_input_none()
 
     def on_label_type_changed(self):
         mw = self.p
         plg = mw.plugins['AntrainPlugin']
         plg.update_label_type(self.ui.label_type.currentText())
 
-    def on_seg_group_clicked(self, button):
+    def on_seg_group_clicked(self, button=None):
         if button == self.ui.seg_point:
             self.ui.seg_point.setChecked(True)
             self.ui.seg_box.setChecked(False)
@@ -118,6 +123,26 @@ class AntrainMSBWidget(HMainSideBarWidget):
             self.ui.seg_point.setChecked(False)
             self.ui.seg_box.setChecked(False)
             self.ui.seg_anything.setChecked(True)
+        else:
+            self.ui.seg_point.setChecked(False)
+            self.ui.seg_box.setChecked(False)
+            self.ui.seg_anything.setChecked(False)
+
+    def on_uploadButton_clicked(self):
+        mw = self.p
+        plg = mw.plugins['AntrainPlugin']
+        if plg.upload():
+            self.set_input_mode_enabled(True)
+
+    def set_input_mode_enabled(self, enabled):
+        self.ui.seg_point.setEnabled(enabled)
+        self.ui.seg_box.setEnabled(enabled)
+        self.ui.seg_anything.setEnabled(enabled)
+
+    def set_input_none(self):
+        self.on_seg_group_clicked()
+        self.set_input_mode_enabled(False)
+        
             
 
     

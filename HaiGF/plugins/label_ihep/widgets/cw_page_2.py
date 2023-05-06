@@ -4,7 +4,7 @@ It is a mark Q&A tool.
 """
 
 from pathlib import Path
-from PySide2 import QtWidgets
+from PySide2 import QtWidgets, QtGui
 from HaiGF import HPage, HGF
 from ..scripts.data_process import get_list
 from PySide2 import QtCore
@@ -34,6 +34,9 @@ class MarkIhepPage2(HPage):
         self.index = None
         self.labeler = None
         self.t1 = None
+        self.shortcut = QtWidgets.QShortcut(QtGui.QKeySequence("Ctrl+A"), self)
+        self.shortcut.activated.connect(self.accept_ai_annotate)
+        
        
        
 
@@ -44,19 +47,23 @@ class MarkIhepPage2(HPage):
         self.index = self.data["index"]
         self.t1 = threading.Thread(target=self.ai_annotate)
         self.t1.start()
+        self.id_label = QtWidgets.QLabel("id")
+        #设置self.id_label的text为id: self.data['data']['id']
+        self.id_label.setText("id: {}".format(self.data['data']['id']))
         self.category_label = QtWidgets.QLabel("category")
         self.category_comboBox = QtWidgets.QComboBox()
         self.category_comboBox.addItems(catetory_list)
-        self.category_comboBox.setCurrentText(self.data['data'].get('category', '1'))
+        self.category_comboBox.setCurrentText(self.data['data'].get('category', 'Others'))
         #在后面放置一个label,用来显示当前的index
         self.ai_label = QtWidgets.QLabel()
         self.ai_label.setAlignment(QtCore.Qt.AlignCenter)
         self.ai_label.setStyleSheet("color: gray;")
         self.ai_label.hide()
         
-        self.layout.addWidget(self.category_label, 0, 0)
-        self.layout.addWidget(self.category_comboBox, 0, 1)
-        self.layout.addWidget(self.ai_label, 0, 2)
+        self.layout.addWidget(self.id_label, 0, 0)
+        self.layout.addWidget(self.category_label, 0, 1)
+        self.layout.addWidget(self.category_comboBox, 0, 2)
+        self.layout.addWidget(self.ai_label, 0, 3)
 
         self.answer_quality_label = QtWidgets.QLabel("answer_quality")
         #spinbox来代替combobox
@@ -79,8 +86,8 @@ class MarkIhepPage2(HPage):
         self.answer_quality_textEdit.setAlignment(QtCore.Qt.AlignCenter)
         self.answer_quality_textEdit.setButtonSymbols(QtWidgets.QAbstractSpinBox.PlusMinus)
         self.answer_quality_textEdit.setValue(self.data['data'].get('answer_quality', 0))
-        self.layout.addWidget(self.answer_quality_label, 0, 3)
-        self.layout.addWidget(self.answer_quality_textEdit, 0, 4)
+        self.layout.addWidget(self.answer_quality_label, 0, 4)
+        self.layout.addWidget(self.answer_quality_textEdit, 0, 5)
 
         self.question_label = QtWidgets.QLabel("question")
         self.question_textEdit = QtWidgets.QTextEdit()
@@ -102,12 +109,24 @@ class MarkIhepPage2(HPage):
         self.artificial_answer_textEdit.keyPressEvent = self.keyPressEvent
         self.layout.addWidget(self.artificial_answer_label, 3, 0)
         self.layout.addWidget(self.artificial_answer_textEdit, 3, 1, 1, 3)
-        self.ai_annotate()
+
+        self.questioner = QtWidgets.QLabel("questioner")
+        self.questioner.setText("questioner: {}".format(self.data['data']['questioner']))
+        self.layout.addWidget(self.questioner, 4, 0)
+
+
+        
 
     def update_page(self):
         self.ai_label.hide()
         if self.auto_upload:
             self.save()
+        else:
+            #如果self.category_comboBox的currentText不是self.data['data']['category'],提示用户是否保存
+            if self.category_comboBox.currentText() != self.data['data'].get('category', ''):
+                reply = QtWidgets.QMessageBox.question(self, 'Message', 'Save?', QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No, QtWidgets.QMessageBox.No)
+                if reply == QtWidgets.QMessageBox.Yes:
+                    self.save()
         self.index = self.data['index']
         #结束上一个线程
         if self.t1:
@@ -115,11 +134,13 @@ class MarkIhepPage2(HPage):
 
         self.t1 = threading.Thread(target=self.ai_annotate)
         self.t1.start()
-        self.category_comboBox.setCurrentText(self.data['data'].get('category', '1'))
+        self.id_label.setText("id: {}".format(self.data['data']['id']))
+        self.category_comboBox.setCurrentText(self.data['data'].get('category', 'Others'))
         self.answer_quality_textEdit.setValue(self.data['data'].get('answer_quality', 0))
         self.question_textEdit.setText(self.data['data']['question'])
         self.answer_textEdit.setText(self.data['data']['answer'])
         self.artificial_answer_textEdit.setText(self.data['data'].get('artificial_answer', ''))
+        self.questioner.setText("questioner: {}".format(self.data['data']['questioner']))
         
 
     def save(self):
@@ -135,14 +156,17 @@ class MarkIhepPage2(HPage):
         self.ai_label.setText(text)
         self.ai_label.show()
 
-    #按下tab键时，将self.ai_label的值赋给self.category_comboBox
-    def keyPressEvent(self, event):
-        if event.key() == QtCore.Qt.Key_Tab:
-            self.category_comboBox.setCurrentText(self.ai_label.text())
-            print(self.category_comboBox.currentText())
+    def accept_ai_annotate(self):
+        text = self.ai_label.text().strip()
+        if text in catetory_list:
+            self.category_comboBox.setCurrentText(text)
             self.ai_label.hide()
         else:
-            super().keyPressEvent(event)
+            QtWidgets.QMessageBox.warning(self, 'Warning', 'Category not in the list', QtWidgets.QMessageBox.Ok)
+
+
+    
+
 
         
 

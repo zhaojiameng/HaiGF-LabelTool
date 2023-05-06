@@ -137,5 +137,11 @@ class AntrainPlugin(HPlugin):
             self.page.label_type = type
             self.cw.tab_widgets[1].pages[0].update_label_type(type)
 
+    def upload(self):
+        if not self.page in self.cw.tab_widgets[0].pages:
+            print('no page')
+        else:
+            return self.page.upload()
+
    
     

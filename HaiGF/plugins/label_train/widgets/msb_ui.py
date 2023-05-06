@@ -101,6 +101,10 @@ class Ui_Form(object):
 
         self.seg_group = QtWidgets.QButtonGroup(self.layoutWidget)
 
+
+        self.uploadButton = QtWidgets.QPushButton(self.layoutWidget)
+        self.uploadButton.setObjectName('上传')
+
         self.seg_point = RadioButton(self.layoutWidget, '点', newIcon('hover'))
         self.seg_box = RadioButton(self.layoutWidget, '框', newIcon('box'))
         self.seg_anything = RadioButton(self.layoutWidget, '任意', newIcon('everything'))
@@ -149,9 +153,10 @@ class Ui_Form(object):
 
         self.gridLayout.addWidget(self.space6, 17, 0, 1, 2)
 
-        self.gridLayout.addWidget(self.seg_point, 18, 0, 1, 2)
-        self.gridLayout.addWidget(self.seg_box, 19, 0, 1, 2)
-        self.gridLayout.addWidget(self.seg_anything, 20, 0, 1, 2)
+        self.gridLayout.addWidget(self.uploadButton, 18, 0, 1, 2)
+        self.gridLayout.addWidget(self.seg_point, 19, 0, 1, 2)
+        self.gridLayout.addWidget(self.seg_box, 20, 0, 1, 2)
+        self.gridLayout.addWidget(self.seg_anything, 21, 0, 1, 2)
 
         
 
@@ -193,6 +198,7 @@ class Ui_Form(object):
         self.label_label.setText(_translate("Form", "标签类型"))
         self.label_type.setItemText(0, _translate("Form", "xml"))
         self.label_type.setItemText(1, _translate("Form", "json"))
+        self.uploadButton.setText(_translate("Form", "upload"))
         self.seg_point.setText(_translate("Form", "Hover & Click"))
         self.seg_box.setText(_translate("Form", "Box"))
         self.seg_anything.setText(_translate("Form", "Everything"))
