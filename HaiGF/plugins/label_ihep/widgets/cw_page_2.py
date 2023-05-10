@@ -5,6 +5,7 @@ It is a mark Q&A tool.
 
 from pathlib import Path
 from PySide2 import QtWidgets, QtGui
+from PySide2.QtWidgets import *
 from HaiGF import HPage, HGF
 from ..scripts.data_process import get_list
 from PySide2 import QtCore
@@ -47,9 +48,14 @@ class MarkIhepPage2(HPage):
         self.index = self.data["index"]
         self.t1 = threading.Thread(target=self.ai_annotate)
         self.t1.start()
+        self.spacer = QWidget()
+        self.spacer.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        
         self.id_label = QtWidgets.QLabel("id")
         #设置self.id_label的text为id: self.data['data']['id']
         self.id_label.setText("id: {}".format(self.data['data']['id']))
+        self.spacer1 = QWidget()
+        self.spacer1.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         self.category_label = QtWidgets.QLabel("category")
         self.category_comboBox = QtWidgets.QComboBox()
         self.category_comboBox.addItems(catetory_list)
@@ -59,12 +65,10 @@ class MarkIhepPage2(HPage):
         self.ai_label.setAlignment(QtCore.Qt.AlignCenter)
         self.ai_label.setStyleSheet("color: gray;")
         self.ai_label.hide()
-        
-        self.layout.addWidget(self.id_label, 0, 0)
-        self.layout.addWidget(self.category_label, 0, 1)
-        self.layout.addWidget(self.category_comboBox, 0, 2)
-        self.layout.addWidget(self.ai_label, 0, 3)
 
+        self.spacer2 = QWidget()
+        self.spacer2.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        
         self.answer_quality_label = QtWidgets.QLabel("answer_quality")
         #spinbox来代替combobox
         self.answer_quality_textEdit = QtWidgets.QSpinBox()
@@ -86,35 +90,48 @@ class MarkIhepPage2(HPage):
         self.answer_quality_textEdit.setAlignment(QtCore.Qt.AlignCenter)
         self.answer_quality_textEdit.setButtonSymbols(QtWidgets.QAbstractSpinBox.PlusMinus)
         self.answer_quality_textEdit.setValue(self.data['data'].get('answer_quality', 0))
-        self.layout.addWidget(self.answer_quality_label, 0, 4)
-        self.layout.addWidget(self.answer_quality_textEdit, 0, 5)
+        
 
-        self.question_label = QtWidgets.QLabel("question")
+        self.question_label = QtWidgets.QLabel("question:")
         self.question_textEdit = QtWidgets.QTextEdit()
         self.question_textEdit.setText(self.data['data']['question'])
         self.question_textEdit.setReadOnly(True)
-        self.layout.addWidget(self.question_label, 1, 0)
-        self.layout.addWidget(self.question_textEdit, 1, 1, 1, 3)
+        
 
-        self.answer_label = QtWidgets.QLabel("answer")
+        self.answer_label = QtWidgets.QLabel("answer:")
         self.answer_textEdit = QtWidgets.QTextEdit()
         self.answer_textEdit.setText(self.data['data']['answer'])
         self.answer_textEdit.setReadOnly(True)
-        self.layout.addWidget(self.answer_label, 2, 0)
-        self.layout.addWidget(self.answer_textEdit, 2, 1, 1, 3)
+        
 
-        self.artificial_answer_label = QtWidgets.QLabel("artificial_answer")
+        self.artificial_answer_label = QtWidgets.QLabel("artificial_answer:")
         self.artificial_answer_textEdit = QtWidgets.QTextEdit()
         self.artificial_answer_textEdit.setText(self.data['data'].get('artificial_answer', ''))
         self.artificial_answer_textEdit.keyPressEvent = self.keyPressEvent
-        self.layout.addWidget(self.artificial_answer_label, 3, 0)
-        self.layout.addWidget(self.artificial_answer_textEdit, 3, 1, 1, 3)
+        
 
         self.questioner = QtWidgets.QLabel("questioner")
         self.questioner.setText("questioner: {}".format(self.data['data']['questioner']))
-        self.layout.addWidget(self.questioner, 4, 0)
 
-
+        self.spacer3 = QWidget()
+        self.spacer3.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+       
+        self.layout.addWidget(self.id_label, 0, 0, 1, 1)
+        self.layout.addWidget(self.category_label, 0, 1, 1, 1)
+        self.layout.addWidget(self.category_comboBox, 0, 2, 1, 1)
+        self.layout.addWidget(self.ai_label, 0, 3, 1, 1)
+        self.layout.addWidget(self.answer_quality_label, 0, 5, 1, 1)
+        self.layout.addWidget(self.answer_quality_textEdit, 0, 6, 1, 1)
+        # self.layout.addWidget(self.spacer, 0, 6, 1, 1)
+        self.layout.addWidget(self.question_label, 1, 0, 1, 1)
+        self.layout.addWidget(self.question_textEdit, 1, 1, 1, 8)
+        self.layout.addWidget(self.answer_label, 2, 0, 1, 1)
+        self.layout.addWidget(self.answer_textEdit, 2, 1, 1, 8)
+        self.layout.addWidget(self.artificial_answer_label, 3, 0, 1, 1)
+        self.layout.addWidget(self.artificial_answer_textEdit, 3, 1, 1, 8)
+        self.layout.addWidget(self.questioner, 4, 0, 1, 1)
+        self.layout.addWidget(self.spacer3, 4, 1, 1, 8)
+        
         
 
     def update_page(self):
@@ -152,17 +169,17 @@ class MarkIhepPage2(HPage):
     def ai_annotate(self):
         text = get_annotation(self.data['data']['question'], self.data['data']['answer'], catetory_list)
         #截取：后面的内容
-        text = text.split(':')[-1]
-        self.ai_label.setText(text)
+        text = text.split(':')[-1].strip()
+        if text in catetory_list:
+            self.ai_label.setText(text)
+        else:
+            self.ai_label.setText('Others')
         self.ai_label.show()
 
     def accept_ai_annotate(self):
-        text = self.ai_label.text().strip()
-        if text in catetory_list:
-            self.category_comboBox.setCurrentText(text)
-            self.ai_label.hide()
-        else:
-            QtWidgets.QMessageBox.warning(self, 'Warning', 'Category not in the list', QtWidgets.QMessageBox.Ok)
+        self.category_comboBox.setCurrentText(self.ai_label.text())
+        self.ai_label.hide()
+      
 
 
     

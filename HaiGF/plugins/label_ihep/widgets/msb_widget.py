@@ -24,7 +24,7 @@ class LabelIhepMSBWidget(HMainSideBarWidget):
 
         self.ui = Ui_Form()
         self.ui.setupUi(self)
-        self.index = 580
+        self.tree_length = 50
         self.data = []
         self.shortcut1 = QtWidgets.QShortcut(QtGui.QKeySequence("Ctrl+U"), self)
         self.shortcut1.activated.connect(self.on_pre_button_clicked)
@@ -52,14 +52,15 @@ class LabelIhepMSBWidget(HMainSideBarWidget):
 
 
     def on_fetch_button_clicked(self):
-        # mw = self.p
-        # plg = mw.plugins['LabelIhepPlugin']
-        # plg.fetch_data(self.index)
-        # self.index += 1
-        records = get_data(self.ui.annotateUserEditer.text())
+        records = get_data(user=self.ui.annotateUserEditer.text(), numer=self.tree_length)
         self.data += records
-        self.index += len(records)
         self.load_datas(records)
+        self.ui.preButton.setEnabled(True)
+
+    def fetch_one_record(self):
+        record = get_data(user=self.ui.annotateUserEditer.text(), numer=1)
+        self.data += record
+        self.load_data(record[0])
         self.ui.preButton.setEnabled(True)
 
     def on_auto_upload_button_clicked(self):
@@ -80,7 +81,10 @@ class LabelIhepMSBWidget(HMainSideBarWidget):
         #将双击的记录传递给LabelIhepPlugin的show_data函数
         record = self.ui.tree.currentItem().data(0, QtCore.Qt.UserRole)
         self.ui.preButton.setEnabled(self.hasPrevRecord())
+        #版本1
         self.ui.nextButton.setEnabled(self.hasNextRecord())
+        #版本2
+        # self.ui.nextButton.setEnabled(True)
         plg.show_data(record)
 
     def hasPrevRecord(self):
@@ -94,16 +98,27 @@ class LabelIhepMSBWidget(HMainSideBarWidget):
         self.ui.tree.setCurrentItem(self.ui.tree.topLevelItem(self.ui.tree.indexOfTopLevelItem(self.ui.tree.currentItem()) - 1))
         self.on_tree_item_double_clicked()
 
-    def on_next_button_clicked(self):     
+    def on_next_button_clicked(self):
+        #版本1
         assert self.ui.nextButton.isEnabled(),'已经是最后一条记录了'
         self.ui.tree.setCurrentItem(self.ui.tree.topLevelItem(self.ui.tree.indexOfTopLevelItem(self.ui.tree.currentItem()) + 1))
         self.on_tree_item_double_clicked()
+        
+        # 版本2     
+        # if not self.hasNextRecord():
+        #     self.fetch_one_record()
+            
+        # print('-----------------------------------------')
+        # self.ui.tree.setCurrentItem(self.ui.tree.topLevelItem(self.ui.tree.indexOfTopLevelItem(self.ui.tree.currentItem()) + 1))
+        # self.on_tree_item_double_clicked()
+
 
     def save_data(self):
         self.on_upload_button_clicked()
         save_dataset(self.ui.annotateUserEditer.text())
         #情况self.ui.tree的节点
         self.ui.tree.clear()
+
 
     def on_annotate_user_editer_text_changed(self):
         mw = self.p

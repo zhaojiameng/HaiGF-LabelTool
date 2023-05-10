@@ -5,24 +5,25 @@ from json import JSONDecodeError
 model = "hepai/demo_model"
 
 
-def get_data(user=None):
-    
-    # 以列表的方式获取10条数据，起始位置为 index，如果 index不设置，则随机
-    response = requests.post("http://192.168.68.22:42901/worker_generate_stream",
-                        json={
-                            "model": model,
-                            "task": "read_data",
-                            "dataset_name": "hep_qa_datasets",
-                           
-                            "number": 50,
-                            "read_locked": True,
-                            "read_labeled": False,
-                            "user": user,
+def get_data(user=None, numer=30):
+    data_part = []
+    while len(data_part) < 1:
+        # 以列表的方式获取10条数据，起始位置为 index，如果 index不设置，则随机
+        response = requests.post("http://192.168.68.22:42901/worker_generate_stream",
+                            json={
+                                "model": model,
+                                "task": "read_data",
+                                "dataset_name": "hep_qa_datasets",
                             
-                            }
-                        )
-    data_part = response.json()['message']
-    # print(data_part)
+                                "number": numer,
+                                "read_locked": True,
+                                "read_labeled": False,
+                                "user": user,
+                                
+                                }
+                            )
+        data_part = response.json()['message']
+    print(data_part)
     return data_part
 
 def update_label(index, category, answer_quality, artificial_answer, labeler):
