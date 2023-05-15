@@ -47,8 +47,6 @@ class ImageAnalysisPage(HPage):
         self.p1 = self.win.addPlot(title="")
         self.p1.setMenuEnabled(False)
         
-        
-
         # Item for displaying image data
         self.img = pg.ImageItem()
         self.img.hoverEvent = self.imageHoverEvent
@@ -282,7 +280,7 @@ class ImageAnalysisPage(HPage):
         self.img_path = img_path
         self.image = np.flipud(data)
         # self.image = np.array(data)
-        # self.scripts()
+        self.scripts()
         self.img.setImage(self.image)
         self.update_manification()
 
@@ -468,7 +466,7 @@ class ImageAnalysisPage(HPage):
         """release ctrl to show the original image"""
         if(event.key() == Qt.Key_Control):
             self.img.setImage(self.image)
-            self.update_manification()
+            self.update_manification(False)
 
     def upload(self):
         return True

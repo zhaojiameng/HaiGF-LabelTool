@@ -25,7 +25,7 @@ class LabelIhepMSBWidget(HMainSideBarWidget):
         self.ui = Ui_Form()
         self.ui.setupUi(self)
         self.tree_length = 50
-        self.data = []
+        self.data = [{"index":1, "data":{"question":"你好", "answer":"你好", "questioner":"public", "id":100}}]
         self.shortcut1 = QtWidgets.QShortcut(QtGui.QKeySequence("Ctrl+U"), self)
         self.shortcut1.activated.connect(self.on_pre_button_clicked)
         self.shortcut2 = QtWidgets.QShortcut(QtGui.QKeySequence("Ctrl+D"), self)
