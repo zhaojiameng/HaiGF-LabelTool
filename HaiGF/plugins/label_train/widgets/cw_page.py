@@ -9,7 +9,7 @@ import xml.etree.cElementTree as ET
 from PIL import Image
 import numpy as np
 from PySide2 import QtWidgets, QtCore
-from PySide2.QtWidgets import QMenu, QAction, QFileDialog
+from PySide2.QtWidgets import QMenu, QAction, QFileDialog, QGraphicsRectItem
 from PySide2.QtGui import QCursor,QPixmap, QImage
 from PySide2.QtCore import Qt, QRectF, QPoint
 import pyqtgraph as pg
@@ -62,6 +62,15 @@ class ImageAnalysisPage(HPage):
         self.create_menu2()
 
         self.label_type = 'xml'
+
+        #sam request json parameter
+        self.sam_enabled = False 
+        self.point_mode = False
+        self.auto_mask = False
+        #v1, len of point 1, label 0
+        self.input_point = None
+        self.input_label = [0]
+        self.input_box = []
         
     def analysis_ROI(self):
         if hasattr(self, 'p2'):
@@ -116,8 +125,37 @@ class ImageAnalysisPage(HPage):
                 if shape in items:
                     self.item = self.shapes.index(shape)
                     return
-                    
+        elif self.sam_enabled and event.button() == Qt.LeftButton:
+            if self.point_mode:
+                #将点击的坐标加入到self.input_point中
+                self.input_point.clear()
+                self.input_point.append([event.pos().x(), event.pos().y()])
+                self.input_box.clear()
+            else:
+                self.input_box.extend([event.pos().x(), event.pos().y()])
+                self.box_rect = pg.ROI(self.input_box, pen=(0, 9), scaleSnap=True, translateSnap=True)
+                self.p1.addItem(self.box_rect)
+                self.box_rect.sigRegionChangeFinished.connect(self.update_box)
                 
+                    
+    def mouseReleaseEvent(self, event):
+        if self.sam_enabled and event.button() == Qt.LeftButton :
+            if not self.point_mode:
+                self.input_box.extend([event.pos().x(), event.pos().y()])
+                self.box_rect.setSize([event.pos().x() - self.input_box[0], event.pos().y() - self.input_box[1]])
+                self.input_point.clear()
+             
+    def mouseMoveEvent(self, event):
+        #左键移动，且是not self.point_mode,绘制矩形框
+        if event.buttons() == Qt.LeftButton and not self.point_mode:
+            #根据鼠标移动的位置，更新self.box_rect的大小
+            self.box_rect.setSize([event.pos().x() - self.input_box[0], event.pos().y() - self.input_box[1]])
+    
+    def update_box(self):
+        #更新self.input_box的值,为self.box_rect的左上角和右下角坐标
+        self.input_box = self.box_rect.pos()
+        self.input_box = [self.input_box[0], self.input_box[1], self.input_box[0] + self.box_rect.size()[0], self.input_box[1] + self.box_rect.size()[1]]
+
     def create_menu1(self):
         self.menu1 = QMenu(self)
         remove_anno = QAction(u'删除框',self.menu1)
@@ -278,8 +316,8 @@ class ImageAnalysisPage(HPage):
             assert os.path.exists(img_path), f'img path not exists: {img_path}'
             data = Image.open(img_path)
         self.img_path = img_path
-        self.image = np.flipud(data)
-        # self.image = np.array(data)
+        # self.image = np.flipud(data)
+        self.image = np.array(data)
         self.scripts()
         self.img.setImage(self.image)
         self.update_manification()
@@ -392,6 +430,9 @@ class ImageAnalysisPage(HPage):
         ppos = self.img.mapToParent(pos)
         x, y = ppos.x(), ppos.y()
         self.p1.setTitle("pos: (%0.1f, %0.1f)  pixel: (%d, %d)  value: %s" % (x, y, i, j, val))
+        if self.sam_enabled:
+            self.input_point.clear()
+            self.input_point.append([x, y])
 
     def canny(self, threshold1=80, threshold2=160):
         """create a canny edge"""

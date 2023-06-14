@@ -25,6 +25,25 @@ def get_annotation(question, answer, labelList):
         full_result += i
     return full_result
 
+def get_reply(prompt):
+    result = hai.LLM.chat( # 生成对话
+            model='hepai/gpt-3.5-turbo',
+            api_key=api_key,
+            messages=[
+                
+                {"role": "system", "content": system_prompt},   
+                {"role": "user", "content": prompt},
+            ],  
+            stream=True,
+        )
+    full_result = ""    
+    for i in result:
+        full_result += i
+    return full_result
+
+if __name__ == '__main__':
+    # print(get_annotation("问题", "答案", ["hep", "qa", "others"]))
+    print(get_reply("你好"))
 
 
 

@@ -32,7 +32,7 @@ result = client.predict(
 				"dog",	# str representing input in 'Detection Prompt' Textbox component
 				0.25,	# int | float representing input in 'Box Threshold' Slider component
 				0.25,	# int | float representing input in 'Text Threshold' Slider component
-                "C:/Users/dell/Desktop/OIP1.jfif",	# str representing input in 'parameter_6' Image component
+                "sample1.jpg",	# str representing input in 'parameter_6' Image component
                 fn_index=0,
 )
 print(result)
