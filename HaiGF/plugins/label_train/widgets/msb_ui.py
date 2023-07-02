@@ -198,10 +198,10 @@ class Ui_Form(object):
         self.label_label.setText(_translate("Form", "标签类型"))
         self.label_type.setItemText(0, _translate("Form", "xml"))
         self.label_type.setItemText(1, _translate("Form", "json"))
-        self.uploadButton.setText(_translate("Form", "upload"))
-        self.seg_point.setText(_translate("Form", "Hover & Click"))
-        self.seg_box.setText(_translate("Form", "Box"))
-        self.seg_anything.setText(_translate("Form", "Everything"))
+        self.uploadButton.setText(_translate("Form", "预测"))
+        self.seg_point.setText(_translate("Form", "点提示"))
+        self.seg_box.setText(_translate("Form", "框提示"))
+        self.seg_anything.setText(_translate("Form", "全景分割"))
 
         
 

@@ -50,6 +50,9 @@ class ImageAnalysisPage(HPage):
         # Item for displaying image data
         self.img = pg.ImageItem()
         self.img.hoverEvent = self.imageHoverEvent
+        self.img.mousePressEvent = self.mousePressEvent
+        self.img.mouseMoveEvent = self.mouseMoveEvent
+        self.img.mouseReleaseEvent = self.mouseReleaseEvent
     
         self.p1.addItem(self.img)
 
@@ -65,8 +68,7 @@ class ImageAnalysisPage(HPage):
 
         #sam request json parameter
         self.sam_enabled = False 
-        self.point_mode = False
-        self.auto_mask = False
+        self.prompt_mode = 0
         #v1, len of point 1, label 0
         self.input_point = None
         self.input_label = [0]
@@ -318,7 +320,7 @@ class ImageAnalysisPage(HPage):
         self.img_path = img_path
         # self.image = np.flipud(data)
         self.image = np.array(data)
-        self.scripts()
+        # self.scripts()
         self.img.setImage(self.image)
         self.update_manification()
 
