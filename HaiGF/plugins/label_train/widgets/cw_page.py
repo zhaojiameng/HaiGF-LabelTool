@@ -10,7 +10,7 @@ from PIL import Image
 import numpy as np
 from PySide2 import QtWidgets, QtCore
 from PySide2.QtWidgets import QMenu, QAction, QFileDialog, QGraphicsRectItem
-from PySide2.QtGui import QCursor,QPixmap, QImage
+from PySide2.QtGui import QCursor,QPixmap, QImage, QPen, QColor
 from PySide2.QtCore import Qt, QRectF, QPoint
 import pyqtgraph as pg
 from pyqtgraph.Qt import QtGui
@@ -50,9 +50,9 @@ class ImageAnalysisPage(HPage):
         # Item for displaying image data
         self.img = pg.ImageItem()
         self.img.hoverEvent = self.imageHoverEvent
-        # self.p1.mousePressEvent = self.mousePressEvent
-        # self.p1.mouseMoveEvent = self.mouseMoveEvent
-        # self.p1.mouseReleaseEvent = self.mouseReleaseEvent
+        self.img.mousePressEvent = self.mousePressEvent
+        self.img.mouseMoveEvent = self.mouseMoveEvent
+        self.img.mouseReleaseEvent = self.mouseReleaseEvent
     
         self.p1.addItem(self.img)
 
@@ -118,6 +118,35 @@ class ImageAnalysisPage(HPage):
         self.win.removeItem(self.hist)
         del self.hist
 
+    def fix_coordinate(self, pos):
+            x, y = pos.x(), pos.y()
+            if x < 0:
+                x = 0
+            if x > self.image.shape[1]:
+                x = self.image.shape[1]
+            if y < 0:
+                y = 0
+            if y > self.image.shape[0]:
+                y = self.image.shape[0]
+            return QPoint(x, y)
+    
+    def get_Rect(self, p1, p2):
+        x1, y1 = p1.x(), p1.y()
+        x2, y2 = p2.x(), p2.y()
+        if x1 < x2:
+            x = x1
+            width = x2 - x1
+        else:
+            x = x2
+            width = x1 - x2
+        if y1 < y2:
+            y = y1
+            height = y2 - y1
+        else:
+            y = y2
+            height = y1 - y2
+        return QRectF(x, y, width, height)
+    
     def mousePressEvent(self, event):
         """mouse press event"""
         self.item = -1
@@ -130,17 +159,17 @@ class ImageAnalysisPage(HPage):
                     self.input_labels.append(1)
                     self.plot_point(click_point.x(), click_point.y(), 1)
                 elif self.prompt_mode == 2:#box
-                    self.input_boxes.extend([click_point.x(), click_point.y()])
+                    self.start_point = self.img.mapToParent(self.fix_coordinate(event.pos()))
+                    self.rect_item = QGraphicsRectItem(self.get_Rect(self.start_point, self.start_point))
+                    self.rect_item.setPen(QPen(QColor(0, 255, 0), 0.1))
+                    self.p1.addItem(self.rect_item)
+                    self.rect_item.setZValue(10)
                     
             #中键点击，背景点
             elif self.prompt_mode == 1 and event.button() == Qt.MiddleButton:
                 self.input_points.extend([click_point.x(), click_point.y()])
                 self.input_labels.append(0)
                 self.plot_point(click_point.x(), click_point.y(), 0)
-
-            elif event.button() == Qt.RightButton:
-                pass
-
         else:
             if event.button() == Qt.RightButton:
                 #转为QPoint对象
@@ -150,8 +179,7 @@ class ImageAnalysisPage(HPage):
                     if shape in items:
                         self.item = self.shapes.index(shape)
                         return
-            # else:
-            #     super().mousePressEvent(event)
+            
         
     def plot_point(self, x, y, label):
         """plot point"""
@@ -164,34 +192,17 @@ class ImageAnalysisPage(HPage):
     def mouseReleaseEvent(self, event):
         if self.sam_enabled:
             if self.prompt_mode == 2 and event.button() == Qt.LeftButton:
-                self.input_boxes.extend([event.pos().x(), event.pos().y()])
-                #根据两个点的坐标，添加ROI
-                self.create_ROI()
+                self.end_point = self.img.mapToParent(self.fix_coordinate(event.pos()))
+                self.rect_item.setRect(self.get_Rect(self.start_point, self.end_point))
+                x, y, w, h = self.rect_item.rect().x(), self.rect_item.rect().y(), self.rect_item.rect().width(), self.rect_item.rect().height()
+                self.input_boxes.extend([x, y, w + x, h + y])
              
     def mouseMoveEvent(self, event):
-        return
-        #左键移动，且是not self.point_mode,绘制矩形框
-        if self.sam_enabled:
-            if self.prompt_mode == 2 and event.buttons() == Qt.LeftButton:
-                #根据鼠标移动的位置，更新self.box_rect的大小
-                self.box_rect.setSize([event.pos().x() - self.input_boxes[0], event.pos().y() - self.input_boxes[1]])
-        
-    def update_sam_enabled(self, enabled):
-        self.sam_enabled = enabled
-        if enabled:
-            self.p1.mousePressEvent = self.mousePressEvent
-            self.p1.mouseMoveEvent = self.mouseMoveEvent
-            self.p1.mouseReleaseEvent = self.mouseReleaseEvent
-        else:
-            self.p1.mousePressEvent = None
-            self.p1.mouseMoveEvent = None
-            self.p1.mouseReleaseEvent = None
-
-    def update_box(self):
-        #更新self.input_boxes的值,为self.box_rect的左上角和右下角坐标
-        self.input_boxes = self.box_rect.pos()
-        self.input_boxes = [self.input_boxes[0], self.input_boxes[1], self.input_boxes[0] + self.box_rect.size()[0], self.input_boxes[1] + self.box_rect.size()[1]]
-
+        if self.sam_enabled and self.prompt_mode == 2 and event.buttons() == Qt.LeftButton:
+            self.end_point = self.img.mapToParent(self.fix_coordinate(event.pos()))
+            self.rect_item.setRect(self.get_Rect(self.start_point, self.end_point))
+            
+    
     def create_menu1(self):
         self.menu1 = QMenu(self)
         remove_anno = QAction(u'删除框',self.menu1)
@@ -552,7 +563,10 @@ class ImageAnalysisPage(HPage):
         from ..scripts.sam_predictor import prompt_segment, auto_segment
         if self.prompt_mode == 0:
             mask = auto_segment(self.img_path)
-        else:   
+        else:
+            print(self.input_points)
+            print(self.input_labels)
+            print(self.input_boxes)  
             mask = prompt_segment(self.input_points, self.input_labels, self.input_boxes, self.img_path)
         
         """show the mask"""

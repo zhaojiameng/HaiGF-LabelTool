@@ -149,7 +149,7 @@ class AntrainPlugin(HPlugin):
             self.msb_widget.enable_sam_button(False)
             print('no page')
         else:
-            self.page.update_sam_enabled(enabled)
+            self.page.sam_enabled = enabled
 
     def update_prompt_mode(self, mode: int):
         if not self.page in self.cw.tab_widgets[0].pages:
