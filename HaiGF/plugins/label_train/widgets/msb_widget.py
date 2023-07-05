@@ -39,8 +39,9 @@ class AntrainMSBWidget(HMainSideBarWidget):
 
         self.ui.seg_group.buttonClicked.connect(self.on_seg_group_clicked)
         self.ui.uploadButton.clicked.connect(self.on_uploadButton_clicked)
+        self.ui.enable_sam_button.clicked.connect(self.on_enable_sam_button_clicked)
 
-        self.set_input_none()
+        # self.set_input_none()
         
 
     def on_cannyPutton_clicked(self):
@@ -111,14 +112,17 @@ class AntrainMSBWidget(HMainSideBarWidget):
         plg.update_label_type(self.ui.label_type.currentText())
 
     def on_seg_group_clicked(self, button=None):
+        mode = 0
         if button == self.ui.seg_point:
             self.ui.seg_point.setChecked(True)
             self.ui.seg_box.setChecked(False)
             self.ui.seg_anything.setChecked(False)
+            mode = 1
         elif button == self.ui.seg_box:
             self.ui.seg_point.setChecked(False)
             self.ui.seg_box.setChecked(True)
             self.ui.seg_anything.setChecked(False)
+            mode = 2
         elif button == self.ui.seg_anything:
             self.ui.seg_point.setChecked(False)
             self.ui.seg_box.setChecked(False)
@@ -127,12 +131,16 @@ class AntrainMSBWidget(HMainSideBarWidget):
             self.ui.seg_point.setChecked(False)
             self.ui.seg_box.setChecked(False)
             self.ui.seg_anything.setChecked(False)
+        mw = self.p
+        plg = mw.plugins['AntrainPlugin']
+        plg.update_prompt_mode(mode)
 
     def on_uploadButton_clicked(self):
         mw = self.p
         plg = mw.plugins['AntrainPlugin']
-        if plg.upload():
-            self.set_input_mode_enabled(True)
+        # if plg.upload():
+        #     self.set_input_mode_enabled(True)
+        plg.predict_sam()
 
     def set_input_mode_enabled(self, enabled):
         self.ui.seg_point.setEnabled(enabled)
@@ -142,8 +150,16 @@ class AntrainMSBWidget(HMainSideBarWidget):
     def set_input_none(self):
         self.on_seg_group_clicked()
         self.set_input_mode_enabled(False)
+
+    def on_enable_sam_button_clicked(self):
+        pass
+        mw = self.p
+        plg = mw.plugins['AntrainPlugin']
+        self.set_input_mode_enabled(self.ui.enable_sam_button.isChecked())
+        plg.enable_sam(self.ui.enable_sam_button.isChecked())
         
-            
+    def enable_sam_button(self, enabled):
+        self.ui.enable_sam_button.setEnabled(enabled)        
 
     
 

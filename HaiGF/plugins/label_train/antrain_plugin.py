@@ -78,6 +78,7 @@ class AntrainPlugin(HPlugin):
 
         if not self.page in self.cw.tab_widgets[0].pages:
             self.cw.addPage(self.page)
+            self.msb_widget.enable_sam_button(True)
         self.cw.set_focus(self.page)
 
     def canny_detect(self, threshold1, threshold2):
@@ -137,11 +138,23 @@ class AntrainPlugin(HPlugin):
             self.page.label_type = type
             self.cw.tab_widgets[1].pages[0].update_label_type(type)
 
-    def upload(self):
+    def predict_sam(self):
         if not self.page in self.cw.tab_widgets[0].pages:
             print('no page')
         else:
-            return self.page.upload()
+            self.page.predict_sam()
+        
+    def enable_sam(self, enabled):
+        if not self.page in self.cw.tab_widgets[0].pages:
+            self.msb_widget.enable_sam_button(False)
+            print('no page')
+        else:
+            self.page.update_sam_enabled(enabled)
 
-   
+    def update_prompt_mode(self, mode: int):
+        if not self.page in self.cw.tab_widgets[0].pages:
+            self.msb_widget.enable_sam_button(False)
+            print('no page')
+        else:
+            self.page.prompt_mode = mode
     

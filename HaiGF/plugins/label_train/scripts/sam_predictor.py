@@ -6,33 +6,9 @@ import numpy as np
 url = "http://aiapi.ihep.ac.cn:42901/v1/inference"
 model = "meta/segment_anything_model"
 api_key = 'HmwJJYFBoIuwXkrRrmGzwUZhbnCSgh'
-prompt_list = ['auto_mask', 'input_points', 'input_labels', 'input_boxes']
-def get_mask_from_sam(auto_mask=False, input_points=None, input_labels=None, input_boxes=None, img=None, stream=False):
-    """
-    get mask from sam via hai
-    :param auto_mask: auto mask
-    :param input_points: input point
-    :param input_labels: input label
-    :param input_boxes: input box
-    :param img: image
-    """
 
-    """
-    prepare the messages
-    """
+def prompt_segment(input_points=None, input_labels=None, input_boxes=None, img=None):
     messages = {}
-    if auto_mask:
-        messages["auto_mask"] = True
-    else:
-        messages["auto_mask"] = False
-        if input_points is not None:
-            messages["input_points"] = input_points
-        if input_labels is not None:
-            messages["input_labels"] = input_labels
-        if input_boxes is not None:
-            messages["input_boxes"] = input_boxes
-            
-    
     """
     convert image to base64
     """
@@ -42,6 +18,32 @@ def get_mask_from_sam(auto_mask=False, input_points=None, input_labels=None, inp
         encoded_image = base64.b64encode(image_data).decode("utf-8")
         messages["img"] = encoded_image
 
+    messages["auto_mask"] = False
+    if input_points is not None:
+        messages["input_points"] = input_points
+    if input_labels is not None:
+        messages["input_labels"] = input_labels
+    if input_boxes is not None:
+        messages["input_boxes"] = input_boxes
+
+    return get_mask_from_sam(messages)
+
+def auto_segment(img=None):
+    messages = {}
+    """
+    convert image to base64
+    """
+    if img is not None:
+        with open(img, "rb") as image_file:
+            image_data = image_file.read()
+        encoded_image = base64.b64encode(image_data).decode("utf-8")
+        messages["img"] = encoded_image
+
+    messages["auto_mask"] = True
+
+    return get_mask_from_sam(messages)
+
+def get_mask_from_sam(messages:dict, stream=False):
     """
     send the request
     """

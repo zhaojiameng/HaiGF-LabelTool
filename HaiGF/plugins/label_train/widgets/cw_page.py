@@ -50,9 +50,9 @@ class ImageAnalysisPage(HPage):
         # Item for displaying image data
         self.img = pg.ImageItem()
         self.img.hoverEvent = self.imageHoverEvent
-        self.img.mousePressEvent = self.mousePressEvent
-        self.img.mouseMoveEvent = self.mouseMoveEvent
-        self.img.mouseReleaseEvent = self.mouseReleaseEvent
+        # self.p1.mousePressEvent = self.mousePressEvent
+        # self.p1.mouseMoveEvent = self.mouseMoveEvent
+        # self.p1.mouseReleaseEvent = self.mouseReleaseEvent
     
         self.p1.addItem(self.img)
 
@@ -64,15 +64,17 @@ class ImageAnalysisPage(HPage):
         self.create_menu1()
         self.create_menu2()
 
+        self.data = None
+
         self.label_type = 'xml'
 
         #sam request json parameter
         self.sam_enabled = False 
         self.prompt_mode = 0
         #v1, len of point 1, label 0
-        self.input_point = None
-        self.input_label = [0]
-        self.input_box = []
+        self.input_points = []
+        self.input_labels = []
+        self.input_boxes = []
         
     def analysis_ROI(self):
         if hasattr(self, 'p2'):
@@ -119,44 +121,76 @@ class ImageAnalysisPage(HPage):
     def mousePressEvent(self, event):
         """mouse press event"""
         self.item = -1
-        if event.button() == Qt.RightButton:
-            #转为QPoint对象
-            point = QPoint(event.pos().x(), event.pos().y())
-            items = self.win.scene().items(point)
-            for shape in self.shapes:
-                if shape in items:
-                    self.item = self.shapes.index(shape)
-                    return
-        elif self.sam_enabled and event.button() == Qt.LeftButton:
-            if self.point_mode:
-                #将点击的坐标加入到self.input_point中
-                self.input_point.clear()
-                self.input_point.append([event.pos().x(), event.pos().y()])
-                self.input_box.clear()
-            else:
-                self.input_box.extend([event.pos().x(), event.pos().y()])
-                self.box_rect = pg.ROI(self.input_box, pen=(0, 9), scaleSnap=True, translateSnap=True)
-                self.p1.addItem(self.box_rect)
-                self.box_rect.sigRegionChangeFinished.connect(self.update_box)
-                
+        if self.sam_enabled:
+            click_point = self.img.mapToParent(event.pos())
+            if event.button() == Qt.LeftButton:
+                if self.prompt_mode == 1:#point
+                    #将点击的坐标加入到self.input_points中
+                    self.input_points.extend([click_point.x(), click_point.y()])
+                    self.input_labels.append(1)
+                    self.plot_point(click_point.x(), click_point.y(), 1)
+                elif self.prompt_mode == 2:#box
+                    self.input_boxes.extend([click_point.x(), click_point.y()])
+                    
+            #中键点击，背景点
+            elif self.prompt_mode == 1 and event.button() == Qt.MiddleButton:
+                self.input_points.extend([click_point.x(), click_point.y()])
+                self.input_labels.append(0)
+                self.plot_point(click_point.x(), click_point.y(), 0)
+
+            elif event.button() == Qt.RightButton:
+                pass
+
+        else:
+            if event.button() == Qt.RightButton:
+                #转为QPoint对象
+                point = QPoint(event.pos().x(), event.pos().y())
+                items = self.win.scene().items(point)
+                for shape in self.shapes:
+                    if shape in items:
+                        self.item = self.shapes.index(shape)
+                        return
+            # else:
+            #     super().mousePressEvent(event)
+        
+    def plot_point(self, x, y, label):
+        """plot point"""
+        if label == 1:
+            color = (255, 0, 0)
+        else:
+            color = (0, 255, 0)
+        self.p1.plot([x], [y], pen=None, symbol='o', symbolSize=5, symbolBrush=color)
                     
     def mouseReleaseEvent(self, event):
-        if self.sam_enabled and event.button() == Qt.LeftButton :
-            if not self.point_mode:
-                self.input_box.extend([event.pos().x(), event.pos().y()])
-                self.box_rect.setSize([event.pos().x() - self.input_box[0], event.pos().y() - self.input_box[1]])
-                self.input_point.clear()
+        if self.sam_enabled:
+            if self.prompt_mode == 2 and event.button() == Qt.LeftButton:
+                self.input_boxes.extend([event.pos().x(), event.pos().y()])
+                #根据两个点的坐标，添加ROI
+                self.create_ROI()
              
     def mouseMoveEvent(self, event):
+        return
         #左键移动，且是not self.point_mode,绘制矩形框
-        if event.buttons() == Qt.LeftButton and not self.point_mode:
-            #根据鼠标移动的位置，更新self.box_rect的大小
-            self.box_rect.setSize([event.pos().x() - self.input_box[0], event.pos().y() - self.input_box[1]])
-    
+        if self.sam_enabled:
+            if self.prompt_mode == 2 and event.buttons() == Qt.LeftButton:
+                #根据鼠标移动的位置，更新self.box_rect的大小
+                self.box_rect.setSize([event.pos().x() - self.input_boxes[0], event.pos().y() - self.input_boxes[1]])
+        
+    def update_sam_enabled(self, enabled):
+        self.sam_enabled = enabled
+        if enabled:
+            self.p1.mousePressEvent = self.mousePressEvent
+            self.p1.mouseMoveEvent = self.mouseMoveEvent
+            self.p1.mouseReleaseEvent = self.mouseReleaseEvent
+        else:
+            self.p1.mousePressEvent = None
+            self.p1.mouseMoveEvent = None
+            self.p1.mouseReleaseEvent = None
+
     def update_box(self):
-        #更新self.input_box的值,为self.box_rect的左上角和右下角坐标
-        self.input_box = self.box_rect.pos()
-        self.input_box = [self.input_box[0], self.input_box[1], self.input_box[0] + self.box_rect.size()[0], self.input_box[1] + self.box_rect.size()[1]]
+        #更新self.input_boxes的值,为self.box_rect的左上角和右下角坐标
+        self.input_boxes = self.box_rect.pos()
+        self.input_boxes = [self.input_boxes[0], self.input_boxes[1], self.input_boxes[0] + self.box_rect.size()[0], self.input_boxes[1] + self.box_rect.size()[1]]
 
     def create_menu1(self):
         self.menu1 = QMenu(self)
@@ -324,6 +358,7 @@ class ImageAnalysisPage(HPage):
         self.img.setImage(self.image)
         self.update_manification()
 
+
     def create_ROI(self):
         """create a ROI"""
         if hasattr(self, 'roi'):
@@ -336,6 +371,11 @@ class ImageAnalysisPage(HPage):
         # self.roi.sigRegionChanged.connect(self.updatePlot)
         self.roi.sigRegionChanged.connect(self.update_manification)
         
+    def plot_box(self):
+        """plot the box of ROI"""
+        self.box = pg.RectROI([200, 400], [100, 50], pen=(0, 9))
+        self.p1.addItem(self.box)
+        self.box.setZValue(10)
 
     def local_magnification(self):
         """make a local magnification of the ROI area in a new tab"""
@@ -432,10 +472,7 @@ class ImageAnalysisPage(HPage):
         ppos = self.img.mapToParent(pos)
         x, y = ppos.x(), ppos.y()
         self.p1.setTitle("pos: (%0.1f, %0.1f)  pixel: (%d, %d)  value: %s" % (x, y, i, j, val))
-        if self.sam_enabled:
-            self.input_point.clear()
-            self.input_point.append([x, y])
-
+       
     def canny(self, threshold1=80, threshold2=160):
         """create a canny edge"""
         image = self.create_canny(threshold1=threshold1, threshold2=threshold2)
@@ -511,8 +548,14 @@ class ImageAnalysisPage(HPage):
             self.img.setImage(self.image)
             self.update_manification(False)
 
-    def upload(self):
-        return True
+    def predict_sam(self):
+        from ..scripts.sam_predictor import prompt_segment, auto_segment
+        if self.prompt_mode == 0:
+            mask = auto_segment(self.img_path)
+        else:   
+            mask = prompt_segment(self.input_points, self.input_labels, self.input_boxes, self.img_path)
+        
+        """show the mask"""
         
 
 

@@ -104,6 +104,8 @@ class Ui_Form(object):
 
         self.uploadButton = QtWidgets.QPushButton(self.layoutWidget)
         self.uploadButton.setObjectName('上传')
+        self.enable_sam_button = RadioButton(self.layoutWidget, '启用sam', newIcon('autosave'))
+        self.enable_sam_button.setEnabled(False)
 
         self.seg_point = RadioButton(self.layoutWidget, '点', newIcon('hover'))
         self.seg_box = RadioButton(self.layoutWidget, '框', newIcon('box'))
@@ -153,7 +155,8 @@ class Ui_Form(object):
 
         self.gridLayout.addWidget(self.space6, 17, 0, 1, 2)
 
-        self.gridLayout.addWidget(self.uploadButton, 18, 0, 1, 2)
+        self.gridLayout.addWidget(self.uploadButton, 18, 1, 1, 1)
+        self.gridLayout.addWidget(self.enable_sam_button, 18, 0, 1, 1)
         self.gridLayout.addWidget(self.seg_point, 19, 0, 1, 2)
         self.gridLayout.addWidget(self.seg_box, 20, 0, 1, 2)
         self.gridLayout.addWidget(self.seg_anything, 21, 0, 1, 2)
@@ -199,6 +202,7 @@ class Ui_Form(object):
         self.label_type.setItemText(0, _translate("Form", "xml"))
         self.label_type.setItemText(1, _translate("Form", "json"))
         self.uploadButton.setText(_translate("Form", "预测"))
+        self.enable_sam_button.setText(_translate("Form", "启用sam模型"))
         self.seg_point.setText(_translate("Form", "点提示"))
         self.seg_box.setText(_translate("Form", "框提示"))
         self.seg_anything.setText(_translate("Form", "全景分割"))
