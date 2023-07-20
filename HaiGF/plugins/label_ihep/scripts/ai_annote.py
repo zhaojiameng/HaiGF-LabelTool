@@ -1,7 +1,6 @@
 import hai
 
-models = hai.Model.list()  # 列出可用模型
-print(models)
+
 
 system_prompt = "You are ChatGPT, answering questions conversationally"
 

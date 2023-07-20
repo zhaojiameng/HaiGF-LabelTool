@@ -156,5 +156,6 @@ class AntrainPlugin(HPlugin):
             self.msb_widget.enable_sam_button(False)
             print('no page')
         else:
+            print(mode)
             self.page.prompt_mode = mode
     

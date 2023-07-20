@@ -45,6 +45,7 @@ class ImageAnalysisPage(HPage):
     
         self.layout.addWidget(self.win)
         self.p1 = self.win.addPlot(title="")
+        self.p1.getViewBox().invertY(True)
         self.p1.setMenuEnabled(False)
         
         # Item for displaying image data
@@ -119,16 +120,16 @@ class ImageAnalysisPage(HPage):
         del self.hist
 
     def fix_coordinate(self, pos):
-            x, y = pos.x(), pos.y()
-            if x < 0:
-                x = 0
-            if x > self.image.shape[1]:
-                x = self.image.shape[1]
-            if y < 0:
-                y = 0
-            if y > self.image.shape[0]:
-                y = self.image.shape[0]
-            return QPoint(x, y)
+        x, y = pos.x(), pos.y()
+        if x < 0:
+            x = 0
+        if x > self.image.shape[1]:
+            x = self.image.shape[1]
+        if y < 0:
+            y = 0
+        if y > self.image.shape[0]:
+            y = self.image.shape[0]
+        return QPoint(int(x), int(y))
     
     def get_Rect(self, p1, p2):
         x1, y1 = p1.x(), p1.y()
@@ -155,7 +156,7 @@ class ImageAnalysisPage(HPage):
             if event.button() == Qt.LeftButton:
                 if self.prompt_mode == 1:#point
                     #将点击的坐标加入到self.input_points中
-                    self.input_points.extend([click_point.x(), click_point.y()])
+                    self.input_points.append([int(click_point.x()), int(click_point.y())])
                     self.input_labels.append(1)
                     self.plot_point(click_point.x(), click_point.y(), 1)
                 elif self.prompt_mode == 2:#box
@@ -167,7 +168,7 @@ class ImageAnalysisPage(HPage):
                     
             #中键点击，背景点
             elif self.prompt_mode == 1 and event.button() == Qt.MiddleButton:
-                self.input_points.extend([click_point.x(), click_point.y()])
+                self.input_points.append([int(click_point.x()), int(click_point.y())])
                 self.input_labels.append(0)
                 self.plot_point(click_point.x(), click_point.y(), 0)
         else:
@@ -195,7 +196,7 @@ class ImageAnalysisPage(HPage):
                 self.end_point = self.img.mapToParent(self.fix_coordinate(event.pos()))
                 self.rect_item.setRect(self.get_Rect(self.start_point, self.end_point))
                 x, y, w, h = self.rect_item.rect().x(), self.rect_item.rect().y(), self.rect_item.rect().width(), self.rect_item.rect().height()
-                self.input_boxes.extend([x, y, w + x, h + y])
+                self.input_boxes.append([x, y, w + x, h + y])
              
     def mouseMoveEvent(self, event):
         if self.sam_enabled and self.prompt_mode == 2 and event.buttons() == Qt.LeftButton:
@@ -570,6 +571,14 @@ class ImageAnalysisPage(HPage):
             mask = prompt_segment(self.input_points, self.input_labels, self.input_boxes, self.img_path)
         
         """show the mask"""
+
+    def draw_bbox(self, bbox):
+        # rect = pg.RectROI([bbox[0], bbox[1]], [bbox[2] - bbox[0], bbox[3] - bbox[1]], pen=(0, 9))
+        rect = QGraphicsRectItem(QRectF(bbox[0], bbox[1], bbox[2], bbox[3]))
+        self.p1.addItem(rect)
+        rect.setZValue(10)
+
+
         
 
 

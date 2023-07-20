@@ -2,10 +2,12 @@ import base64
 import json
 import requests
 import numpy as np
+import os
+import matplotlib.pyplot as plt
 
 url = "http://aiapi.ihep.ac.cn:42901/v1/inference"
 model = "meta/segment_anything_model"
-api_key = 'HmwJJYFBoIuwXkrRrmGzwUZhbnCSgh'
+api_key = 'SOnXGBNzddTMcvJhAfNGEDoEOgXZIB'
 
 def prompt_segment(input_points=None, input_labels=None, input_boxes=None, img=None):
     messages = {}
@@ -47,6 +49,7 @@ def get_mask_from_sam(messages:dict, stream=False):
     """
     send the request
     """
+    print(messages.keys())
     response = requests.post(
         url,
         json={
@@ -67,6 +70,7 @@ def get_mask_from_sam(messages:dict, stream=False):
     """the message is a mask list, transform it to a numpy array, and save it as a jpg file"""
     mask = data['message']
     mask = np.array(mask)
+    plt.imsave("mask.jpg", mask)
     """
     return the mask, or save it as a jpg file, or do something else
     :case1:plot mask on the image
@@ -83,5 +87,7 @@ def get_mask_from_sam(messages:dict, stream=False):
     surely the mask returned is a list, not a numpy array
     """
     return mask
+
+
 
     
