@@ -11,6 +11,7 @@ class AntrainMSBWidget(HMainSideBarWidget):
         super().__init__(parent, *args, **kwargs)
         self.p = parent
         self.annoShape = 'Line ROI'
+        self.upload_type = 0 #0：显示掩码，1：检测， 2：分割
 
 
         self.set_title(self.tr('Annotation and Train Tools'))
@@ -39,10 +40,21 @@ class AntrainMSBWidget(HMainSideBarWidget):
 
         self.ui.seg_group.buttonClicked.connect(self.on_seg_group_clicked)
         self.ui.uploadButton.clicked.connect(self.on_uploadButton_clicked)
+        self.ui.uploadType.currentTextChanged.connect(self.change_upload_type)
         self.ui.enable_sam_button.clicked.connect(self.on_enable_sam_button_clicked)
 
         # self.set_input_none()
         
+    def change_upload_type(self):
+        if self.ui.uploadType.currentText() == "显示掩码":
+            self.upload_type = 0
+        elif self.ui.uploadType.currentText() == "检测":
+            self.upload_type = 1
+        elif self.ui.uploadType.currentText() == "分割":
+            self.upload_type = 2
+        else:
+            self.upload_type = 0
+
 
     def on_cannyPutton_clicked(self):
         mw = self.p
@@ -140,7 +152,7 @@ class AntrainMSBWidget(HMainSideBarWidget):
         plg = mw.plugins['AntrainPlugin']
         # if plg.upload():
         #     self.set_input_mode_enabled(True)
-        plg.predict_sam()
+        plg.predict_sam(self.upload_type)
 
     def set_input_mode_enabled(self, enabled):
         self.ui.seg_point.setEnabled(enabled)

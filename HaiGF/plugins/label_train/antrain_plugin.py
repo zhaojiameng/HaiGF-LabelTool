@@ -2,6 +2,7 @@ from pathlib import Path
 from HaiGF.apis import HPlugin, HAction
 from HaiGF.apis import newIcon
 import damei as dm
+import threading
 
 from .widgets.msb_widget import AntrainMSBWidget
 
@@ -138,11 +139,12 @@ class AntrainPlugin(HPlugin):
             self.page.label_type = type
             self.cw.tab_widgets[1].pages[0].update_label_type(type)
 
-    def predict_sam(self):
+    def predict_sam(self, upload_type):
         if not self.page in self.cw.tab_widgets[0].pages:
             print('no page')
         else:
-            self.page.predict_sam()
+            self.t1 = threading.Thread(target=self.page.predict_sam(upload_type))
+            self.t1.start()
         
     def enable_sam(self, enabled):
         if not self.page in self.cw.tab_widgets[0].pages:

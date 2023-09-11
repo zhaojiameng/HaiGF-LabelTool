@@ -4,90 +4,21 @@ import requests
 import numpy as np
 import os
 import matplotlib.pyplot as plt
+import hai
 
-url = "http://aiapi.ihep.ac.cn:42901/v1/inference"
-model = "meta/segment_anything_model"
-api_key = 'SOnXGBNzddTMcvJhAfNGEDoEOgXZIB'
 
-def prompt_segment(input_points=None, input_labels=None, input_boxes=None, img=None):
-    messages = {}
-    """
-    convert image to base64
-    """
-    if img is not None:
-        with open(img, "rb") as image_file:
-            image_data = image_file.read()
-        encoded_image = base64.b64encode(image_data).decode("utf-8")
-        messages["img"] = encoded_image
-
-    messages["auto_mask"] = False
-    if input_points is not None:
-        messages["input_points"] = input_points
-    if input_labels is not None:
-        messages["input_labels"] = input_labels
-    if input_boxes is not None:
-        messages["input_boxes"] = input_boxes
-
-    return get_mask_from_sam(messages)
-
-def auto_segment(img=None):
-    messages = {}
-    """
-    convert image to base64
-    """
-    if img is not None:
-        with open(img, "rb") as image_file:
-            image_data = image_file.read()
-        encoded_image = base64.b64encode(image_data).decode("utf-8")
-        messages["img"] = encoded_image
-
-    messages["auto_mask"] = True
-
-    return get_mask_from_sam(messages)
-
-def get_mask_from_sam(messages:dict, stream=False):
-    """
-    send the request
-    """
-    print(messages.keys())
-    response = requests.post(
-        url,
-        json={
-            "model": model,
-            "api_key": api_key,
-            "stream": stream,
-            "messages": messages,
-        },
-        timeout=1000,
-        stream=True
+def seg_via_sam(input_points, input_labels, input_boxes, img=None):
+    input_points = input_points if len(input_points) > 0 else None
+    input_labels = input_labels if len(input_labels) > 0 else None
+    input_boxes = input_boxes if len(input_boxes) > 0 else None
+    masks_list = hai.Models.inference(
+        model='meta/segment_anything_model',  # 指定可用模型名字
+        api_key='Hi-USdbJhVVGOezXmeUaFEDPgxhEbAWEydniGIArQTNrPejzpQ',  # 输入hepai_api_key
+        img = img,  # 输入图片路径或cv2读取的图片
+        input_points = input_points,  # 点提示，格式为[[x1,y1],[x2,y2],...] 
+        input_labels = input_labels,  # 点提示对应的标签，0代表背景点，1代表前景点，格式为[0, 1, ...], 需要与input_points一一对应，如不提供默认全为前景点
+        input_boxes = input_boxes,  # 框提示，格式为[[x1,y1,x2,y2],[x1,y1,x2,y2],...]
+        stream=False,  # 是否流式输出
+        timeout=60,  # 网络请求超时时间，单位秒
     )
-    if response.status_code != 200:
-        raise Exception(f"Got status code {response.status_code} from server: {response.text}")
-
-    data = response.json()
-    if data['status_code'] != 42901:
-        raise Exception(f"Got status code {data['status_code']} from server: {data['message']}")
-    """the message is a mask list, transform it to a numpy array, and save it as a jpg file"""
-    mask = data['message']
-    mask = np.array(mask)
-    plt.imsave("mask.jpg", mask)
-    """
-    return the mask, or save it as a jpg file, or do something else
-    :case1:plot mask on the image
-            # 假设原图和掩码存在变量img和mask中
-            # 调整掩码的颜色通道，以便将其叠加在原图上
-            mask = mask[:, :, np.newaxis]
-            mask = np.concatenate([mask, mask, mask], axis=2)
-
-            # 将原图和掩码叠加在一起
-            overlay = np.where(mask == 0, img, 0.5 * img + 0.5 * mask)
-
-            
-
-    surely the mask returned is a list, not a numpy array
-    """
-    return mask
-
-
-
-    
+    return masks_list

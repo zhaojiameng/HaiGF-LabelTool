@@ -560,17 +560,64 @@ class ImageAnalysisPage(HPage):
             self.img.setImage(self.image)
             self.update_manification(False)
 
-    def predict_sam(self):
-        from ..scripts.sam_predictor import prompt_segment, auto_segment
-        if self.prompt_mode == 0:
-            mask = auto_segment(self.img_path)
+    def plot_masks(self, img, masks, color=None):
+        if isinstance(img, str):
+            img = cv2.imread(img)
+            img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+        if "area" not in masks[0].keys():
+            sorted_masks = masks
         else:
-            print(self.input_points)
-            print(self.input_labels)
-            print(self.input_boxes)  
-            mask = prompt_segment(self.input_points, self.input_labels, self.input_boxes, self.img_path)
+            sorted_masks = sorted(masks, key=(lambda x: x['area']), reverse=True)
+        for i, mask in enumerate(sorted_masks):
+            m = mask['segmentation']
+            mask_color_img = np.zeros_like(img)
+            mask_color_img[...] = self.colors[i]
+            mask_indices = np.where(m == 1)
+            
+            
+            alpha = 0.35
+            img[mask_indices] = alpha * mask_color_img[mask_indices] + (1-alpha) * img[mask_indices]
         
-        """show the mask"""
+        return img  
+
+    def predict_sam(self, upload_type=0):
+        from ..scripts.sam_predictor import seg_via_sam
+        if self.prompt_mode == 0:
+            masks = seg_via_sam(img=self.img_path)
+        else:
+            masks = seg_via_sam(img=self.img_path, input_points=self.input_points, input_labels=self.input_labels, input_boxes=self.input_boxes)
+        
+#         """show the mask"""
+#         #masks的每个元素是一个mask，将其展示到p1上
+#         colors = [
+#     (255, 0, 0, 255),     # red
+#     (0, 255, 0, 255),     # green
+#     (0, 0, 255, 255),     # blue
+#     # Add more colors if you have more masks
+# ]
+#         lut = np.array(colors, dtype=np.ubyte)
+
+#         # For each mask
+#         for mask in masks:
+#             # Create an ImageItem
+#             mask = np.flipud(mask)
+#             mask_img = pg.ImageItem(mask)
+            
+#             # Set the color lookup table
+#             mask_img.setLookupTable(lut)
+            
+#             # Add the mask to the plot
+#             self.p1.addItem(mask_img)
+        if upload_type == 0:
+            self.masked_img = self.plot_masks(self.img_path, masks)
+            self.img.setImage(self.masked_img)
+        elif upload_type == 1:
+            self.masked_img = self.plot_masks(self.image, masks)
+            self.img.setImage(self.masked_img)
+        elif upload_type == 2:
+            pass
+            
+
 
     def draw_bbox(self, bbox):
         # rect = pg.RectROI([bbox[0], bbox[1]], [bbox[2] - bbox[0], bbox[3] - bbox[1]], pen=(0, 9))

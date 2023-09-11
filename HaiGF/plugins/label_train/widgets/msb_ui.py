@@ -104,6 +104,11 @@ class Ui_Form(object):
 
         self.uploadButton = QtWidgets.QPushButton(self.layoutWidget)
         self.uploadButton.setObjectName('上传')
+        self.uploadType = QtWidgets.QComboBox(self.layoutWidget)
+        self.uploadType.addItem("显示掩码")
+        self.uploadType.addItem("检测")
+        self.uploadType.addItem("分割")
+        self.uploadType.setCurrentText("显示掩码")
         self.enable_sam_button = RadioButton(self.layoutWidget, '启用sam', newIcon('autosave'))
         self.enable_sam_button.setEnabled(False)
 
@@ -155,11 +160,12 @@ class Ui_Form(object):
 
         self.gridLayout.addWidget(self.space6, 17, 0, 1, 2)
 
-        self.gridLayout.addWidget(self.uploadButton, 18, 1, 1, 1)
+        self.gridLayout.addWidget(self.uploadButton, 20, 1, 1, 1)
         self.gridLayout.addWidget(self.enable_sam_button, 18, 0, 1, 1)
-        self.gridLayout.addWidget(self.seg_point, 19, 0, 1, 2)
-        self.gridLayout.addWidget(self.seg_box, 20, 0, 1, 2)
-        self.gridLayout.addWidget(self.seg_anything, 21, 0, 1, 2)
+        self.gridLayout.addWidget(self.seg_point, 18, 1, 1, 1)
+        self.gridLayout.addWidget(self.seg_box, 19, 0, 1, 1)
+        self.gridLayout.addWidget(self.seg_anything, 19, 1, 1, 1)
+        self.gridLayout.addWidget(self.uploadType, 20, 0, 1, 1)
 
         
 
