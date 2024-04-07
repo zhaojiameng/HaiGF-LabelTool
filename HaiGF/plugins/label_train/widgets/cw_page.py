@@ -18,9 +18,12 @@ from HaiGF import HPage, HGF
 from HaiGF.gui_framework.widgets.central_widgets.tab_widget import HTabWidget
 from HaiGF.plugins.label_train.my_ROI import MyPolyLineROI, MyRectROI, MyCircleROI, MyEllipseROI, MyLineROI, CurvePlogan
 from HaiGF.plugins.label_train.scripts.aa import ImageProcessor
+from HaiGF.plugins.label_train.scripts.common.util import asure_folder, rectroi_to_yolo
 from HaiGF.plugins.label_train.widgets.cw_page2 import ImageMagnificationPage
 from HaiGF.utils import general
 import damei as dm
+import random
+
 
 logger = dm.get_logger('cw_page')
 here = Path(__file__).parent.parent
@@ -51,9 +54,17 @@ class ImageAnalysisPage(HPage):
         # Item for displaying image data
         self.img = pg.ImageItem()
         self.img.hoverEvent = self.imageHoverEvent
+
+        #for sam
         self.img.mousePressEvent = self.mousePressEvent
         self.img.mouseMoveEvent = self.mouseMoveEvent
         self.img.mouseReleaseEvent = self.mouseReleaseEvent
+        
+
+        #for adjust bbox
+        # self.win.mousePressEvent = self.mousePressEvent
+        # self.win.mouseMoveEvent = self.mouseMoveEvent
+        # self.win.mouseReleaseEvent = self.mouseReleaseEvent
     
         self.p1.addItem(self.img)
 
@@ -76,6 +87,83 @@ class ImageAnalysisPage(HPage):
         self.input_points = []
         self.input_labels = []
         self.input_boxes = []
+        self.prompts = []
+        self.bboxs = []
+
+        self.annotation_folder = None
+        self.improve_folder = None
+        self.api_key = None
+        
+    def fake_function(self,event):
+        pass
+    
+    def switch_mouse_event(self, sam_enabled):
+        self.sam_enabled = sam_enabled
+        # if sam_enabled:
+        #     self.img.mousePressEvent = self.mousePressEvent
+        #     self.img.mouseMoveEvent = self.mouseMoveEvent
+        #     self.img.mouseReleaseEvent = self.mouseReleaseEvent
+        #     self.win.mousePressEvent = self.fake_function
+        #     self.win.mouseMoveEvent = self.fake_function
+        #     self.win.mouseReleaseEvent = self.fake_function
+        # else:
+        #     self.img.mousePressEvent = self.fake_function
+        #     self.img.mouseMoveEvent = self.fake_function
+        #     self.img.mouseReleaseEvent = self.fake_function
+        #     self.win.mousePressEvent = self.mousePressEvent
+        #     self.win.mouseMoveEvent = self.mouseMoveEvent
+        #     self.win.mouseReleaseEvent = self.mouseReleaseEvent
+
+
+    def reset_screen(self):
+        self.input_points = []
+        self.input_labels = []
+        self.input_boxes = []
+        self.p1.clear()
+        self.p1.addItem(self.img)
+        self.shapes = []
+        self.prompts = []
+        self.item = -1
+
+    def clear_prompt(self):
+        """clear prompt"""
+        for prompt in self.prompts:
+            self.p1.removeItem(prompt)
+        self.prompts = []
+        self.input_points = []
+        self.input_labels = []
+        self.input_boxes = []
+        # print('finish clear prompt')
+
+    def update_api_key(self, api_key):
+        self.api_key = api_key
+        #写入环境变量
+        os.environ['HEPAI_API_KEY'] = api_key
+
+    def save_bbox(self):
+        """save bbox to file"""
+        if len(self.bboxs) == 0:
+            print('no bbox')
+            return
+        self.improve_folder = asure_folder(self.improve_folder)
+        improve_path = os.path.join(self.improve_folder, os.path.basename(self.img_path).split('.')[0] + '.txt')
+        print(improve_path)
+        with open(improve_path, 'a') as f:
+            for bbox in self.bboxs:
+                img_width = self.image.shape[1]
+                img_height = self.image.shape[0]
+                x_center, y_center, w, h = rectroi_to_yolo(bbox, img_width, img_height)
+                label = 0  # 假设所有的bbox都属于同一个类别，这里使用类别0
+                f.write(f"{label} {x_center} {y_center} {w} {h}\n")
+        self.bboxs = []
+
+    def draw_bbox(self, bbox):
+        """draw bbox"""
+        x, y, w, h = bbox[0], bbox[1], bbox[2], bbox[3]
+        self.box = pg.RectROI([x, y], [w, h], pen=(0, 9))
+        self.p1.addItem(self.box)
+        self.box.setZValue(10)
+        self.bboxs.append(self.box)
         
     def analysis_ROI(self):
         if hasattr(self, 'p2'):
@@ -163,6 +251,7 @@ class ImageAnalysisPage(HPage):
                     self.start_point = self.img.mapToParent(self.fix_coordinate(event.pos()))
                     self.rect_item = QGraphicsRectItem(self.get_Rect(self.start_point, self.start_point))
                     self.rect_item.setPen(QPen(QColor(0, 255, 0), 0.1))
+                    self.prompts.append(self.rect_item)
                     self.p1.addItem(self.rect_item)
                     self.rect_item.setZValue(10)
                     
@@ -188,7 +277,14 @@ class ImageAnalysisPage(HPage):
             color = (255, 0, 0)
         else:
             color = (0, 255, 0)
-        self.p1.plot([x], [y], pen=None, symbol='o', symbolSize=5, symbolBrush=color)
+        # 创建散点图对象
+        scatter = pg.ScatterPlotItem()
+        scatter.addPoints(x=[x], y=[y], brush=color, symbol='o', size=5)
+        self.prompts.append(scatter)
+
+        # 将散点图对象添加到 self.p1 中
+        self.p1.addItem(scatter)
+        # self.p1.plot([x], [y], pen=None, symbol='o', symbolSize=5, symbolBrush=color)
                     
     def mouseReleaseEvent(self, event):
         if self.sam_enabled:
@@ -316,40 +412,51 @@ class ImageAnalysisPage(HPage):
         if len(self.shapes) == 0:
             print('no roi')
             return
-        pass
-        """使用切片操作提取出ROI区域;
-        我们使用Python内置的XML模块来创建XML文件,并将ROI区域的坐标信息保存到XML文件中;
-        创建一个根节点annotation,并在其中添加一个子节点size来保存图片的大小信息,以及一个子节点object来保存ROI区域的信息;
-        object节点中包含一个子节点name来表示ROI区域的名称,以及一个子节点bndbox来保存ROI区域的边界框信息;
-        bndbox节点中包含四个子节点xmin、ymin、xmax、ymax,分别表示ROI区域的左上角和右下角坐标最后;
-        使用ElementTree将XML文件保存到磁盘中。"""
+        self.improve_folder = asure_folder(self.improve_folder)
+        improve_path = os.path.join(self.improve_folder, os.path.basename(self.img_path).split('.')[0] + '.txt')
+        print(improve_path)
+        data = ''
+        with open(improve_path, 'w') as f:
+            for roi in self.shapes:
+                class_id, x_center, y_center, w, h = rectroi_to_yolo(roi, self.image.shape[1], self.image.shape[0])
+                data += f"{class_id} {x_center} {y_center} {w} {h}\n"
+            f.write(data)
+        # self.shapes = []
+
+        # pass
+        # """使用切片操作提取出ROI区域;
+        # 我们使用Python内置的XML模块来创建XML文件,并将ROI区域的坐标信息保存到XML文件中;
+        # 创建一个根节点annotation,并在其中添加一个子节点size来保存图片的大小信息,以及一个子节点object来保存ROI区域的信息;
+        # object节点中包含一个子节点name来表示ROI区域的名称,以及一个子节点bndbox来保存ROI区域的边界框信息;
+        # bndbox节点中包含四个子节点xmin、ymin、xmax、ymax,分别表示ROI区域的左上角和右下角坐标最后;
+        # 使用ElementTree将XML文件保存到磁盘中。"""
         
-        for roi in self.shapes:
-            # 提取ROI区域
-            roi = self.img.getArrayRegion(self.image, roi)
-            # 保存ROI区域的坐标信息到XML文件中
-            root = ET.Element('annotation')
-            size = ET.SubElement(root, 'size')
-            width = ET.SubElement(size, 'width')
-            height = ET.SubElement(size, 'height')
-            depth = ET.SubElement(size, 'depth')
-            width.text = str(self.image.shape[1])
-            height.text = str(self.image.shape[0])
-            depth.text = str(self.image.shape[2])
-            object = ET.SubElement(root, 'object')
-            name = ET.SubElement(object, 'name')
-            name.text = 'ROI'
-            bndbox = ET.SubElement(object, 'bndbox')
-            xmin = ET.SubElement(bndbox, 'xmin')
-            ymin = ET.SubElement(bndbox, 'ymin')
-            xmax = ET.SubElement(bndbox, 'xmax')
-            ymax = ET.SubElement(bndbox, 'ymax')
-            xmin.text = str(roi.shape[0])
-            ymin.text = str(roi.shape[1])
-            xmax.text = str(roi.shape[2])
-            ymax.text = str(roi.shape[3])
-            tree = ET.ElementTree(root)
-            tree.write('test.xml')
+        # for roi in self.shapes:
+        #     # 提取ROI区域
+        #     roi = self.img.getArrayRegion(self.image, roi)
+        #     # 保存ROI区域的坐标信息到XML文件中
+        #     root = ET.Element('annotation')
+        #     size = ET.SubElement(root, 'size')
+        #     width = ET.SubElement(size, 'width')
+        #     height = ET.SubElement(size, 'height')
+        #     depth = ET.SubElement(size, 'depth')
+        #     width.text = str(self.image.shape[1])
+        #     height.text = str(self.image.shape[0])
+        #     depth.text = str(self.image.shape[2])
+        #     object = ET.SubElement(root, 'object')
+        #     name = ET.SubElement(object, 'name')
+        #     name.text = 'ROI'
+        #     bndbox = ET.SubElement(object, 'bndbox')
+        #     xmin = ET.SubElement(bndbox, 'xmin')
+        #     ymin = ET.SubElement(bndbox, 'ymin')
+        #     xmax = ET.SubElement(bndbox, 'xmax')
+        #     ymax = ET.SubElement(bndbox, 'ymax')
+        #     xmin.text = str(roi.shape[0])
+        #     ymin.text = str(roi.shape[1])
+        #     xmax.text = str(roi.shape[2])
+        #     ymax.text = str(roi.shape[3])
+        #     tree = ET.ElementTree(root)
+        #     tree.write('test.xml')
          
     def create_img(self, img_path=None):
         """prepare the input image to analysis"""
@@ -560,33 +667,31 @@ class ImageAnalysisPage(HPage):
             self.img.setImage(self.image)
             self.update_manification(False)
 
-    def plot_masks(self, img, masks, color=None):
-        if isinstance(img, str):
-            img = cv2.imread(img)
-            img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-        if "area" not in masks[0].keys():
-            sorted_masks = masks
-        else:
-            sorted_masks = sorted(masks, key=(lambda x: x['area']), reverse=True)
-        for i, mask in enumerate(sorted_masks):
-            m = mask['segmentation']
-            mask_color_img = np.zeros_like(img)
-            mask_color_img[...] = self.colors[i]
-            mask_indices = np.where(m == 1)
-            
-            
-            alpha = 0.35
-            img[mask_indices] = alpha * mask_color_img[mask_indices] + (1-alpha) * img[mask_indices]
-        
-        return img  
+
+    def plot_bbox(self, bboxes):
+        for bbox in bboxes:
+            x, y, w, h = bbox[0], bbox[1], bbox[2], bbox[3]
+            self.create_yolo(x, y, w, h, 0, 0)
+
 
     def predict_sam(self, upload_type=0):
+        """predict the image via sam"""
+        if self.api_key is None:
+            #弹出一个对话框，让用户输入api_key
+            print('api_key is None')
+            from ..scripts.common.util import CommonDialog
+            dialog = CommonDialog(title='请输入api_key')
+            dialog.show()
+            if dialog.exec_():
+                self.update_api_key(dialog.label_edit.text())
+
+
         from ..scripts.sam_predictor import seg_via_sam
         if self.prompt_mode == 0:
-            masks = seg_via_sam(img=self.img_path)
+            masks = seg_via_sam(img=self.img_path, upload_type=upload_type, api_key=self.api_key)
         else:
-            masks = seg_via_sam(img=self.img_path, input_points=self.input_points, input_labels=self.input_labels, input_boxes=self.input_boxes)
-        
+            masks = seg_via_sam(img=self.img_path, input_points=self.input_points, input_labels=self.input_labels, input_boxes=self.input_boxes, api_key=self.api_key)
+        print(type(masks), len(masks), type(masks[0]))
 #         """show the mask"""
 #         #masks的每个元素是一个mask，将其展示到p1上
 #         colors = [
@@ -609,11 +714,14 @@ class ImageAnalysisPage(HPage):
 #             # Add the mask to the plot
 #             self.p1.addItem(mask_img)
         if upload_type == 0:
-            self.masked_img = self.plot_masks(self.img_path, masks)
+            from HaiGF.plugins.label_train.scripts.sam_predictor import plot_masks
+            self.masked_img = plot_masks(self.img_path, masks)
+           
             self.img.setImage(self.masked_img)
+            #保存图片
+            cv2.imwrite('D:/masked_img.png', self.masked_img)
         elif upload_type == 1:
-            self.masked_img = self.plot_masks(self.image, masks)
-            self.img.setImage(self.masked_img)
+            self.plot_bbox(masks)
         elif upload_type == 2:
             pass
             
@@ -624,6 +732,84 @@ class ImageAnalysisPage(HPage):
         rect = QGraphicsRectItem(QRectF(bbox[0], bbox[1], bbox[2], bbox[3]))
         self.p1.addItem(rect)
         rect.setZValue(10)
+
+    def clear_bbox(self):
+        for shape in self.shapes:
+            if isinstance(shape, MyRectROI):
+                self.p1.removeItem(shape)
+        self.shapes = []
+
+    def annotation_to_image(self):
+        #从ananotation文件夹下读取同名yolo标注文件，将标注信息绘制到图片上
+        #读取图片
+        self.clear_bbox()
+        width = self.image.shape[1]
+        height = self.image.shape[0]
+        #读取标注文件,路径是标注文件夹，文件名是图片名，后缀是txt
+        if self.annotation_folder is None:
+            from tkinter import filedialog
+            # 弹出文件夹选择对话框
+            folder_path = filedialog.askdirectory()
+            # 判断选择的是否是文件夹
+            if os.path.isdir(folder_path):
+            # 获取文件夹名称      
+                # folder_name = os.path.basename(folder_path)
+                self.annotation_folder = folder_path
+            else:
+                print("请选择一个文件夹!")
+            pass
+        annotation_path = os.path.join(self.annotation_folder, os.path.basename(self.img_path).split('.')[0] + '.txt')
+        print(annotation_path)
+        with open(annotation_path, 'r') as f:
+            annotation = f.readlines()
+        #绘制标注信息,label_rect接受的参数是（类别，x,y,weight,height）
+        from .label_rect import LabeledRectItem
+        from decimal import Decimal, getcontext
+        getcontext().prec = 6
+        row_id = 0
+        for i in annotation:
+            i = i.strip('\n')
+            i = i.split(' ')
+            i = [Decimal(x) for x in i]
+            x = (i[1] - i[3]/2) * width
+            y = (i[2] - i[4]/2) * height
+            i_width = i[3] * width
+            i_height = i[4] * height
+            self.create_yolo(x, y, i_width, i_height, row_id, i[0])
+            row_id += 1
+            # rect = LabeledRectItem(i[0], x, y, i_width, i_height)
+            # print(rect)
+            # self.shapes.append(rect)
+            # self.p1.addItem(rect)
+            # rect.setZValue(self.p1.scene().items()[::-1][0].zValue() + 1)
+
+    def create_yolo(self, x, y, width, height, row, label):
+        rect = MyRectROI([x, y], [width, height])
+        rect.set_row(row)
+        rect.set_pen(label)
+        self.shapes.append(rect)
+        self.p1.addItem(rect)
+        rect.setZValue(self.p1.scene().items()[::-1][0].zValue() + 1)
+
+    def improve_label(self):
+        #打开标注文件，进行更新
+        #更新操作是遍历self.shapes，每个shape是一个MyRectROI对象，每个对象有一个row属性，对应标注文件中的一行,保留标注文件中的这些行，其他行删除
+        #更新后的标注文件保存到原来的位置
+        self.improve_folder = asure_folder(self.improve_folder)
+        annotation_path = os.path.join(self.annotation_folder, os.path.basename(self.img_path).split('.')[0] + '.txt')
+        improve_path = os.path.join(self.improve_folder, os.path.basename(self.img_path).split('.')[0] + '.txt')
+        print(improve_path)
+        with open(annotation_path, 'r') as f:
+            annotation = f.readlines()
+        
+        with open(improve_path, 'w') as f:
+            for shape in self.shapes:
+                if isinstance(shape, MyRectROI):
+                    row = shape.row
+                    f.write(annotation[row])
+        
+
+
 
 
         

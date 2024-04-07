@@ -2,7 +2,7 @@ import math
 import pyqtgraph as pg
 from pyqtgraph.Qt import QtCore
 from PySide2 import QtGui, QtCore
-from PySide2.QtWidgets import QWidget, QGraphicsPolygonItem, QStyle
+from PySide2.QtWidgets import QWidget, QGraphicsPolygonItem, QStyle, QGraphicsRectItem
 from PySide2.QtGui import QPainterPath, QKeyEvent
 from PySide2.QtCore import QPointF, QLineF
 #引入QGraphicsSceneMouseEvent，用于鼠标事件
@@ -232,10 +232,23 @@ class MyLineROI(pg.LineROI):
         # self.removable = True
 
 class MyRectROI(pg.RectROI):
-    def __init__(self, *args, **kwargs):
+    def __init__(self,*args, **kwargs):
         super().__init__(*args, **kwargs)
         self.setPen(pg.mkPen('y'))
+        self.row = None
         # self.removable = True
+        self.label = None
+
+    def set_row(self, row):
+        self.row = row
+
+    def set_pen(self, label):
+        if label == 1:
+            self.setPen(pg.mkPen('r'))
+
+    def set_label(self, label):
+        self.label = label
+
         
 class MyEllipseROI(pg.EllipseROI):
     def __init__(self, *args, **kwargs):

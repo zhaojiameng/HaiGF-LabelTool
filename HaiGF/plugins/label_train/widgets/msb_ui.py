@@ -104,6 +104,7 @@ class Ui_Form(object):
 
         self.uploadButton = QtWidgets.QPushButton(self.layoutWidget)
         self.uploadButton.setObjectName('上传')
+        self.uploadButton.setEnabled(False)
         self.uploadType = QtWidgets.QComboBox(self.layoutWidget)
         self.uploadType.addItem("显示掩码")
         self.uploadType.addItem("检测")
@@ -112,12 +113,30 @@ class Ui_Form(object):
         self.enable_sam_button = RadioButton(self.layoutWidget, '启用sam', newIcon('autosave'))
         self.enable_sam_button.setEnabled(False)
 
-        self.seg_point = RadioButton(self.layoutWidget, '点', newIcon('hover'))
-        self.seg_box = RadioButton(self.layoutWidget, '框', newIcon('box'))
-        self.seg_anything = RadioButton(self.layoutWidget, '任意', newIcon('everything'))
+        # self.seg_point = RadioButton(self.layoutWidget, '点', newIcon('hover'))
+        self.seg_point = QtWidgets.QRadioButton(self.layoutWidget)
+        self.seg_point.setObjectName('点')
+        self.seg_point.setEnabled(False)
+        # self.seg_box = RadioButton(self.layoutWidget, '框', newIcon('box'))
+        self.seg_box = QtWidgets.QRadioButton(self.layoutWidget)
+        self.seg_box.setObjectName('框')
+        self.seg_box.setEnabled(False)
+        # self.seg_anything = QPushButton(self.layoutWidget)
+        self.seg_anything = QtWidgets.QRadioButton(self.layoutWidget)
+        self.seg_anything.setObjectName('全景分割')
+        self.seg_anything.setEnabled(False)
         self.seg_group.addButton(self.seg_point)
         self.seg_group.addButton(self.seg_box)
         self.seg_group.addButton(self.seg_anything)
+        # self.seg_group.setExclusive(False)
+        self.clear_prompt = QPushButton(self.layoutWidget)
+        self.clear_prompt.setObjectName('清除提示')
+        self.enable_label_button = RadioButton(self.layoutWidget, '绘制bbox', newIcon('autosave'))
+        self.save_improve_button = RadioButton(self.layoutWidget, '保存改进', newIcon('autosave'))
+        self.reset_screen_button = QPushButton(self.layoutWidget)
+        self.reset_screen_button.setObjectName('重置屏幕')
+
+        
        
 
         self.spacer = QWidget()
@@ -165,17 +184,14 @@ class Ui_Form(object):
         self.gridLayout.addWidget(self.seg_point, 18, 1, 1, 1)
         self.gridLayout.addWidget(self.seg_box, 19, 0, 1, 1)
         self.gridLayout.addWidget(self.seg_anything, 19, 1, 1, 1)
-        self.gridLayout.addWidget(self.uploadType, 20, 0, 1, 1)
-
-        
-
+        self.gridLayout.addWidget(self.clear_prompt, 20, 0, 1, 1)
+        self.gridLayout.addWidget(self.uploadType, 21, 0, 1, 1)
+        self.gridLayout.addWidget(self.reset_screen_button, 21, 1, 1, 1)
+        self.gridLayout.addWidget(self.enable_label_button, 22, 0, 1, 1)
+        self.gridLayout.addWidget(self.save_improve_button, 22, 1, 1, 1)
 
         self.gridLayout_2.addWidget(self.layoutWidget, 1, 0, 1, 1)
         self.gridLayout_2.addWidget(self.spacer)
-
-       
-
-
 
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
@@ -187,7 +203,6 @@ class Ui_Form(object):
         self.runButton.setText(_translate("Form", "运行"))
         self.runButton1.setText(_translate("Form", "撤销"))
 
-        
         self.roiComboBox.setItemText(0, _translate("Form", "Line ROI"))
         self.roiComboBox.setItemText(1, _translate("Form", "Rect ROI"))
         self.roiComboBox.setItemText(2, _translate("Form", "Ellipse ROI"))
@@ -212,6 +227,10 @@ class Ui_Form(object):
         self.seg_point.setText(_translate("Form", "点提示"))
         self.seg_box.setText(_translate("Form", "框提示"))
         self.seg_anything.setText(_translate("Form", "全景分割"))
+        self.enable_label_button.setText(_translate("Form", "绘制bbox"))
+        self.save_improve_button.setText(_translate("Form", "保存改进"))
+        self.clear_prompt.setText(_translate("Form", "清除提示"))
+        self.reset_screen_button.setText(_translate("Form", "清屏"))
 
         
 

@@ -151,7 +151,7 @@ class AntrainPlugin(HPlugin):
             self.msb_widget.enable_sam_button(False)
             print('no page')
         else:
-            self.page.sam_enabled = enabled
+            self.page.switch_mouse_event(enabled)
 
     def update_prompt_mode(self, mode: int):
         if not self.page in self.cw.tab_widgets[0].pages:
@@ -160,4 +160,30 @@ class AntrainPlugin(HPlugin):
         else:
             print(mode)
             self.page.prompt_mode = mode
+
+    def enable_label(self, enabled: bool):
+        if enabled:
+            if not self.page in self.cw.tab_widgets[0].pages:
+                print('no page')
+            else:
+                self.page.annotation_to_image()
     
+    def save_improve(self, enabled: bool):
+        if enabled:
+            if not self.page in self.cw.tab_widgets[0].pages:
+                print('no page')
+            else:
+                self.page.improve_label()
+
+    def clear_prompt(self):
+        if not self.page in self.cw.tab_widgets[0].pages:
+            print('no page')
+        else:
+            # print('clear prompt')
+            self.page.clear_prompt()
+
+    def reset_screen(self):
+        if not self.page in self.cw.tab_widgets[0].pages:
+            print('no page')
+        else:
+            self.page.reset_screen()
